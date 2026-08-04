@@ -12,6 +12,7 @@ export default defineConfig({
         controls: resolve(import.meta.dirname, 'controls.html'),
         standards: resolve(import.meta.dirname, 'standards.html'),
         industries: resolve(import.meta.dirname, 'industries.html'),
+        evidence: resolve(import.meta.dirname, 'evidence.html'),
         resources: resolve(import.meta.dirname, 'resources.html'),
         tools: resolve(import.meta.dirname, 'tools.html'),
         about: resolve(import.meta.dirname, 'about.html')
