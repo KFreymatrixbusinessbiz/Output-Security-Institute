@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  ArrowRight, BookOpen, CheckCircle2, ChevronDown, ClipboardCheck,
+  ArrowRight, BookOpen, CheckCircle2, ChevronDown, ClipboardCheck, Compass,
   Download, ExternalLink, FileCheck2, FileKey, FileText, Fingerprint, Menu, Network,
   SearchCheck, ShieldCheck, Workflow, X
 } from 'lucide-react'
@@ -290,6 +290,24 @@ function Maturity(){
   </section>
 }
 
+const startingProfiles = [
+  {number:'01', title:'The boundary is unclear', signal:'Devices are known, but the information, interfaces, owners, service paths, physical custody, and operational dependencies around them are not.', first:'Define the work and draw the complete system boundary.', controls:'OICC-01, OICC-02, OICC-06', evidence:'Boundary workbook, component inventory, data-flow and dependency map', link:'/tools/output-system-boundary-workbook.xlsx'},
+  {number:'02', title:'Regulated information crosses output', signal:'CUI, ePHI, CJI, payment data, client records, intellectual property, or other sensitive information may be received, processed, stored, transmitted, rendered, or retained.', first:'Determine applicability, locate the information, and assign custody decisions.', controls:'OICC-02, OICC-03, OICC-05, OICC-08, OICC-12', evidence:'Information-flow map, access model, release rules, retention and disposition records', link:'/standards.html'},
+  {number:'03', title:'Work cannot wait for recovery', signal:'Branches, remote sites, clinical work, production, logistics, public service, or 24-hour operations depend on output continuing through an interruption.', first:'Define the work that must continue and test recovery without assuming normal support.', controls:'OICC-02, OICC-10, OICC-11', evidence:'Recovery objective, authorized local actions, fallback map and exercise results', link:'/pathways.html'},
+  {number:'04', title:'Outside support enters the environment', signal:'Remote tools, shared credentials, technicians, suppliers, replacement parts, removed components, or cloud services cross organizational trust and custody boundaries.', first:'Make every access path and dependency visible, authorized, limited, and reviewable.', controls:'OICC-03, OICC-07, OICC-09, OICC-12', evidence:'Supplier requirements, access records, approved sources, parts and media custody', link:'/governance.html'},
+  {number:'05', title:'An assessment or investigation is approaching', signal:'The organization must show what is in scope, how controls operate, who owns decisions, and what current evidence supports each conclusion.', first:'Build the evidence plan before collecting documents or assigning a score.', controls:'OICC-01, OICC-04, OICC-08, OICC-10', evidence:'Assessment plan, evidence matrix, test results, findings and risk decisions', link:'/evidence.html'}
+]
+
+function Profiles(){
+  return <section className="section profiles" id="profiles" data-page="profiles">
+    <div className="section-number">14 / START HERE</div>
+    <div className="profiles-intro"><h2>Start with the condition<br/>you need to <em>change.</em></h2><div><p>You do not need to read the institute in order or begin with a regulation. Choose the condition that most closely resembles your environment, establish a narrow starting boundary, and make the first decision visible.</p><p>More than one profile may apply. Begin where the operational consequence is greatest or where an unknown prevents a defensible decision.</p></div></div>
+    <div className="profile-grid">{startingProfiles.map(profile=><article className="profile-card" key={profile.number}><div className="profile-card-head"><span>{profile.number}</span><h3>{profile.title}</h3></div><p className="profile-signal">{profile.signal}</p><div className="profile-first"><small>BEGIN WITH</small><p>{profile.first}</p></div><dl><div><dt>PRIORITY CONTROLS</dt><dd>{profile.controls}</dd></div><div><dt>FIRST EVIDENCE</dt><dd>{profile.evidence}</dd></div></dl><a className="text-link" href={profile.link}>Open the starting resource <ArrowRight size={15}/></a></article>)}</div>
+    <div className="profile-sequence"><div><small>THE FIRST 90 DAYS</small><h3>Make the unknowns governable before making the program large.</h3></div><ol><li><b>FIRST 30</b><span>Name the work, boundary, information, dependencies, owners, and material unknowns.</span></li><li><b>NEXT 30</b><span>Define priority control objectives, approved conditions, evidence expectations, and decision rights.</span></li><li><b>NEXT 30</b><span>Test the highest-consequence claims, record contradictions, assign action, and exercise continuity.</span></li></ol></div>
+    <div className="profile-close"><Compass size={34}/><div><small>STARTING PRINCIPLE</small><h3>A starting profile is not a reduced standard.</h3><p>It is a disciplined way to begin. The complete boundary, applicable requirements, and remaining OICC control objectives still require review as the organization moves from discovery to sustained governance.</p><div className="method-links"><a href="/maturity.html">Use the implementation maturity model <ArrowRight size={15}/></a><a href="/tools.html">Open the working tools <ArrowRight size={15}/></a></div></div></div>
+  </section>
+}
+
 const tools = [
   {number:'01', title:'OICC Assessment Workbook', purpose:'Connect each OICC control objective to implementation, evidence, ownership, gaps, and the next decision.', use:['Initial discovery','Internal control review','Assessment preparation','Remediation planning'], file:'/tools/oicc-assessment-workbook.xlsx', format:'Excel workbook'},
   {number:'02', title:'Output System Boundary Workbook', purpose:'Define the devices, software, identities, data, connections, people, physical locations, and dependencies that belong within the governed system.', use:['System scoping','CUI boundary review','Data-flow validation','Ownership assignment'], file:'/tools/output-system-boundary-workbook.xlsx', format:'Excel workbook'},
@@ -310,7 +328,7 @@ const evidencePatterns = [
 
 function Header(){
   const [open,setOpen]=useState(false)
-  const links=[['Doctrine','/doctrine.html'],['OICC Controls','/controls.html'],['Standards','/standards.html'],['Industries','/industries.html'],['Evidence','/evidence.html'],['Resources','/resources.html'],['Pathways','/pathways.html'],['Briefings','/briefings.html'],['Tools','/tools.html']]
+  const links=[['Start Here','/profiles.html'],['OICC Controls','/controls.html'],['Standards','/standards.html'],['Industries','/industries.html'],['Evidence','/evidence.html'],['Resources','/resources.html'],['Briefings','/briefings.html'],['Tools','/tools.html']]
   return <header className="site-header">
     <a className="brand" href="/" aria-label="Output Security Institute home"><span className="brand-mark" aria-hidden="true"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></a>
     <nav className={open?'nav open':'nav'} aria-label="Main navigation">{links.map(([label,href])=><a key={href} href={href} onClick={()=>setOpen(false)}>{label}</a>)}</nav>
@@ -406,18 +424,20 @@ function App(){
 
   <Maturity/>
 
+  <Profiles/>
+
   <section className="section tools" id="tools" data-page="tools">
-    <div className="section-number">14 / IMPLEMENTATION TOOLS</div>
+    <div className="section-number">15 / IMPLEMENTATION TOOLS</div>
     <div className="tools-intro"><h2>Turn the principle into<br/><em>a governed decision.</em></h2><div><p>These working documents are designed for security, IT, compliance, operations, procurement, records, and service owners to complete together.</p><p>They do not produce a certification or compliance determination. Their purpose is to make scope, ownership, evidence, dependency, and unresolved decisions visible.</p></div></div>
     <div className="tool-grid">{tools.map(t=><article className="tool-card" key={t.title}><div className="tool-number">{t.number}</div><FileText size={28}/><h3>{t.title}</h3><p>{t.purpose}</p><div className="tool-use"><h4>Useful for</h4><ul>{t.use.map(x=><li key={x}>{x}</li>)}</ul></div><a className="button tool-download" href={t.file} download>Download {t.format} <Download size={16}/></a></article>)}</div>
     <div className="tool-method"><div><span>USE THE TOOLS IN SEQUENCE</span><h3>Boundary before controls.<br/>Controls before evidence.<br/>Evidence before conclusions.</h3></div><ol><li><b>Define</b><span>Establish the work, information, components, people, and dependencies in scope.</span></li><li><b>Assess</b><span>Compare each control objective with the implemented condition and accountable owner.</span></li><li><b>Collect</b><span>Examine records, interview responsible people, and test actual behavior.</span></li><li><b>Decide</b><span>Record gaps, accepted risk, required change, responsible owner, and due date.</span></li></ol></div>
   </section>
 
   <section className="section about" id="about" data-page="about">
-    <div className="section-number">15 / ABOUT OSI</div>
+    <div className="section-number">16 / ABOUT OSI</div>
     <div className="about-grid"><h2>Independent guidance for a boundary that deserves clearer governance.</h2><div><p>The Output Security Institute develops practical, manufacturer-neutral guidance for the security, integrity, and continuity of systems that create, move, and manage physical information.</p><p>OSI is an independent educational initiative. It does not certify products, organizations, security, or regulatory compliance. References to external frameworks do not imply affiliation or endorsement.</p><p>Our purpose is direct: help security, IT, compliance, operations, and procurement teams ask better questions, establish clearer ownership, reduce unexamined dependency, and strengthen continuity.</p><div className="about-links"><a className="text-link dark-link" href="/methodology.html">Read our methodology and independence policy <ArrowRight size={17}/></a><a className="text-link dark-link" href="/governance.html">Use the governance and ownership model <ArrowRight size={17}/></a><a className="text-link dark-link" href="mailto:info@outputsecurityinstitute.org?subject=Contributing%20to%20OSI">Contribute expertise or request guidance <ArrowRight size={17}/></a></div></div></div>
   </section>
 </main>
-<footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/doctrine.html">Doctrine</a><a href="/controls.html">OICC Framework</a><a href="/standards.html">Standards</a><a href="/evidence.html">Evidence</a><a href="/resources.html">Resources</a><a href="/pathways.html">Pathways</a><a href="/briefings.html">Briefings</a><a href="/methodology.html">Methodology</a><a href="/governance.html">Governance</a><a href="/maturity.html">Maturity</a><a href="/tools.html">Tools</a><a href="/about.html">About</a></div><small>© {new Date().getFullYear()} Output Security Institute. Independent educational guidance. Verify all requirements with the authoritative source.</small></footer></div>}
+<footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/profiles.html">Start Here</a><a href="/doctrine.html">Doctrine</a><a href="/controls.html">OICC Framework</a><a href="/standards.html">Standards</a><a href="/evidence.html">Evidence</a><a href="/resources.html">Resources</a><a href="/pathways.html">Pathways</a><a href="/briefings.html">Briefings</a><a href="/methodology.html">Methodology</a><a href="/governance.html">Governance</a><a href="/maturity.html">Maturity</a><a href="/tools.html">Tools</a><a href="/about.html">About</a></div><small>© {new Date().getFullYear()} Output Security Institute. Independent educational guidance. Verify all requirements with the authoritative source.</small></footer></div>}
 
 export default App
