@@ -1,0 +1,22 @@
+OUTPUT SECURITY INSTITUTE CONTENT EXPANSION V2
+
+1. Extract this ZIP on your computer.
+2. Open the GitHub repository:
+   KFreymatrixbusinessbiz/Output-Security-Institute
+3. Choose Add file > Upload files.
+4. Upload the CONTENTS of the osi-upgrade folder to the repository root.
+   Keep the src folder intact.
+5. Commit directly to main with this message:
+   Expand OSI controls, standards, industries, and resources
+6. Cloudflare will run npm run build and deploy automatically.
+
+Files replaced:
+- index.html
+- package.json
+- package-lock.json
+- wrangler.jsonc
+- src/App.jsx
+- src/main.jsx
+- src/styles.css
+
+Cloudflare Web Analytics is already included in index.html.
