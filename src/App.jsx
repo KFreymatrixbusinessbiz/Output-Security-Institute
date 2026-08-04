@@ -261,6 +261,35 @@ function Governance(){
   </section>
 }
 
+const maturityStages = [
+  ['01','VISIBLE','The organization can identify the output environment, its information, owners, interfaces, dependencies, critical work, and material unknowns.','Current inventory; preliminary boundary; named discovery owner; unresolved-question register'],
+  ['02','DEFINED','Control objectives, decision rights, approved baselines, supplier requirements, continuity needs, and evidence expectations are documented.','Approved scope; role and authority matrix; configuration baseline; evidence plan'],
+  ['03','GOVERNED','Controls operate through assigned roles, authorized processes, documented exceptions, controlled changes, and lifecycle requirements.','Access reviews; change records; exception decisions; service and custody records'],
+  ['04','VERIFIED','The organization examines records, interviews owners, tests behavior, reconciles contradictions, and records defensible conclusions.','Test results; evidence samples; findings; risk decisions; remediation ownership'],
+  ['05','SUSTAINED','Monitoring, review triggers, exercises, source changes, supplier changes, incidents, and lessons learned continuously improve the operating model.','Trend review; recovery exercises; source watch; revised baselines; closed-loop corrective action']
+]
+
+const implementationMoves = [
+  ['START WITH THE WORK','Identify what must continue, the acceptable interruption, and the consequence when output is unavailable, misdirected, altered, or unaccountable.'],
+  ['DRAW THE BOUNDARY','Include devices, software, identities, information, interfaces, people, locations, service paths, suppliers, parts, media, and physical custody.'],
+  ['ASSIGN THE DECISIONS','Name who owns the outcome, who has authority, who must participate, what evidence records the decision, and what triggers reconsideration.'],
+  ['ESTABLISH THE BASELINE','Define the authorized architecture, configuration, access, information handling, evidence, continuity, update, service, and disposition condition.'],
+  ['TEST THE CLAIMS','Examine documentation, interview accountable people, observe behavior, test recovery and control operation, and preserve contradictions as findings.'],
+  ['CLOSE THE LOOP','Prioritize action by operational consequence, record accepted risk, verify remediation, refresh evidence, and revise the model when conditions change.']
+]
+
+function Maturity(){
+  return <section className="section maturity" id="maturity" data-page="maturity">
+    <div className="section-number">13 / IMPLEMENTATION MATURITY</div>
+    <div className="maturity-intro"><h2>Progress is the ability<br/>to make a <em>better decision.</em></h2><div><p>Output-security maturity is not the number of products installed, policies written, or boxes checked. It is the organization’s increasing ability to see the environment, assign authority, operate controls, verify claims, and adapt before an interruption or incident forces the issue.</p><p>The stages below describe observable operating conditions. They are not a certification scale, a compliance score, or a substitute for the requirements that apply to the organization.</p></div></div>
+    <div className="maturity-stages">{maturityStages.map(([number,title,condition,evidence])=><article key={number}><div><span>{number}</span><b>{title}</b></div><h3>{condition}</h3><p><strong>Evidence of progress</strong>{evidence}</p></article>)}</div>
+    <div className="implementation-path"><div className="implementation-path-head"><small>A PRACTICAL IMPLEMENTATION PATH</small><h3>Move in sequence.<br/>Repeat when the boundary changes.</h3></div><ol>{implementationMoves.map(([title,body],index)=><li key={title}><span>{String(index+1).padStart(2,'0')}</span><div><b>{title}</b><p>{body}</p></div></li>)}</ol></div>
+    <div className="maturity-measures"><div><small>MEASURES THAT INFORM</small><h3>Measure control health, not activity volume.</h3></div><div className="measure-grid">{[['BOUNDARY','Known components and dependencies reconciled against discovery.'],['OWNERSHIP','Material decisions with a named accountable owner and authority.'],['EVIDENCE','Control conclusions supported by current, retrievable evidence.'],['EXCEPTIONS','Open risk decisions with scope, owner, compensating control and expiration.'],['CONTINUITY','Critical workflows exercised without assuming normal support is available.'],['LIFECYCLE','Changes, service events and disposition completed with verified custody.']].map(([title,body])=><article key={title}><b>{title}</b><p>{body}</p></article>)}</div></div>
+    <div className="maturity-warning"><Fingerprint size={34}/><div><small>MATURITY WARNING</small><h3>Do not average away a critical weakness.</h3><p>A strong score in one area cannot neutralize an ungoverned trust path, unavailable recovery capability, unidentified information store, or ownerless risk decision. Report material conditions and their operational consequence directly.</p></div></div>
+    <div className="maturity-close"><CheckCircle2 size={34}/><div><small>THE OPERATING TEST</small><h3>The model is mature when it survives contact with change.</h3><p>New information, users, interfaces, locations, suppliers, firmware, workflows, incidents, and mission priorities should trigger known owners and repeatable decisions—not a return to discovery from the beginning.</p><div className="method-links"><a href="/governance.html">Assign the ownership model <ArrowRight size={15}/></a><a href="/tools.html">Begin with the OSI working tools <ArrowRight size={15}/></a></div></div></div>
+  </section>
+}
+
 const tools = [
   {number:'01', title:'OICC Assessment Workbook', purpose:'Connect each OICC control objective to implementation, evidence, ownership, gaps, and the next decision.', use:['Initial discovery','Internal control review','Assessment preparation','Remediation planning'], file:'/tools/oicc-assessment-workbook.xlsx', format:'Excel workbook'},
   {number:'02', title:'Output System Boundary Workbook', purpose:'Define the devices, software, identities, data, connections, people, physical locations, and dependencies that belong within the governed system.', use:['System scoping','CUI boundary review','Data-flow validation','Ownership assignment'], file:'/tools/output-system-boundary-workbook.xlsx', format:'Excel workbook'},
@@ -375,18 +404,20 @@ function App(){
 
   <Governance/>
 
+  <Maturity/>
+
   <section className="section tools" id="tools" data-page="tools">
-    <div className="section-number">13 / IMPLEMENTATION TOOLS</div>
+    <div className="section-number">14 / IMPLEMENTATION TOOLS</div>
     <div className="tools-intro"><h2>Turn the principle into<br/><em>a governed decision.</em></h2><div><p>These working documents are designed for security, IT, compliance, operations, procurement, records, and service owners to complete together.</p><p>They do not produce a certification or compliance determination. Their purpose is to make scope, ownership, evidence, dependency, and unresolved decisions visible.</p></div></div>
     <div className="tool-grid">{tools.map(t=><article className="tool-card" key={t.title}><div className="tool-number">{t.number}</div><FileText size={28}/><h3>{t.title}</h3><p>{t.purpose}</p><div className="tool-use"><h4>Useful for</h4><ul>{t.use.map(x=><li key={x}>{x}</li>)}</ul></div><a className="button tool-download" href={t.file} download>Download {t.format} <Download size={16}/></a></article>)}</div>
     <div className="tool-method"><div><span>USE THE TOOLS IN SEQUENCE</span><h3>Boundary before controls.<br/>Controls before evidence.<br/>Evidence before conclusions.</h3></div><ol><li><b>Define</b><span>Establish the work, information, components, people, and dependencies in scope.</span></li><li><b>Assess</b><span>Compare each control objective with the implemented condition and accountable owner.</span></li><li><b>Collect</b><span>Examine records, interview responsible people, and test actual behavior.</span></li><li><b>Decide</b><span>Record gaps, accepted risk, required change, responsible owner, and due date.</span></li></ol></div>
   </section>
 
   <section className="section about" id="about" data-page="about">
-    <div className="section-number">14 / ABOUT OSI</div>
+    <div className="section-number">15 / ABOUT OSI</div>
     <div className="about-grid"><h2>Independent guidance for a boundary that deserves clearer governance.</h2><div><p>The Output Security Institute develops practical, manufacturer-neutral guidance for the security, integrity, and continuity of systems that create, move, and manage physical information.</p><p>OSI is an independent educational initiative. It does not certify products, organizations, security, or regulatory compliance. References to external frameworks do not imply affiliation or endorsement.</p><p>Our purpose is direct: help security, IT, compliance, operations, and procurement teams ask better questions, establish clearer ownership, reduce unexamined dependency, and strengthen continuity.</p><div className="about-links"><a className="text-link dark-link" href="/methodology.html">Read our methodology and independence policy <ArrowRight size={17}/></a><a className="text-link dark-link" href="/governance.html">Use the governance and ownership model <ArrowRight size={17}/></a><a className="text-link dark-link" href="mailto:info@outputsecurityinstitute.org?subject=Contributing%20to%20OSI">Contribute expertise or request guidance <ArrowRight size={17}/></a></div></div></div>
   </section>
 </main>
-<footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/doctrine.html">Doctrine</a><a href="/controls.html">OICC Framework</a><a href="/standards.html">Standards</a><a href="/evidence.html">Evidence</a><a href="/resources.html">Resources</a><a href="/pathways.html">Pathways</a><a href="/briefings.html">Briefings</a><a href="/methodology.html">Methodology</a><a href="/governance.html">Governance</a><a href="/tools.html">Tools</a><a href="/about.html">About</a></div><small>© {new Date().getFullYear()} Output Security Institute. Independent educational guidance. Verify all requirements with the authoritative source.</small></footer></div>}
+<footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/doctrine.html">Doctrine</a><a href="/controls.html">OICC Framework</a><a href="/standards.html">Standards</a><a href="/evidence.html">Evidence</a><a href="/resources.html">Resources</a><a href="/pathways.html">Pathways</a><a href="/briefings.html">Briefings</a><a href="/methodology.html">Methodology</a><a href="/governance.html">Governance</a><a href="/maturity.html">Maturity</a><a href="/tools.html">Tools</a><a href="/about.html">About</a></div><small>© {new Date().getFullYear()} Output Security Institute. Independent educational guidance. Verify all requirements with the authoritative source.</small></footer></div>}
 
 export default App
