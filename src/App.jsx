@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   ArrowRight, BookOpen, CheckCircle2, ChevronDown, ClipboardCheck,
-  ExternalLink, FileCheck2, FileKey, Fingerprint, Menu, Network,
+  Download, ExternalLink, FileCheck2, FileKey, FileText, Fingerprint, Menu, Network,
   SearchCheck, ShieldCheck, Workflow, X
 } from 'lucide-react'
 
@@ -128,9 +128,16 @@ const resources = [
   {type:'DISPOSITION', title:'NIST SP 800-88 Rev. 1', text:'Guidance for media sanitization and disposition decisions.', url:'https://csrc.nist.gov/pubs/sp/800/88/r1/final'}
 ]
 
+const tools = [
+  {number:'01', title:'OICC Assessment Worksheet', purpose:'Connect each OICC control objective to implementation, evidence, ownership, gaps, and the next decision.', use:['Initial discovery','Internal control review','Assessment preparation','Remediation planning'], file:'/tools/oicc-assessment-worksheet.md'},
+  {number:'02', title:'Output System Boundary Worksheet', purpose:'Define the devices, software, identities, data, connections, people, physical locations, and dependencies that belong within the governed system.', use:['System scoping','CUI boundary review','Data-flow validation','Ownership assignment'], file:'/tools/output-system-boundary-worksheet.md'},
+  {number:'03', title:'Procurement Security Questionnaire', purpose:'Bring security, continuity, evidence, lifecycle, and dependency questions into the decision before a product or operating model is selected.', use:['RFI and RFP development','Vendor evaluation','Architecture review','Contract requirements'], file:'/tools/procurement-security-questionnaire.md'},
+  {number:'04', title:'Evidence Collection Matrix', purpose:'Establish what must be examined, who should be interviewed, what should be tested, and how often evidence should be refreshed.', use:['Audit readiness','Control validation','Incident preparation','Continuous governance'], file:'/tools/evidence-collection-matrix.md'}
+]
+
 function Header(){
   const [open,setOpen]=useState(false)
-  const links=[['Doctrine','/doctrine.html'],['OICC Controls','/controls.html'],['Standards','/standards.html'],['Industries','/industries.html'],['Resources','/resources.html'],['About','/about.html']]
+  const links=[['Doctrine','/doctrine.html'],['OICC Controls','/controls.html'],['Standards','/standards.html'],['Industries','/industries.html'],['Resources','/resources.html'],['Tools','/tools.html'],['About','/about.html']]
   return <header className="site-header">
     <a className="brand" href="/" aria-label="Output Security Institute home"><span className="brand-mark" aria-hidden="true"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></a>
     <nav className={open?'nav open':'nav'} aria-label="Main navigation">{links.map(([label,href])=><a key={href} href={href} onClick={()=>setOpen(false)}>{label}</a>)}</nav>
@@ -212,11 +219,18 @@ function App(){
     <div className="resource-grid">{resources.map(r=><a className="resource-card" key={r.title} href={r.url} target="_blank" rel="noreferrer"><small>{r.type}</small><BookOpen size={25}/><h3>{r.title}</h3><p>{r.text}</p><span>Open authoritative source <ExternalLink size={14}/></span></a>)}</div>
   </section>
 
+  <section className="section tools" id="tools" data-page="tools">
+    <div className="section-number">08 / IMPLEMENTATION TOOLS</div>
+    <div className="tools-intro"><h2>Turn the principle into<br/><em>a governed decision.</em></h2><div><p>These working documents are designed for security, IT, compliance, operations, procurement, records, and service owners to complete together.</p><p>They do not produce a certification or compliance determination. Their purpose is to make scope, ownership, evidence, dependency, and unresolved decisions visible.</p></div></div>
+    <div className="tool-grid">{tools.map(t=><article className="tool-card" key={t.title}><div className="tool-number">{t.number}</div><FileText size={28}/><h3>{t.title}</h3><p>{t.purpose}</p><div className="tool-use"><h4>Useful for</h4><ul>{t.use.map(x=><li key={x}>{x}</li>)}</ul></div><a className="button tool-download" href={t.file} download>Download working document <Download size={16}/></a></article>)}</div>
+    <div className="tool-method"><div><span>USE THE TOOLS IN SEQUENCE</span><h3>Boundary before controls.<br/>Controls before evidence.<br/>Evidence before conclusions.</h3></div><ol><li><b>Define</b><span>Establish the work, information, components, people, and dependencies in scope.</span></li><li><b>Assess</b><span>Compare each control objective with the implemented condition and accountable owner.</span></li><li><b>Collect</b><span>Examine records, interview responsible people, and test actual behavior.</span></li><li><b>Decide</b><span>Record gaps, accepted risk, required change, responsible owner, and due date.</span></li></ol></div>
+  </section>
+
   <section className="section about" id="about" data-page="about">
-    <div className="section-number">08 / ABOUT OSI</div>
+    <div className="section-number">09 / ABOUT OSI</div>
     <div className="about-grid"><h2>Independent guidance for a boundary that deserves clearer governance.</h2><div><p>The Output Security Institute develops practical, manufacturer-neutral guidance for the security, integrity, and continuity of systems that create, move, and manage physical information.</p><p>OSI is an independent educational initiative. It does not certify products, organizations, security, or regulatory compliance. References to external frameworks do not imply affiliation or endorsement.</p><p>Our purpose is direct: help security, IT, compliance, operations, and procurement teams ask better questions, establish clearer ownership, reduce unexamined dependency, and strengthen continuity.</p><a className="text-link dark-link" href="mailto:info@outputsecurityinstitute.org?subject=Contributing%20to%20OSI">Contribute expertise or request guidance <ArrowRight size={17}/></a></div></div>
   </section>
 </main>
-<footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/doctrine.html">Doctrine</a><a href="/controls.html">OICC Framework</a><a href="/standards.html">Standards</a><a href="/resources.html">Resources</a></div><small>© {new Date().getFullYear()} Output Security Institute. Independent educational guidance. Verify all requirements with the authoritative source.</small></footer></div>}
+<footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/doctrine.html">Doctrine</a><a href="/controls.html">OICC Framework</a><a href="/standards.html">Standards</a><a href="/resources.html">Resources</a><a href="/tools.html">Tools</a></div><small>© {new Date().getFullYear()} Output Security Institute. Independent educational guidance. Verify all requirements with the authoritative source.</small></footer></div>}
 
 export default App
