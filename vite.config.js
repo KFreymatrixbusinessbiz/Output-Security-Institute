@@ -14,6 +14,8 @@ export default defineConfig({
         industries: resolve(import.meta.dirname, 'industries.html'),
         evidence: resolve(import.meta.dirname, 'evidence.html'),
         resources: resolve(import.meta.dirname, 'resources.html'),
+        pathways: resolve(import.meta.dirname, 'pathways.html'),
+        briefings: resolve(import.meta.dirname, 'briefings.html'),
         tools: resolve(import.meta.dirname, 'tools.html'),
         about: resolve(import.meta.dirname, 'about.html')
       }
