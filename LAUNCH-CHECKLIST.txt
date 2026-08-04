@@ -1,0 +1,38 @@
+OUTPUT SECURITY INSTITUTE — LAUNCH CHECKLIST
+
+Repository and deployment
+[ ] Upload the contents of this folder to the repository root and commit to main.
+[ ] Confirm Cloudflare runs: npm run build
+[ ] Confirm Cloudflare deploys: npx wrangler deploy
+[ ] Confirm the Cloudflare root directory is /
+[ ] Confirm the active deployment completed without errors.
+
+Route verification
+[ ] Open the home page and each primary navigation destination.
+[ ] Open Start Here, OICC Controls, Standards, Industries, Evidence, Resources, Briefings, and Tools.
+[ ] Confirm an unknown URL displays the OSI page-not-found screen.
+[ ] Confirm the mobile menu opens, closes, and exposes every primary destination.
+
+Resource verification
+[ ] Download and open the OICC assessment workbook.
+[ ] Download and open the boundary workbook.
+[ ] Download and open the evidence collection workbook.
+[ ] Download and open the procurement questionnaire.
+[ ] Open several authoritative external references from the resource center.
+
+Domain and measurement
+[ ] Bind the final custom domain in Cloudflare when it is available.
+[ ] Confirm DNS, HTTPS, and redirects for the root and www hostnames.
+[ ] Replace placeholder outputsecurityinstitute.org URLs if a different domain is selected.
+[ ] Confirm Cloudflare Web Analytics receives a test visit.
+[ ] Confirm robots.txt and sitemap.xml load from the final domain.
+
+Organization details
+[ ] Activate info@outputsecurityinstitute.org before publishing that address publicly.
+[ ] Confirm the contribution email link opens the intended mailbox.
+[ ] Record the release date and owner for the OICC working framework.
+
+Final test
+[ ] Test desktop and mobile layouts in current Chrome, Edge, Safari, and Firefox.
+[ ] Test keyboard navigation and visible focus from the top of every primary page.
+[ ] Test at 200% browser zoom for clipping or horizontal overflow.

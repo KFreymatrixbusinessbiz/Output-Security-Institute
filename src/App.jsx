@@ -329,11 +329,16 @@ const evidencePatterns = [
 function Header(){
   const [open,setOpen]=useState(false)
   const links=[['Start Here','/profiles.html'],['OICC Controls','/controls.html'],['Standards','/standards.html'],['Industries','/industries.html'],['Evidence','/evidence.html'],['Resources','/resources.html'],['Briefings','/briefings.html'],['Tools','/tools.html']]
-  return <header className="site-header">
+  const currentPath=window.location.pathname==='/'?'/':window.location.pathname.replace(/\/$/, '').replace(/\.html$/, '')
+  return <><a className="skip-link" href="#main-content">Skip to main content</a><header className="site-header">
     <a className="brand" href="/" aria-label="Output Security Institute home"><span className="brand-mark" aria-hidden="true"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></a>
-    <nav className={open?'nav open':'nav'} aria-label="Main navigation">{links.map(([label,href])=><a key={href} href={href} onClick={()=>setOpen(false)}>{label}</a>)}</nav>
-    <button className="menu" onClick={()=>setOpen(!open)} aria-label="Toggle navigation">{open?<X/>:<Menu/>}</button>
-  </header>
+    <nav id="main-navigation" className={open?'nav open':'nav'} aria-label="Main navigation">{links.map(([label,href])=>{const normalized=href.replace(/\.html$/, '');const active=currentPath===normalized;return <a key={href} href={href} aria-current={active?'page':undefined} onClick={()=>setOpen(false)}>{label}</a>})}</nav>
+    <button className="menu" type="button" onClick={()=>setOpen(!open)} aria-label="Toggle navigation" aria-controls="main-navigation" aria-expanded={open}>{open?<X/>:<Menu/>}</button>
+  </header></>
+}
+
+function NotFound(){
+  return <section className="section not-found" data-page="notfound"><div className="section-number">PAGE NOT FOUND</div><div><h2>The path ends here.<br/><em>The work does not.</em></h2><p>The page may have moved, or the address may be incomplete. Choose a starting point or return to the institute home page.</p><div className="not-found-actions"><a className="button primary" href="/profiles.html">Start with your condition <ArrowRight size={17}/></a><a className="text-link" href="/">Return home <ArrowRight size={17}/></a></div></div></section>
 }
 
 function ControlCard({control}){
@@ -349,8 +354,12 @@ function ControlCard({control}){
 
 function App(){
   const filename=(window.location.pathname.split('/').pop()||'index.html').replace('.html','')
-  const view=filename==='index'?'home':filename
-  return <div id="top"><Header/><main className={view==='home'?'home-view':'page-view'} data-view={view}>
+  const knownViews=['doctrine','controls','standards','industries','evidence','resources','pathways','briefings','methodology','governance','maturity','profiles','tools','about']
+  const view=filename==='index'?'home':knownViews.includes(filename)?filename:'notfound'
+  const viewTitles={doctrine:'OSI Doctrine',controls:'Operational Infrastructure Critical Controls',standards:'Standards Crosswalk',industries:'Industry Implementation',evidence:'Evidence Pattern Library',resources:'Authoritative Resource Center',pathways:'Implementation Pathways',briefings:'Operational Briefings',methodology:'Research Methodology and Independence',governance:'Governance and Ownership',maturity:'Implementation Maturity',profiles:'Start with Your Condition',tools:'Implementation Tools',about:'About the Output Security Institute',notfound:'Page Not Found'}
+  return <div id="top"><Header/><main id="main-content" className={view==='home'?'home-view':'page-view'} data-view={view} tabIndex="-1">
+  {view!=='home'&&<h1 className="sr-only">{viewTitles[view]}</h1>}
+  <NotFound/>
   <section className="hero" data-page="home">
     <div className="eyebrow"><span></span>Independent guidance for output security</div>
     <h1>Security does not end<br/>at the <em>screen.</em></h1>
