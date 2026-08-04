@@ -124,9 +124,9 @@ const resources = [
 
 function Header(){
   const [open,setOpen]=useState(false)
-  const links=[['Doctrine','#doctrine'],['OICC Controls','#controls'],['Standards','#standards'],['Industries','#industries'],['Resources','#resources'],['About','#about']]
+  const links=[['Doctrine','/doctrine.html'],['OICC Controls','/controls.html'],['Standards','/standards.html'],['Industries','/industries.html'],['Resources','/resources.html'],['About','/about.html']]
   return <header className="site-header">
-    <a className="brand" href="#top" aria-label="Output Security Institute home"><span className="brand-mark" aria-hidden="true"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></a>
+    <a className="brand" href="/" aria-label="Output Security Institute home"><span className="brand-mark" aria-hidden="true"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></a>
     <nav className={open?'nav open':'nav'} aria-label="Main navigation">{links.map(([label,href])=><a key={href} href={href} onClick={()=>setOpen(false)}>{label}</a>)}</nav>
     <button className="menu" onClick={()=>setOpen(!open)} aria-label="Toggle navigation">{open?<X/>:<Menu/>}</button>
   </header>
@@ -143,16 +143,19 @@ function ControlCard({control}){
   </details>
 }
 
-function App(){return <div id="top"><Header/><main>
-  <section className="hero">
+function App(){
+  const filename=(window.location.pathname.split('/').pop()||'index.html').replace('.html','')
+  const view=filename==='index'?'home':filename
+  return <div id="top"><Header/><main className={view==='home'?'home-view':'page-view'} data-view={view}>
+  <section className="hero" data-page="home">
     <div className="eyebrow"><span></span>Independent guidance for output security</div>
     <h1>Security does not end<br/>at the <em>screen.</em></h1>
     <p className="hero-copy">Output systems sit where digital information becomes physical, identity becomes action, and policy becomes custody. OSI provides manufacturer-neutral guidance for governing that boundary.</p>
-    <div className="hero-actions"><a className="button primary" href="#controls">Use the OICC framework <ArrowRight size={18}/></a><a className="text-link" href="#doctrine">Read the doctrine <ChevronDown size={18}/></a></div>
+    <div className="hero-actions"><a className="button primary" href="/controls.html">Use the OICC framework <ArrowRight size={18}/></a><a className="text-link" href="/doctrine.html">Read the doctrine <ArrowRight size={18}/></a></div>
     <div className="boundary-map" aria-label="Information crossing the digital and physical boundary"><div className="map-label digital">DIGITAL ENVIRONMENT</div><div className="map-node"><Network/><span>Network and identity</span></div><div className="map-line"></div><div className="map-core"><Fingerprint/><b>OUTPUT<br/>BOUNDARY</b><small>CONTROL BECOMES CUSTODY</small></div><div className="map-line"></div><div className="map-node"><FileKey/><span>Physical information</span></div><div className="map-label physical">PHYSICAL ENVIRONMENT</div></div>
   </section>
 
-  <section className="section issue" id="doctrine">
+  <section className="section issue" id="doctrine" data-page="doctrine">
     <div className="section-number">01 / OSI DOCTRINE</div>
     <div className="issue-grid"><h2>Output is an operational boundary.<br/><em>Govern it as one.</em></h2><div><p>Printers, multifunction systems, scanners, label platforms, workflow applications, fax systems, and cloud output services authenticate users, exchange data, execute software, connect networks, and create records.</p><p>Their risk does not come from what the industry calls them. It comes from what they are allowed to do, what information they handle, who can reach them, and what the organization depends on them to keep doing.</p></div></div>
     <div className="principles">
@@ -165,49 +168,49 @@ function App(){return <div id="top"><Header/><main>
     </div>
   </section>
 
-  <section className="section scope-band">
+  <section className="section scope-band" data-page="doctrine">
     <div className="section-number">WHAT BELONGS IN SCOPE</div>
     <div className="scope-grid">{[['DEVICES','Printers, MFPs, scanners, label and specialty output'],['SOFTWARE','Drivers, embedded applications, workflow and management'],['CONNECTIONS','Wired, wireless, mobile, cloud, fax, USB and APIs'],['PEOPLE','Users, administrators, service personnel and suppliers'],['INFORMATION','Jobs, scans, queues, address books, logs and physical records'],['DEPENDENCIES','Credentials, parts, supplies, remote tools and escalation paths']].map(([h,p])=><article key={h}><small>{h}</small><p>{p}</p></article>)}</div>
   </section>
 
-  <section className="section dark controls" id="controls">
+  <section className="section dark controls" id="controls" data-page="controls">
     <div className="section-number">02 / OICC FRAMEWORK</div>
     <div className="controls-intro"><div><div className="framework-badge">OICC <small>v1.0 / WORKING FRAMEWORK</small></div><h2>Operational Infrastructure<br/>Critical Controls</h2></div><div><p>The OICC framework organizes output-system governance into twelve control areas. Each area connects an objective to priority actions, expected evidence, and established security frameworks.</p><p className="use-note">Use OICC to discover scope and improve decisions. Do not treat it as a substitute for the authoritative standard or a guarantee of compliance.</p></div></div>
     <div className="control-grid">{controls.map(c=><ControlCard key={c.id} control={c}/>)}</div>
   </section>
 
-  <section className="section assessment">
+  <section className="section assessment" data-page="controls">
     <div className="section-number">03 / ASSESSMENT METHOD</div>
     <div className="assessment-grid"><div><h2>Examine.<br/>Interview.<br/><em>Test.</em></h2><p>A policy statement alone does not establish that a control works. A useful assessment connects organizational intent to implemented settings, observable behavior, and retained evidence.</p></div><div className="method-list">{[['01','EXAMINE','Policies, diagrams, inventories, configurations, contracts, logs, tickets, and disposition records.'],['02','INTERVIEW','Security, IT, operations, procurement, privacy, records, facilities, and service owners.'],['03','TEST','Authentication, release, interfaces, logging, recovery, remote access, update, and sanitization behavior.'],['04','RECONCILE','Compare what policy requires, what people believe, what technology does, and what evidence proves.']].map(([n,t,p])=><article key={n}><span>{n}</span><div><h3>{t}</h3><p>{p}</p></div></article>)}</div></div>
   </section>
 
-  <section className="section standards" id="standards">
+  <section className="section standards" id="standards" data-page="standards">
     <div className="section-number">04 / STANDARDS CROSSWALK</div>
     <div className="standards-head"><div><h2>Translate authoritative guidance into<br/><em>operational questions.</em></h2><p>OICC is a contextual framework. The originating publication remains authoritative. Applicability depends on the organization, information, contract, jurisdiction, and system boundary.</p></div></div>
     <div className="standards-table" role="table" aria-label="Standards relationships"><div className="standards-row table-head" role="row"><span>REFERENCE</span><span>ROLE</span><span>OICC RELATIONSHIP</span><span>LINK</span></div>{standards.map(s=><article className="standards-row" role="row" key={s.name}><h3>{s.name}</h3><small>{s.status}</small><p>{s.relationship}</p><a href={s.url} target="_blank" rel="noreferrer" aria-label={`Open ${s.name}`}><ExternalLink size={18}/></a></article>)}</div>
   </section>
 
-  <section className="section industries" id="industries">
+  <section className="section industries" id="industries" data-page="industries">
     <div className="section-number">05 / INDUSTRY IMPLEMENTATION</div>
     <h2>The control objective stays consistent.<br/>The <em>operational consequence</em> changes.</h2>
     <div className="industry-grid">{industries.map(i=><article key={i.title}><span></span><h3>{i.title}</h3><p>{i.focus}</p><details><summary>Questions to bring forward <ChevronDown size={15}/></summary><ul>{i.questions.map(q=><li key={q}>{q}</li>)}</ul></details></article>)}</div>
   </section>
 
-  <section className="section procurement">
+  <section className="section procurement" data-page="standards">
     <div className="section-number">06 / PROCUREMENT QUESTIONS</div>
     <div className="procurement-grid"><div><h2>Ask what the technology changes<br/>before asking what it <em>costs.</em></h2><p>Security requirements added after selection become exceptions, workarounds, bolt-ons, and dependencies. Bring them into the decision before the architecture is fixed.</p></div><ol>{['What information will the system process, store, transmit, render, or retain?','Which identities can use, administer, integrate with, or service it?','Which protocols, ports, interfaces, cloud services, and remote tools are required?','What security evidence can the system produce and retain?','How are firmware provenance, vulnerabilities, updates, and end-of-support handled?','What work must continue when the device, network, cloud service, or support provider is unavailable?','How is data removal verified during reassignment, return, replacement, or disposal?','Which dependencies are eliminated, which are introduced, and who owns each one?'].map((q,i)=><li key={q}><span>{String(i+1).padStart(2,'0')}</span>{q}</li>)}</ol></div>
   </section>
 
-  <section className="section resources" id="resources">
+  <section className="section resources" id="resources" data-page="resources">
     <div className="resource-copy"><div className="section-number">07 / AUTHORITATIVE RESOURCES</div><h2>Start with the source.<br/>Then apply it to the boundary.</h2><p>OSI curates primary government and standards resources. Links open the authoritative publisher so readers can verify scope, revision, and applicability.</p></div>
     <div className="resource-grid">{resources.map(r=><a className="resource-card" key={r.title} href={r.url} target="_blank" rel="noreferrer"><small>{r.type}</small><BookOpen size={25}/><h3>{r.title}</h3><p>{r.text}</p><span>Open authoritative source <ExternalLink size={14}/></span></a>)}</div>
   </section>
 
-  <section className="section about" id="about">
+  <section className="section about" id="about" data-page="about">
     <div className="section-number">08 / ABOUT OSI</div>
     <div className="about-grid"><h2>Independent guidance for a boundary that deserves clearer governance.</h2><div><p>The Output Security Institute develops practical, manufacturer-neutral guidance for the security, integrity, and continuity of systems that create, move, and manage physical information.</p><p>OSI is an independent educational initiative. It does not certify products, organizations, security, or regulatory compliance. References to external frameworks do not imply affiliation or endorsement.</p><p>Our purpose is direct: help security, IT, compliance, operations, and procurement teams ask better questions, establish clearer ownership, reduce unexamined dependency, and strengthen continuity.</p><a className="text-link dark-link" href="mailto:info@outputsecurityinstitute.org?subject=Contributing%20to%20OSI">Contribute expertise or request guidance <ArrowRight size={17}/></a></div></div>
   </section>
 </main>
-<footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="#doctrine">Doctrine</a><a href="#controls">OICC Framework</a><a href="#standards">Standards</a><a href="#resources">Resources</a></div><small>© {new Date().getFullYear()} Output Security Institute. Independent educational guidance. Verify all requirements with the authoritative source.</small></footer></div>}
+<footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/doctrine.html">Doctrine</a><a href="/controls.html">OICC Framework</a><a href="/standards.html">Standards</a><a href="/resources.html">Resources</a></div><small>© {new Date().getFullYear()} Output Security Institute. Independent educational guidance. Verify all requirements with the authoritative source.</small></footer></div>}
 
 export default App

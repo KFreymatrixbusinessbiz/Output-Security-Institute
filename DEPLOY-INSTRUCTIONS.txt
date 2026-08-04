@@ -5,16 +5,25 @@ OUTPUT SECURITY INSTITUTE CONTENT EXPANSION V2
    KFreymatrixbusinessbiz/Output-Security-Institute
 3. Choose Add file > Upload files.
 4. Upload the CONTENTS of the osi-upgrade folder to the repository root.
-   Keep the src folder intact.
+   Keep the src folder intact. Keep doctrine.html, controls.html,
+   standards.html, industries.html, resources.html, about.html,
+   and vite.config.js at the repository root.
 5. Commit directly to main with this message:
    Expand OSI controls, standards, industries, and resources
 6. Cloudflare will run npm run build and deploy automatically.
 
 Files replaced:
 - index.html
+- doctrine.html
+- controls.html
+- standards.html
+- industries.html
+- resources.html
+- about.html
 - package.json
 - package-lock.json
 - wrangler.jsonc
+- vite.config.js
 - src/App.jsx
 - src/main.jsx
 - src/styles.css
