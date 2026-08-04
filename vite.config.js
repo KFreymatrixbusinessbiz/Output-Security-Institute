@@ -17,6 +17,7 @@ export default defineConfig({
         pathways: resolve(import.meta.dirname, 'pathways.html'),
         briefings: resolve(import.meta.dirname, 'briefings.html'),
         methodology: resolve(import.meta.dirname, 'methodology.html'),
+        governance: resolve(import.meta.dirname, 'governance.html'),
         tools: resolve(import.meta.dirname, 'tools.html'),
         about: resolve(import.meta.dirname, 'about.html')
       }

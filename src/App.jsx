@@ -220,6 +220,47 @@ function Methodology(){
   </section>
 }
 
+const governanceRoles = [
+  ['01','Executive and risk authority','Sets risk tolerance, accepts material exceptions, resolves priority conflicts, and ensures output systems are included in enterprise governance.'],
+  ['02','System owner','Owns the operating outcome, system boundary, inventory, criticality, dependencies, lifecycle, and coordination of control decisions.'],
+  ['03','Information owner','Defines sensitivity, authorized use, release, retention, custody, disclosure, and disposition requirements for the information handled.'],
+  ['04','Security and identity','Defines architecture, authentication, administrative access, configuration, vulnerability, logging, and incident requirements.'],
+  ['05','Operations and local capability','Owns continuity at the point of work, authorized first response, fallback procedures, exercises, and escalation when local recovery is insufficient.'],
+  ['06','Procurement and supplier governance','Turns control objectives into selection, contract, evidence, access, service, provenance, and end-of-support requirements.'],
+  ['07','Privacy, legal and records','Interprets privacy, records, disclosure, contractual, jurisdictional, and retention obligations that shape the workflow.'],
+  ['08','Lifecycle custodian','Governs deployment, change, service access, updates, parts and media custody, reassignment, return, sanitization, and verified disposition.']
+]
+
+const decisionRights = [
+  ['Define the governed boundary','System owner','Information owner; security; operations','Approved boundary, inventory, data flow, dependencies'],
+  ['Authorize privileged or service access','Security and identity','System owner; supplier governance','Named account, approval, session or activity record, review'],
+  ['Approve firmware or material configuration change','System owner','Security; operations; lifecycle custodian','Test, risk decision, rollback plan, change and verification record'],
+  ['Accept a security or continuity exception','Executive or delegated risk authority','Control owner; legal or compliance; system owner','Scope, rationale, compensating controls, expiration, approver'],
+  ['Invoke local recovery or fallback','Operations and local capability','System owner; security; information owner as needed','Authorized action, event record, outcome, escalation decision'],
+  ['Release, retain, sanitize or dispose of information','Information owner','Records; privacy or legal; lifecycle custodian','Method, authority, custody, verification and final disposition']
+]
+
+const lifecycleEvents = [
+  ['ACQUIRE','Who converts risk and continuity needs into selection and contract requirements?'],
+  ['DEPLOY','Who approves the boundary, baseline, identities, interfaces, evidence and operating acceptance?'],
+  ['OPERATE','Who reviews access, events, vulnerabilities, dependencies, exceptions and local readiness?'],
+  ['CHANGE','Who evaluates the effect of firmware, configuration, workflow, network, ownership or supplier change?'],
+  ['INTERRUPT','Who may act locally, preserve evidence, invoke fallback and decide when escalation is required?'],
+  ['RETIRE','Who identifies information-bearing components and verifies custody, sanitization, return or destruction?']
+]
+
+function Governance(){
+  return <section className="section governance" id="governance" data-page="governance">
+    <div className="section-number">12 / GOVERNANCE &amp; OWNERSHIP</div>
+    <div className="governance-intro"><h2>Ownership is<br/><em>a control.</em></h2><div><p>Output security often fails in the handoffs between security, IT, operations, procurement, records, privacy, and service. A generic team cannot accept risk, authorize access, invoke continuity, or verify disposition.</p><p>Governance should name the decision, the person or role with authority, the participants whose knowledge is required, the evidence that records the result, and the event that causes review.</p></div></div>
+    <div className="governance-roles">{governanceRoles.map(([number,title,body])=><article key={number}><span>{number}</span><Workflow size={24}/><h3>{title}</h3><p>{body}</p></article>)}</div>
+    <div className="decision-rights"><div className="decision-heading"><small>DECISION RIGHTS</small><h3>Accountability belongs to a decision—not merely a department.</h3><p>Titles will vary by organization. The requirement is that authority and participation are explicit before the decision is needed.</p></div><div className="decision-table" role="table" aria-label="Output security decision rights"><div className="decision-row decision-labels" role="row"><span>DECISION</span><span>ACCOUNTABLE OWNER</span><span>REQUIRED PARTICIPANTS</span><span>RETAINED EVIDENCE</span></div>{decisionRights.map(([decision,owner,participants,evidence])=><article className="decision-row" role="row" key={decision}><h4>{decision}</h4><p>{owner}</p><p>{participants}</p><p>{evidence}</p></article>)}</div></div>
+    <div className="lifecycle-governance"><small>REVIEW TRIGGERS</small><h3>Ownership must remain visible across the lifecycle.</h3><div className="lifecycle-grid">{lifecycleEvents.map(([event,question],index)=><article key={event}><span>{String(index+1).padStart(2,'0')}</span><b>{event}</b><p>{question}</p></article>)}</div></div>
+    <div className="governance-cadence"><ShieldCheck size={34}/><div><small>GOVERNANCE CADENCE</small><h3>Review when risk changes—not only when the calendar says so.</h3><p>Continuous monitoring, periodic access and inventory review, supplier and recovery exercises, and annual policy review can provide a useful baseline. Material changes to information, interfaces, location, ownership, firmware, suppliers, workflow, or operational consequence should trigger review immediately. Scale the cadence to risk and applicable requirements.</p></div></div>
+    <div className="ownership-close"><FileCheck2 size={34}/><div><small>THE CLOSING TEST</small><h3>No orphaned decisions.</h3><p>For every material control, the organization should be able to identify who owns the outcome, who has authority to decide, who must participate, what evidence proves the decision, and when it must be reconsidered.</p><div className="method-links"><a href="/controls.html">Connect ownership to the OICC controls <ArrowRight size={15}/></a><a href="/tools.html">Record ownership in the working tools <ArrowRight size={15}/></a></div></div></div>
+  </section>
+}
+
 const tools = [
   {number:'01', title:'OICC Assessment Workbook', purpose:'Connect each OICC control objective to implementation, evidence, ownership, gaps, and the next decision.', use:['Initial discovery','Internal control review','Assessment preparation','Remediation planning'], file:'/tools/oicc-assessment-workbook.xlsx', format:'Excel workbook'},
   {number:'02', title:'Output System Boundary Workbook', purpose:'Define the devices, software, identities, data, connections, people, physical locations, and dependencies that belong within the governed system.', use:['System scoping','CUI boundary review','Data-flow validation','Ownership assignment'], file:'/tools/output-system-boundary-workbook.xlsx', format:'Excel workbook'},
@@ -332,18 +373,20 @@ function App(){
 
   <Methodology/>
 
+  <Governance/>
+
   <section className="section tools" id="tools" data-page="tools">
-    <div className="section-number">12 / IMPLEMENTATION TOOLS</div>
+    <div className="section-number">13 / IMPLEMENTATION TOOLS</div>
     <div className="tools-intro"><h2>Turn the principle into<br/><em>a governed decision.</em></h2><div><p>These working documents are designed for security, IT, compliance, operations, procurement, records, and service owners to complete together.</p><p>They do not produce a certification or compliance determination. Their purpose is to make scope, ownership, evidence, dependency, and unresolved decisions visible.</p></div></div>
     <div className="tool-grid">{tools.map(t=><article className="tool-card" key={t.title}><div className="tool-number">{t.number}</div><FileText size={28}/><h3>{t.title}</h3><p>{t.purpose}</p><div className="tool-use"><h4>Useful for</h4><ul>{t.use.map(x=><li key={x}>{x}</li>)}</ul></div><a className="button tool-download" href={t.file} download>Download {t.format} <Download size={16}/></a></article>)}</div>
     <div className="tool-method"><div><span>USE THE TOOLS IN SEQUENCE</span><h3>Boundary before controls.<br/>Controls before evidence.<br/>Evidence before conclusions.</h3></div><ol><li><b>Define</b><span>Establish the work, information, components, people, and dependencies in scope.</span></li><li><b>Assess</b><span>Compare each control objective with the implemented condition and accountable owner.</span></li><li><b>Collect</b><span>Examine records, interview responsible people, and test actual behavior.</span></li><li><b>Decide</b><span>Record gaps, accepted risk, required change, responsible owner, and due date.</span></li></ol></div>
   </section>
 
   <section className="section about" id="about" data-page="about">
-    <div className="section-number">13 / ABOUT OSI</div>
-    <div className="about-grid"><h2>Independent guidance for a boundary that deserves clearer governance.</h2><div><p>The Output Security Institute develops practical, manufacturer-neutral guidance for the security, integrity, and continuity of systems that create, move, and manage physical information.</p><p>OSI is an independent educational initiative. It does not certify products, organizations, security, or regulatory compliance. References to external frameworks do not imply affiliation or endorsement.</p><p>Our purpose is direct: help security, IT, compliance, operations, and procurement teams ask better questions, establish clearer ownership, reduce unexamined dependency, and strengthen continuity.</p><div className="about-links"><a className="text-link dark-link" href="/methodology.html">Read our methodology and independence policy <ArrowRight size={17}/></a><a className="text-link dark-link" href="mailto:info@outputsecurityinstitute.org?subject=Contributing%20to%20OSI">Contribute expertise or request guidance <ArrowRight size={17}/></a></div></div></div>
+    <div className="section-number">14 / ABOUT OSI</div>
+    <div className="about-grid"><h2>Independent guidance for a boundary that deserves clearer governance.</h2><div><p>The Output Security Institute develops practical, manufacturer-neutral guidance for the security, integrity, and continuity of systems that create, move, and manage physical information.</p><p>OSI is an independent educational initiative. It does not certify products, organizations, security, or regulatory compliance. References to external frameworks do not imply affiliation or endorsement.</p><p>Our purpose is direct: help security, IT, compliance, operations, and procurement teams ask better questions, establish clearer ownership, reduce unexamined dependency, and strengthen continuity.</p><div className="about-links"><a className="text-link dark-link" href="/methodology.html">Read our methodology and independence policy <ArrowRight size={17}/></a><a className="text-link dark-link" href="/governance.html">Use the governance and ownership model <ArrowRight size={17}/></a><a className="text-link dark-link" href="mailto:info@outputsecurityinstitute.org?subject=Contributing%20to%20OSI">Contribute expertise or request guidance <ArrowRight size={17}/></a></div></div></div>
   </section>
 </main>
-<footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/doctrine.html">Doctrine</a><a href="/controls.html">OICC Framework</a><a href="/standards.html">Standards</a><a href="/evidence.html">Evidence</a><a href="/resources.html">Resources</a><a href="/pathways.html">Pathways</a><a href="/briefings.html">Briefings</a><a href="/methodology.html">Methodology</a><a href="/tools.html">Tools</a><a href="/about.html">About</a></div><small>© {new Date().getFullYear()} Output Security Institute. Independent educational guidance. Verify all requirements with the authoritative source.</small></footer></div>}
+<footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/doctrine.html">Doctrine</a><a href="/controls.html">OICC Framework</a><a href="/standards.html">Standards</a><a href="/evidence.html">Evidence</a><a href="/resources.html">Resources</a><a href="/pathways.html">Pathways</a><a href="/briefings.html">Briefings</a><a href="/methodology.html">Methodology</a><a href="/governance.html">Governance</a><a href="/tools.html">Tools</a><a href="/about.html">About</a></div><small>© {new Date().getFullYear()} Output Security Institute. Independent educational guidance. Verify all requirements with the authoritative source.</small></footer></div>}
 
 export default App
