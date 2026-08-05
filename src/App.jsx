@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   ArrowRight, BookOpen, CheckCircle2, ChevronDown, ClipboardCheck, Compass,
   Download, ExternalLink, FileCheck2, FileKey, FileText, Fingerprint, Menu, Network,
@@ -357,6 +357,38 @@ function App(){
   const knownViews=['doctrine','controls','standards','industries','evidence','resources','pathways','briefings','methodology','governance','maturity','profiles','tools','about']
   const view=filename==='index'?'home':knownViews.includes(filename)?filename:'notfound'
   const viewTitles={doctrine:'OSI Doctrine',controls:'Operational Infrastructure Critical Controls',standards:'Standards Crosswalk',industries:'Industry Implementation',evidence:'Evidence Pattern Library',resources:'Authoritative Resource Center',pathways:'Implementation Pathways',briefings:'Operational Briefings',methodology:'Research Methodology and Independence',governance:'Governance and Ownership',maturity:'Implementation Maturity',profiles:'Start with Your Condition',tools:'Implementation Tools',about:'About the Output Security Institute',notfound:'Page Not Found'}
+  const pageDescriptions={"home":"Independent, manufacturer-neutral guidance for governing the security, integrity, and continuity of organizational output systems.","doctrine":"The governing principles behind OSI guidance for output-system security, custody, dependency, evidence, and continuity.","controls":"Twelve Operational Infrastructure Critical Controls for governing output-system risk, access, configuration, evidence, service, continuity, and lifecycle.","standards":"Understand how authoritative cybersecurity, privacy, CUI, sector, and procurement sources relate to output-system governance.","industries":"Practical output-security implementation guidance for defense, healthcare, finance, government, education, manufacturing, logistics, and professional services.","evidence":"Recurring output-security evidence patterns showing what to observe, why it matters, and what defensible records to collect.","resources":"Search authoritative standards, regulatory guidance, assessment resources, lifecycle references, and secure-procurement sources.","pathways":"Five guided pathways from an operational condition to scope, controls, evidence, procurement, and continuity decisions.","briefings":"Original OSI decision briefings that expose the assumptions behind recurring output-security and continuity decisions.","methodology":"How OSI selects sources, distinguishes requirements from interpretation, develops guidance, manages corrections, and protects editorial independence.","governance":"Assign accountable ownership, decision rights, evidence, and review triggers across the complete output-system lifecycle.","maturity":"A five-stage model for moving output systems from unmanaged conditions to sustained governance without reducing maturity to a compliance score.","profiles":"Choose a practical starting point based on the operating condition your organization faces.","tools":"Editable assessment, system-boundary, procurement, and evidence tools for practical output-system governance.","about":"The purpose, scope, independence, and manufacturer-neutral role of the Output Security Institute.","notfound":"The requested Output Security Institute page could not be found."}
+  useEffect(()=>{
+    const origin='https://outputsecurityinstitute.org'
+    const route=view==='home'?'':view==='notfound'?window.location.pathname:`/${view}`
+    const canonical=`${origin}${route}`
+    const title=view==='home'?'Output Security Institute | Security Beyond the Screen':`${viewTitles[view]} | Output Security Institute`
+    const description=pageDescriptions[view]
+    document.title=title
+    const setMeta=(selector,attribute,value)=>{
+      let element=document.head.querySelector(selector)
+      if(!element){
+        element=document.createElement('meta')
+        const match=selector.match(/meta\[(name|property)="([^"]+)"\]/)
+        if(match) element.setAttribute(match[1],match[2])
+        document.head.appendChild(element)
+      }
+      element.setAttribute(attribute,value)
+    }
+    let canonicalLink=document.head.querySelector('link[rel="canonical"]')
+    if(!canonicalLink){
+      canonicalLink=document.createElement('link')
+      canonicalLink.rel='canonical'
+      document.head.appendChild(canonicalLink)
+    }
+    canonicalLink.href=canonical
+    setMeta('meta[name="description"]','content',description)
+    setMeta('meta[property="og:title"]','content',title)
+    setMeta('meta[property="og:description"]','content',description)
+    setMeta('meta[property="og:url"]','content',canonical)
+    setMeta('meta[name="twitter:title"]','content',title)
+    setMeta('meta[name="twitter:description"]','content',description)
+  },[view])
   return <div id="top"><Header/><main id="main-content" className={view==='home'?'home-view':'page-view'} data-view={view} tabIndex="-1">
   {view!=='home'&&<h1 className="sr-only">{viewTitles[view]}</h1>}
   <NotFound/>
