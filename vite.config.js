@@ -21,7 +21,8 @@ export default defineConfig({
         maturity: resolve(import.meta.dirname, 'maturity.html'),
         profiles: resolve(import.meta.dirname, 'profiles.html'),
         tools: resolve(import.meta.dirname, 'tools.html'),
-        about: resolve(import.meta.dirname, 'about.html')
+        about: resolve(import.meta.dirname, 'about.html'),
+        contact: resolve(import.meta.dirname, 'contact.html')
       }
     }
   }
