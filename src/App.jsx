@@ -146,7 +146,10 @@ function App() {
           <p>Once the lifecycle is visible, the OICC framework organizes the decisions needed to govern it across security, operations, service, and lifecycle. It helps organizations move from recognition to evidence-based action.</p>
         </div>
         <div className="control-grid">
-          {controls.map((c, i) => <article key={c.n} className="control-card"><span>{c.n}</span>{[ShieldCheck,Fingerprint,Check,FileKey,ScanSearch,Network,ClipboardCheck,BookOpen][i]({size:25})}<h3>{c.title}</h3><p>{c.text}</p><a href="#resources" aria-label={`Learn about ${c.title}`}>View control objective <ArrowRight size={15}/></a></article>)}
+          {controls.map((c, i) => {
+            const ControlIcon = [ShieldCheck, Fingerprint, Check, FileKey, ScanSearch, Network, ClipboardCheck, BookOpen][i]
+            return <article key={c.n} className="control-card"><span>{c.n}</span><ControlIcon size={25}/><h3>{c.title}</h3><p>{c.text}</p><a href="#resources" aria-label={`Learn about ${c.title}`}>View control objective <ArrowRight size={15}/></a></article>
+          })}
         </div>
       </section>
 
