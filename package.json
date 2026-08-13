@@ -1,23 +1,6 @@
-{
-  "name": "output-security-institute",
-  "private": true,
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build"
-    "preview": "vite preview",
-    "deploy": "npm run build && wrangler deploy"
-  },
-  "dependencies": {
-    "@vitejs/plugin-react": "latest",
-    "lucide-react": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "vite": "latest",
-    "wrangler": "latest"
-  },
-  "devDependencies": {
-    "vite-plugin-singlefile": "^2.3.3"
-  }
-}
+"scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview",
+  "deploy": "npm run build && wrangler deploy"
+},
