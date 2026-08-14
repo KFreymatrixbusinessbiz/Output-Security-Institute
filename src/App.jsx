@@ -89,7 +89,7 @@ function Header() {
   const [open, setOpen] = useState(false)
   const links = [['Why It Matters', '/#why'], ['Follow a Document', '/#lifecycle'], ['Weekly Brief', '/briefings'], ['OICC Controls', '/#controls'], ['Knowledge Center', '/knowledge']]
   return <header className="site-header">
-    <a className="brand" href="#top" aria-label="Output Security Institute home">
+    <a className="brand" href="/" aria-label="Output Security Institute home">
       <span className="brand-mark" aria-hidden="true"><span>O</span><span>S</span><span>I</span></span>
       <span><strong>Output Security</strong><em>Institute</em></span>
     </a>
