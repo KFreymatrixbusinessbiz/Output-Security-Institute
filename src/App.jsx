@@ -2,8 +2,60 @@ import { useState } from 'react'
 import {
   ArrowLeft, ArrowRight, BookOpen, Check, ChevronDown, ClipboardCheck, ExternalLink,
   FileKey, Fingerprint, Menu, Network, ScanSearch, Search, ShieldCheck, X,
-  Monitor, Printer, FileOutput, Archive, Trash2, Users
+  Monitor, Printer, FileOutput, Archive, Trash2, Users, CalendarDays, Newspaper
 } from 'lucide-react'
+
+const august14Brief = [
+  {
+    title: 'CMMC Phase II suspended, but security requirements remain',
+    category: 'CMMC / Federal information',
+    confirmed: 'On July 13, the Department suspended CMMC Phase II, including the November 10 implementation date and subsequent milestones, pending a 60-day review. Phase I self-assessments remain in effect. Contractors must still protect covered defense information, and NIST SP 800-171 Rev. 2 continues to be enforced through self-assessments and selected government assessments.',
+    why: 'The announcement pauses part of the certification structure. It does not suspend the responsibility to protect covered federal information.',
+    implication: 'Organizations should distinguish delayed certification milestones from the continuing obligation to safeguard covered information, including information processed, transmitted, stored, or physically reproduced by output systems.',
+    source: 'Official Department announcement',
+    url: 'https://business.defense.gov/Engage/News/Article/4542563/forging-the-arsenal-of-freedom-department-of-war-suspends-cmmc-phase-ii-require/'
+  },
+  {
+    title: 'Windows now prefers IPP for new printer installations',
+    category: 'Windows / IPP',
+    confirmed: 'Microsoft’s Windows Ready Print rollout makes the Windows inbox IPP driver the preferred option for new installations when supported. Existing queues are unaffected. Windows Protected Print Mode remains a separate, stronger setting that exclusively permits the modern Windows print stack.',
+    why: 'IPP support is moving from an optional compatibility feature toward a basic Windows deployment requirement. Capable Print Support Apps are increasingly important where organizations need advanced functionality without legacy drivers.',
+    implication: 'Output-security teams need a clear distinction among IPP compatibility, Windows Ready Print, Windows Protected Print Mode, and Print Support Apps before making deployment or procurement decisions.',
+    source: 'Microsoft announcement',
+    url: 'https://techcommunity.microsoft.com/blog/partnernews/introducing-windows-ready-print-and-modernized-driver-selection/4526895',
+    source2: 'Windows update documentation',
+    url2: 'https://support.microsoft.com/en-us/topic/june-23-2026-kb5095093-os-builds-26200-8737-and-26100-8737-preview'
+  },
+  {
+    title: 'Federal IoT acquisition guidance is open for comment',
+    category: 'NIST / Acquisition',
+    confirmed: 'Draft NIST SP 800-213 Rev. 1 treats an IoT product as a system element whose acquisition and integration can change the receiving system’s risk assessment and required controls. Comments close August 24, 2026.',
+    inference: 'NIST does not expressly classify every printer as an IoT product. Networked printers and multifunction devices nevertheless fit the publication’s architectural reasoning when their integration changes system risk.',
+    why: 'The draft provides an authoritative pathway for evaluating connected products by the risks they introduce into an information system, rather than only by their primary business function.',
+    implication: 'Output-device acquisition should examine firmware integrity and support, local storage, service pathways, identity integration, exportable audit records, network and cloud connections, and end-of-life sanitization.',
+    source: 'NIST announcement and draft',
+    url: 'https://csrc.nist.gov/News/2026/nist-releases-sp-800-213r1-ipd'
+  },
+  {
+    title: 'NIST updates storage-security guidance',
+    category: 'NIST / Device data',
+    confirmed: 'Draft NIST SP 800-209 Rev. 1 expands guidance concerning authentication, authorization, encryption, configuration, auditability, and media protection. Comments close September 8, 2026.',
+    inference: 'The publication addresses broader storage infrastructure, not multifunction-device storage specifically. Its principles remain relevant to devices that retain print jobs, scans, address books, credentials, configuration data, or logs.',
+    why: 'Device security cannot stop at network access. Organizations also need to understand what a device retains throughout its operational life.',
+    implication: 'A device-data lifecycle review should identify what is stored, why it is retained, who can access or export it, when it is deleted, whether deletion can be verified, and how media is sanitized when equipment is reassigned, returned, or disposed of.',
+    source: 'NIST announcement and draft',
+    url: 'https://csrc.nist.gov/News/2026/security-guidelines-storage-infrastructure-draft'
+  },
+  {
+    title: 'Printer API exposed credentials without authentication',
+    category: 'Vulnerability / API authorization',
+    confirmed: 'CERT/CC disclosed that affected HP DeskJet 2800 firmware permits unauthenticated API requests to retrieve Wi-Fi credentials, SNMP settings, cloud-registration metadata, and device-security information. CERT/CC reported no available firmware patch as of its July 6 revision and recommended isolation, restricted management access, access-control lists, and disabling unnecessary Wi-Fi Direct, SNMP, discovery, and cloud functions.',
+    why: 'The visible interface required authentication, but the underlying API did not. A secure-looking control panel does not prove that every device service enforces the same protections.',
+    implication: 'Output-security validation should include API authorization, segmentation, unnecessary-service reduction, management-path restrictions, and independent confirmation that protections apply below the visible interface.',
+    source: 'CERT/CC VU#828543',
+    url: 'https://kb.cert.org/vuls/id/828543'
+  }
+]
 
 const library = [
   {title:'NIST Cybersecurity Framework 2.0',source:'National Institute of Standards and Technology',type:'Framework',industry:'All Industries',control:'Governance & Ownership',date:'2024-02-26',reviewed:'2026-07-18',url:'https://www.nist.gov/cyberframework',summary:'A risk-based framework organized around Govern, Identify, Protect, Detect, Respond, and Recover.',relevance:'Provides the governing structure for bringing output systems into an organization-wide cybersecurity risk program.'},
@@ -35,7 +87,7 @@ const mappings = [
 
 function Header() {
   const [open, setOpen] = useState(false)
-  const links = [['Why It Matters', '/#why'], ['Follow a Document', '/#lifecycle'], ['Where to Begin', '/#pathways'], ['OICC Controls', '/#controls'], ['Knowledge Center', '/knowledge']]
+  const links = [['Why It Matters', '/#why'], ['Follow a Document', '/#lifecycle'], ['Weekly Brief', '/briefings'], ['OICC Controls', '/#controls'], ['Knowledge Center', '/knowledge']]
   return <header className="site-header">
     <a className="brand" href="#top" aria-label="Output Security Institute home">
       <span className="brand-mark" aria-hidden="true"><span>O</span><span>S</span><span>I</span></span>
@@ -69,8 +121,56 @@ function KnowledgeCenterPage(){
   </main></div>
 }
 
+function BriefingsPage(){
+  return <div className="brief-page"><Header/><main>
+    <section className="brief-hero">
+      <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
+      <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
+      <h1>OSI Security<br/><em>Brief.</em></h1>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> August 14, 2026</span><span>Baseline edition</span><span>5 material developments</span></div>
+      <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
+    </section>
+
+    <section className="brief-editorial">
+      <strong>Editorial standard</strong>
+      <p>OSI prioritizes authoritative primary sources, excludes routine promotion and recycled commentary, and states when a conclusion is an inference rather than source language. Inclusion does not establish endorsement or compliance.</p>
+    </section>
+
+    <section className="brief-list">
+      {august14Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Practical implication for output security</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">CATEGORIES WITHOUT MATERIAL DEVELOPMENTS</div>
+      <h2>Silence is part of the <em>record.</em></h2>
+      <p>No material new developments were identified for HIPAA Security Rule activity, new Zero Trust standards, or Epson-, Brother-, and Kyocera-specific security advisories during this review period.</p>
+    </section>
+
+    <section className="brief-priorities section">
+      <div className="section-number">OSI PRIORITIES ARISING FROM THIS BRIEF</div>
+      <ol>
+        <li><span>01</span><p>Prepare OSI comments on NIST SP 800-213 Rev. 1 before August 24.</p></li>
+        <li><span>02</span><p>Publish a plain-language explanation of Windows Ready Print, IPP, Windows Protected Print Mode, and Print Support Apps.</p></li>
+        <li><span>03</span><p>Explain why the CMMC pause is not a pause in the responsibility to protect covered information.</p></li>
+        <li><span>04</span><p>Develop an OICC Device Data Lifecycle control objective.</p></li>
+        <li><span>05</span><p>Publish a neutral case study on API authorization and independent device validation.</p></li>
+      </ol>
+    </section>
+  </main><footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/briefings">Security Briefs</a><a href="/#controls">OICC Framework</a><a href="/knowledge">Knowledge Center</a></div><small>© {new Date().getFullYear()} Output Security Institute. Educational guidance only.</small></footer></div>
+}
+
 function App() {
   if(window.location.pathname.startsWith('/knowledge')) return <KnowledgeCenterPage/>
+  if(window.location.pathname.startsWith('/briefings')) return <BriefingsPage/>
   return <div id="top">
     <Header />
     <main>
@@ -139,8 +239,16 @@ function App() {
         <aside className="ask-osi"><div><strong>Not sure where to begin?</strong><p>Describe the condition you are trying to understand. You do not need to know the terminology.</p></div><a href="mailto:info@outputsecurityinstitute.org?subject=Help me begin with output security">Ask OSI a question <ArrowRight size={17}/></a></aside>
       </section>
 
+      <section className="weekly-brief section" id="weekly-brief">
+        <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
+        <div className="weekly-grid">
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> August 14, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the August 14 brief <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / 5 MATERIAL DEVELOPMENTS</span>{august14Brief.map((item,i)=><a href="/briefings" key={item.title}><b>{String(i+1).padStart(2,'0')}</b><p>{item.title}</p><ArrowRight size={16}/></a>)}</div>
+        </div>
+      </section>
+
       <section className="controls section dark" id="controls">
-        <div className="section-number">05 / A STRUCTURED RESPONSE</div>
+        <div className="section-number">06 / A STRUCTURED RESPONSE</div>
         <div className="controls-intro">
           <div><div className="framework-badge">OICC <small>v1.0 / FOUNDATIONAL DRAFT</small></div><h2>Operational Infrastructure<br/>Critical Controls</h2></div>
           <p>Once the lifecycle is visible, the OICC framework organizes the decisions needed to govern it across security, operations, service, and lifecycle. It helps organizations move from recognition to evidence-based action.</p>
