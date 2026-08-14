@@ -173,13 +173,9 @@ function App() {
   if(window.location.pathname.startsWith('/briefings')) return <BriefingsPage/>
   return <div id="top">
     <Header />
-    <a className="latest-brief-bar" href="/briefings" aria-label="Read the August 14, 2026 OSI Security Brief">
-      <span className="latest-brief-label"><Newspaper size={15}/> Latest security brief</span>
-      <span className="latest-brief-title">CMMC, modern Windows printing, federal guidance, device storage, and API exposure</span>
-      <span className="latest-brief-link">August 14, 2026 <ArrowRight size={15}/></span>
-    </a>
     <main>
       <section className="hero">
+        <a className="hero-brief-link" href="/briefings"><Newspaper size={14}/> Latest Security Brief · August 14 <ArrowRight size={14}/></a>
         <div className="eyebrow"><span></span> A plain-language introduction to output security</div>
         <h1>What happens after<br/>someone presses <em>Print?</em></h1>
         <p className="hero-copy">A printer once put information on paper. Today, printers and scanners are connected to networks, applications, cloud services, people, and outside support. The technology changed. The responsibility for the information did not.</p>

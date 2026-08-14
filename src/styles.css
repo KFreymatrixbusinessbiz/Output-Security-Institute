@@ -14,7 +14,7 @@
 @media(max-width:900px){.weekly-grid{grid-template-columns:1fr}.brief-hero>p,.brief-hero-meta{margin-left:0}.brief-item{grid-template-columns:70px 1fr}.brief-sources{grid-column:2}.brief-none>p{margin-left:0}}
 @media(max-width:560px){.brief-hero{padding:55px 6vw 70px}.brief-editorial{grid-template-columns:1fr}.brief-list{padding:0 6vw}.brief-item{grid-template-columns:1fr;gap:25px;padding:50px 0}.brief-index{flex-direction:row;align-items:center}.brief-sources{grid-column:1}.brief-priorities li{grid-template-columns:45px 1fr}}
 
-/* Above-the-fold latest brief link */
-.latest-brief-bar{min-height:48px;padding:0 5vw;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;background:#0e2421;color:var(--paper);border-bottom:1px solid rgba(255,255,255,.14);font:10px var(--mono);letter-spacing:.06em}.latest-brief-bar:hover .latest-brief-link{color:#fff}.latest-brief-label,.latest-brief-link{display:flex;align-items:center;gap:8px;text-transform:uppercase;white-space:nowrap}.latest-brief-label{color:var(--mint)}.latest-brief-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.76}.latest-brief-link{color:var(--mint);font-weight:600}.hero{min-height:calc(100vh - 136px)}
-@media(max-width:900px){.latest-brief-bar{min-height:52px;grid-template-columns:auto 1fr;padding:0 5vw}.latest-brief-title{display:none}.hero{min-height:calc(100vh - 124px)}}
-@media(max-width:560px){.latest-brief-bar{gap:12px;padding:0 4vw;font-size:9px}.latest-brief-link{margin-left:auto}.latest-brief-link svg{display:none}}
+/* Quiet, above-the-fold brief link */
+.hero-brief-link{position:absolute;z-index:2;top:32px;right:5vw;display:flex;align-items:center;gap:8px;padding-bottom:4px;border-bottom:1px solid var(--line);font:500 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#315f55}.hero-brief-link:hover{color:var(--ink);border-color:var(--ink)}
+@media(max-width:900px){.hero-brief-link{position:relative;top:auto;right:auto;width:max-content;margin:0 0 32px}}
+@media(max-width:560px){.hero-brief-link{font-size:9px}}
