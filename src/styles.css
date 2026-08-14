@@ -15,6 +15,6 @@
 @media(max-width:560px){.brief-hero{padding:55px 6vw 70px}.brief-editorial{grid-template-columns:1fr}.brief-list{padding:0 6vw}.brief-item{grid-template-columns:1fr;gap:25px;padding:50px 0}.brief-index{flex-direction:row;align-items:center}.brief-sources{grid-column:1}.brief-priorities li{grid-template-columns:45px 1fr}}
 
 /* Quiet, above-the-fold brief link */
-.hero-brief-link{position:absolute;z-index:2;top:32px;right:5vw;display:flex;align-items:center;gap:8px;padding-bottom:4px;border-bottom:1px solid var(--line);font:500 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#315f55}.hero-brief-link:hover{color:var(--ink);border-color:var(--ink)}
+.hero-brief-link{position:absolute;z-index:2;top:32px;right:5vw;display:flex;align-items:center;gap:8px;padding-bottom:4px;border-bottom:1px solid rgba(56,196,214,.5);font:500 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#72d6e3}.hero-brief-link:hover{color:#fff;border-color:#72d6e3}
 @media(max-width:900px){.hero-brief-link{position:relative;top:auto;right:auto;width:max-content;margin:0 0 32px}}
 @media(max-width:560px){.hero-brief-link{font-size:9px}}
