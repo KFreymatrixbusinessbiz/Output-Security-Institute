@@ -150,9 +150,9 @@ function BriefingsPage(){
     </section>
 
     <section className="brief-none section">
-      <div className="section-number">CATEGORIES WITHOUT MATERIAL DEVELOPMENTS</div>
-      <h2>Silence is part of the <em>record.</em></h2>
-      <p>No material new developments were identified for HIPAA Security Rule activity, new Zero Trust standards, or Epson-, Brother-, and Kyocera-specific security advisories during this review period.</p>
+      <div className="section-number">BASELINE FOR FUTURE REPORTING</div>
+      <h2>This inaugural brief establishes the <em>starting point.</em></h2>
+      <p>As this is OSI’s inaugural Security Brief, it establishes the baseline for future reporting. No additional material developments were identified in the other categories reviewed.</p>
     </section>
 
     <section className="brief-priorities section">
@@ -173,6 +173,11 @@ function App() {
   if(window.location.pathname.startsWith('/briefings')) return <BriefingsPage/>
   return <div id="top">
     <Header />
+    <a className="latest-brief-bar" href="/briefings" aria-label="Read the August 14, 2026 OSI Security Brief">
+      <span className="latest-brief-label"><Newspaper size={15}/> Latest security brief</span>
+      <span className="latest-brief-title">CMMC, modern Windows printing, federal guidance, device storage, and API exposure</span>
+      <span className="latest-brief-link">August 14, 2026 <ArrowRight size={15}/></span>
+    </a>
     <main>
       <section className="hero">
         <div className="eyebrow"><span></span> A plain-language introduction to output security</div>
