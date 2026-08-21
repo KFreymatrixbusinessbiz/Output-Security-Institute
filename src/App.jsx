@@ -5,6 +5,33 @@ import {
   Monitor, Printer, FileOutput, Archive, Trash2, Users, CalendarDays, Newspaper
 } from 'lucide-react'
 
+const august21Brief = [
+  {
+    title: 'Federal agencies warn of an active threat to industrial endpoints',
+    category: 'Operational endpoints / Zero Trust',
+    confirmed: 'On August 19, NSA, CISA, FBI, DOE, and EPA issued a joint advisory describing active targeting of Siemens S7 programmable logic controllers. The agencies identify internet exposure, weak segmentation, and remotely accessible third-party service pathways as material risk factors.',
+    inference: 'The advisory does not concern printers. OSI infers that the same architectural exposure applies when an MFP, print-management server, or monitoring agent retains internet reachability, unnecessary services, weak credentials, or an inadequately governed vendor connection.',
+    why: 'The advisory demonstrates that operational devices can be discovered and manipulated through ordinary connectivity, known weaknesses, and tools disguised as legitimate monitoring software.',
+    implication: 'OSI should publish “Persistent Visibility Is Not Persistent Privilege,” defining narrowly scoped outbound telemetry, a separate service channel disabled by default, customer authorization, verified identity, session expiration, and exportable logs.',
+    source: 'CISA joint federal advisory',
+    url: 'https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-231a',
+    source2: 'Official advisory PDF',
+    url2: 'https://www.ic3.gov/CSA/2026/260819.pdf'
+  },
+  {
+    title: 'Medusa ransomware advisory expanded for healthcare',
+    category: 'Healthcare / Ransomware',
+    confirmed: 'On August 18, CISA, FBI, and HHS updated their Medusa ransomware advisory with investigation findings through April 2026. The update reports more than 500 victims and documents rapid exploitation, lateral movement, credential theft, data exfiltration, and double extortion. Healthcare is identified as a frequent target.',
+    inference: 'The agencies do not report MFP exploitation in this campaign. OSI infers architectural relevance because output endpoints connected to clinical or administrative systems may become reachable, useful for reconnaissance, or disruptive during a broader compromise.',
+    why: 'Healthcare output environments routinely touch ePHI through print queues, scan destinations, fax workflows, address books, local storage, shared folders, and workflow integrations.',
+    implication: 'Matrix Business Systems should use a Healthcare Output Ransomware Readiness checklist covering segmentation, removal of unused services, firmware ownership, protected scan destinations and service credentials, print-server and device logging, and recovery procedures during network isolation.',
+    source: 'CISA Medusa advisory',
+    url: 'https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a',
+    source2: 'Official FBI/CISA/HHS PDF',
+    url2: 'https://www.ic3.gov/CSA/2026/260818.pdf'
+  }
+]
+
 const august14Brief = [
   {
     title: 'CMMC Phase II suspended, but security requirements remain',
@@ -127,13 +154,37 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> August 14, 2026</span><span>Baseline edition</span><span>5 material developments</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> August 21, 2026</span><span>Weekly edition</span><span>2 material developments</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
     <section className="brief-editorial">
       <strong>Editorial standard</strong>
       <p>OSI prioritizes authoritative primary sources, excludes routine promotion and recycled commentary, and states when a conclusion is an inference rather than source language. Inclusion does not establish endorsement or compliance.</p>
+    </section>
+
+    <section className="brief-list">
+      {august21Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">NO MATERIAL DEVELOPMENT THIS WEEK</div>
+      <h2>Other monitored categories remain <em>unchanged.</em></h2>
+      <p>No consequential new print-endpoint or device-data exposure advisory, NIST SP 800-171/CMMC action, Windows Protected Print or IPP change, HIPAA regulatory action, or general Zero Trust standard was identified after August 14.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">AUGUST 14 BASELINE — PRESERVED</div>
+      <h2>Previous material developments.</h2>
     </section>
 
     <section className="brief-list">
@@ -151,8 +202,8 @@ function BriefingsPage(){
 
     <section className="brief-none section">
       <div className="section-number">BASELINE FOR FUTURE REPORTING</div>
-      <h2>This inaugural brief establishes the <em>starting point.</em></h2>
-      <p>As this is OSI’s inaugural Security Brief, it establishes the baseline for future reporting. No additional material developments were identified in the other categories reviewed.</p>
+      <h2>The August 14 brief remains the <em>starting point.</em></h2>
+      <p>The inaugural August 14 edition is preserved above as the baseline for future weekly reporting.</p>
     </section>
 
     <section className="brief-priorities section">
@@ -321,3 +372,4 @@ function App() {
 }
 
 export default App
+
