@@ -226,7 +226,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="hero-brief-link" href="/briefings"><Newspaper size={14}/> Latest Security Brief · August 14 <ArrowRight size={14}/></a>
+        <a className="hero-brief-link" href="/briefings"><Newspaper size={14}/> Latest Security Brief · August 21 <ArrowRight size={14}/></a>
         <div className="eyebrow"><span></span> A plain-language introduction to output security</div>
         <h1>What happens after<br/>someone presses <em>Print?</em></h1>
         <p className="hero-copy">A printer once put information on paper. Today, printers and scanners are connected to networks, applications, cloud services, people, and outside support. The technology changed. The responsibility for the information did not.</p>
@@ -294,8 +294,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> August 14, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the August 14 brief <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / 5 MATERIAL DEVELOPMENTS</span>{august14Brief.map((item,i)=><a href="/briefings" key={item.title}><b>{String(i+1).padStart(2,'0')}</b><p>{item.title}</p><ArrowRight size={16}/></a>)}</div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> August 21, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the August 21 brief <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / 2 MATERIAL DEVELOPMENTS</span>{august21Brief.map((item,i)=><a href="/briefings" key={item.title}><b>{String(i+1).padStart(2,'0')}</b><p>{item.title}</p><ArrowRight size={16}/></a>)}</div>
         </div>
       </section>
 
