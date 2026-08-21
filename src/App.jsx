@@ -9,7 +9,7 @@ const august21Brief = [
   {
     title: 'Federal agencies warn of an active threat to industrial endpoints',
     category: 'Operational endpoints / Zero Trust',
-    confirmed: 'On August 19, NSA, CISA, FBI, DOE, and EPA issued a joint advisory describing active targeting of Siemens S7 programmable logic controllers. The agencies identify internet exposure, weak segmentation, and remotely accessible third-party service pathways as material risk factors.',
+    confirmed: 'On August 19, NSA, CISA, FBI, DOE, and EPA issued a joint advisory describing active targeting of Siemens S7 programmable logic controllers. Threat actors are using internet-scanning services to locate exposed or insufficiently segmented PLCs and AI-generated exploitation scripts that mimic legitimate monitoring tools. The agencies also warn that remote access maintained by third-party service providers or integrators may leave asset owners unaware their systems are exposed.',
     inference: 'The advisory does not concern printers. OSI infers that the same architectural exposure applies when an MFP, print-management server, or monitoring agent retains internet reachability, unnecessary services, weak credentials, or an inadequately governed vendor connection.',
     why: 'The advisory demonstrates that operational devices can be discovered and manipulated through ordinary connectivity, known weaknesses, and tools disguised as legitimate monitoring software.',
     implication: 'OSI should publish “Persistent Visibility Is Not Persistent Privilege,” defining narrowly scoped outbound telemetry, a separate service channel disabled by default, customer authorization, verified identity, session expiration, and exportable logs.',
