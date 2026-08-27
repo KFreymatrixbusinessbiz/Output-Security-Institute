@@ -114,17 +114,17 @@ const mappings = [
 
 function Header() {
   const [open, setOpen] = useState(false)
-  const links = [['Why It Matters', '/#why'], ['Follow a Document', '/#lifecycle'], ['Weekly Brief', '/briefings'], ['OICC Controls', '/#controls'], ['Knowledge Center', '/knowledge']]
+  const links = [['Why It Matters', '/#why'], ['OICC Framework', '/#controls'], ['Knowledge', '/knowledge'], ['Briefings', '/briefings'], ['About', '/#about']]
   return <header className="site-header">
     <a className="brand" href="/" aria-label="Output Security Institute home">
-      <span className="brand-mark" aria-hidden="true"><span>O</span><span>S</span><span>I</span></span>
-      <span><strong>Output Security</strong><em>Institute</em></span>
+      <span className="brand-initials" aria-hidden="true">OSI</span>
+      <span className="brand-name"><strong>Output Security</strong><em>Institute</em></span>
     </a>
-    <nav className={open ? 'nav open' : 'nav'} aria-label="Main navigation">
+    <nav id="primary-navigation" className={open ? 'nav open' : 'nav'} aria-label="Primary navigation">
       {links.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
       <a className="nav-action" href="mailto:info@outputsecurityinstitute.org?subject=Question for OSI" onClick={() => setOpen(false)}>Ask OSI <ArrowRight size={15}/></a>
     </nav>
-    <button className="menu" onClick={() => setOpen(!open)} aria-label="Toggle navigation">{open ? <X/> : <Menu/>}</button>
+    <button className="menu" type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="primary-navigation" aria-label={open ? 'Close navigation' : 'Open navigation'}>{open ? <X/> : <Menu/>}</button>
   </header>
 }
 
@@ -226,17 +226,29 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="hero-brief-link" href="/briefings"><Newspaper size={14}/> Latest Security Brief · August 21 <ArrowRight size={14}/></a>
-        <div className="eyebrow"><span></span> A plain-language introduction to output security</div>
-        <h1>What happens after<br/>someone presses <em>Print?</em></h1>
-        <p className="hero-copy">A printer once put information on paper. Today, printers and scanners are connected to networks, applications, cloud services, people, and outside support. The technology changed. The responsibility for the information did not.</p>
-        <div className="hero-actions">
-          <a className="button primary" href="#lifecycle">Follow a document <ArrowRight size={18}/></a>
-          <a className="text-link" href="#why">Why this matters <ChevronDown size={18}/></a>
-        </div>
-        <div className="hero-principle">
-          <span>THE CENTRAL IDEA</span>
-          <strong>The information does not become less sensitive when it leaves the screen.</strong>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>August 21, 2026</span></a>
+        <div className="hero-layout">
+          <div className="hero-editorial">
+            <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
+            <h1>Security doesn't end at the screen.</h1>
+            <p className="hero-principle"><span>The central idea</span><strong>The information does not become less sensitive when it leaves the screen.</strong></p>
+            <p className="hero-copy">OSI provides independent, manufacturer-neutral guidance for systems that create, move, and manage physical information.</p>
+            <div className="hero-actions">
+              <a className="button primary" href="#why">Understand the risk</a>
+              <a className="text-link" href="#controls">Explore OICC <ArrowRight size={18}/></a>
+            </div>
+            <p className="trust-line">Independent <span aria-hidden="true">•</span> Manufacturer-neutral <span aria-hidden="true">•</span> Standards-informed</p>
+          </div>
+          <figure className="boundary-diagram" aria-labelledby="boundary-title">
+            <figcaption id="boundary-title">The OSI digital-to-physical boundary</figcaption>
+            <div className="boundary-stage boundary-digital"><strong>Digital</strong><small>Technical environment</small></div>
+            <span className="boundary-arrow" aria-hidden="true">↓</span>
+            <div className="boundary-stage boundary-system"><strong>Output system</strong><small>The transition boundary</small></div>
+            <span className="boundary-arrow" aria-hidden="true">↓</span>
+            <div className="boundary-stage boundary-physical"><strong>Physical</strong><small>Information in tangible form</small></div>
+            <span className="boundary-arrow" aria-hidden="true">↓</span>
+            <div className="boundary-stage boundary-custody"><strong>Custody</strong><small>Human and organizational control</small></div>
+          </figure>
         </div>
       </section>
 
@@ -249,10 +261,10 @@ function App() {
             <p>They also create something most other endpoints do not: a physical document that can be retrieved, carried, copied, stored, shared, misplaced, retained, or destroyed.</p>
           </div>
         </div>
-        <div className="questions">
-          <article><span>THEN</span><h3>A largely mechanical device</h3><p>Its visible purpose was straightforward: receive a document and place it on paper.</p></article>
-          <article><span>NOW</span><h3>A connected endpoint</h3><p>It exchanges information with users, systems, networks, applications, administrators, and support providers.</p></article>
-          <article><span>STILL</span><h3>A physical information boundary</h3><p>Digital controls meet human custody when information becomes paper or is scanned into another destination.</p></article>
+        <div className="change-sequence" aria-label="Then, now, and still">
+          <article><span>THEN</span><div><h3>A largely mechanical device</h3><p>Its visible purpose was straightforward: receive a document and place it on paper.</p></div></article>
+          <article><span>NOW</span><div><h3>A connected endpoint</h3><p>It exchanges information with users, systems, networks, applications, administrators, and support providers.</p></div></article>
+          <article><span>STILL</span><div><h3>A physical information boundary</h3><p>Digital controls meet human custody when information becomes paper or is scanned into another destination.</p></div></article>
         </div>
       </section>
 
