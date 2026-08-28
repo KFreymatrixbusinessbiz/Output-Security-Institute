@@ -271,16 +271,22 @@ function App() {
       <section className="lifecycle section" id="lifecycle">
         <div className="section-number">02 / FOLLOW ONE DOCUMENT</div>
         <div className="lifecycle-intro"><h2>One ordinary action creates a <em>complete lifecycle.</em></h2><p>Consider a customer record, medical document, financial report, student file, legal matter, or piece of intellectual property. Its sensitivity continues through every step.</p></div>
-        <div className="journey" aria-label="The lifecycle of a printed document">
-          {[
-            [Monitor,'Created','Who created it, and what information does it contain?'],
-            [Network,'Sent','Where does it travel, and which systems can reach it?'],
-            [Printer,'Processed','Does the device store, log, route, or reproduce it?'],
-            [FileOutput,'Released','Who is permitted to retrieve the physical output?'],
-            [Users,'Used','Who sees, carries, copies, or shares the document?'],
-            [Archive,'Retained','Where is it stored, and how long should it remain?'],
-            [Trash2,'Destroyed','Can the organization verify its final disposition?']
-          ].map(([Icon,title,text],i)=><article key={title}><span>{String(i+1).padStart(2,'0')}</span><Icon size={25}/><h3>{title}</h3><p>{text}</p></article>)}
+        <div className="lifecycle-model">
+          <div className="lifecycle-zones" aria-hidden="true">
+            <span>Digital environment</span><span>Transition</span><span>Physical custody</span>
+          </div>
+          <ol className="journey" aria-label="The lifecycle of a printed document">
+            {[
+              ['Created','Who created it, and what information does it contain?'],
+              ['Sent','Where does it travel, and which systems can reach it?'],
+              ['Processed','Does the device store, log, route, or reproduce it?'],
+              ['Released','Who is permitted to retrieve the physical output?'],
+              ['Used','Who sees, carries, copies, or shares the document?'],
+              ['Retained','Where is it stored, and how long should it remain?'],
+              ['Destroyed','Can the organization verify its final disposition?']
+            ].map(([title,text],i)=><li key={title} className={`lifecycle-stage lifecycle-stage-${i+1}`}><article><span>{String(i+1).padStart(2,'0')}</span><h3>{title}</h3><p>{text}</p></article></li>)}
+          </ol>
+          <div className="lifecycle-boundary" aria-hidden="true"><span>Digital → physical boundary</span></div>
         </div>
         <div className="continuity-statement"><strong>Digital security and physical custody are not separate stories.</strong><p>They are consecutive stages in the life of the same information.</p></div>
       </section>
