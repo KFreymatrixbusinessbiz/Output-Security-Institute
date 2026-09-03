@@ -5,6 +5,7 @@ import {
   Monitor, Printer, FileOutput, Archive, Trash2, Users, CalendarDays, Newspaper
 } from 'lucide-react'
 import { knowledgeCategories, knowledgeResources } from './knowledge-data.js'
+import { crosswalkRecords, crosswalkSource } from './standards-data.js'
 
 const september3Brief = [
   {
@@ -132,7 +133,7 @@ const mappings = [
 
 function Header() {
   const [open, setOpen] = useState(false)
-  const links = [['Why It Matters', '/#why'], ['OICC Framework', '/oicc'], ['Knowledge', '/knowledge'], ['Briefings', '/briefings'], ['About', '/#about']]
+  const links = [['Why It Matters', '/#why'], ['OICC Framework', '/oicc'], ['Standards', '/standards'], ['Knowledge', '/knowledge'], ['Briefings', '/briefings'], ['About', '/#about']]
   return <header className="site-header">
     <a className="brand" href="/" aria-label="Output Security Institute home">
       <span className="brand-initials" aria-hidden="true">OSI</span>
@@ -435,7 +436,40 @@ function OiccPage(){
   </main><SiteFooter/></div>
 }
 
+function StandardsPage(){
+  const domainAnchors={
+    'Governance & Ownership':'governance-ownership','Identity & Access':'identity-access','Secure Configuration':'secure-configuration','Data Protection':'data-protection','Visibility & Evidence':'visibility-evidence','Service & Supply Chain':'service-supply-chain','Recovery & Continuity':'recovery-continuity','Lifecycle Assurance':'lifecycle-assurance'
+  }
+  const [query,setQuery]=useState('')
+  const [domain,setDomain]=useState('All')
+  const [relationship,setRelationship]=useState('All')
+  useEffect(()=>{
+    document.title='Standards Crosswalk | Output Security Institute'
+    const meta=document.querySelector('meta[name="description"]')
+    if(meta) meta.setAttribute('content','The OSI Standards Crosswalk connects verified NIST CSF 2.0 cybersecurity outcomes to relevant OICC output-security domains without implying endorsement or compliance equivalence.')
+  },[])
+  const domains=[...new Set(crosswalkRecords.map(x=>x.domain))]
+  const relationships=[...new Set(crosswalkRecords.map(x=>x.relationship))]
+  const search=query.trim().toLowerCase()
+  const visible=crosswalkRecords.filter(x=>(domain==='All'||x.domain===domain)&&(relationship==='All'||x.relationship===relationship)&&(!search||[x.id,x.title,x.domain,x.relationship,x.rationale,crosswalkSource.framework].join(' ').toLowerCase().includes(search)))
+  const active=query||domain!=='All'||relationship!=='All'
+  const clear=()=>{setQuery('');setDomain('All');setRelationship('All')}
+  return <div className="standards-page"><Header/><main>
+    <section className="sp-hero"><a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a><div className="sp-kicker">OSI Standards Crosswalk</div><h1>Connecting output security to established security principles.</h1><div className="sp-hero-grid"><p>This crosswalk helps organizations examine OICC alongside established security frameworks and authoritative guidance. It asks which established principles inform each OICC domain and why the relationship matters to output systems.</p><div><strong>Mapping is interpretation, not endorsement.</strong><p>OSI mappings identify relationships that OSI considers relevant to output security. They do not indicate that an issuing organization references, approves, or endorses OICC. OSI does not create regulatory requirements or certify compliance.</p></div></div></section>
+    <section className="sp-method"><div className="sp-label">Crosswalk methodology</div><h2>Authority first. Interpretation made inspectable.</h2><div className="sp-flow">{[
+      ['Source','Start with authoritative framework language.'],['Condition','Identify the security condition addressed.'],['OICC relevance','Locate the related output-security concern.'],['Relationship','Classify it as Direct, Supporting, or Contextual.'],['Evidence','Retain the authoritative source reference.']
+    ].map(([title,text],i)=><div key={title}><span>{String(i+1).padStart(2,'0')}</span><strong>{title}</strong><p>{text}</p></div>)}</div></section>
+    <section className="sp-index"><div className="sp-index-head"><div><div className="sp-label">Verified mapping index</div><h2>A small crosswalk with a defensible source basis.</h2></div><p>The initial release uses only exact NIST CSF 2.0 outcomes verified against the authoritative publication. Detailed mappings for additional frameworks are deferred until their source language is examined to the same standard.</p></div>
+      <div className="sp-toolbar"><label className="sp-search"><span>Search mappings</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Identifier, concept, domain, or rationale"/></label><div className="sp-filters"><label><span>OICC domain</span><select value={domain} onChange={e=>setDomain(e.target.value)}><option>All</option>{domains.map(x=><option key={x}>{x}</option>)}</select></label><label><span>Relationship</span><select value={relationship} onChange={e=>setRelationship(e.target.value)}><option>All</option>{relationships.map(x=><option key={x}>{x}</option>)}</select></label></div></div>
+      <div className="sp-count"><span>{String(visible.length).padStart(2,'0')} verified mappings</span>{active&&<button type="button" onClick={clear}>Clear search and filters</button>}</div>
+      {visible.length?<div className="sp-records">{visible.map(x=><article className="sp-record" key={x.id}><div className="sp-source"><span>External source</span><b>{crosswalkSource.short}</b><span>{x.id}</span></div><div className="sp-concept"><span>External concept</span><h3>{x.title}</h3><div className="sp-rationale"><strong>OSI rationale</strong><p>{x.rationale}</p></div></div><div className="sp-map"><span>{x.relationship} relationship</span><a href={`/oicc#${domainAnchors[x.domain]}`}>{x.domain}</a><a href={crosswalkSource.knowledgeUrl}>View in Knowledge Center</a><a href={crosswalkSource.sourceUrl} target="_blank" rel="noreferrer" aria-label={`View original NIST source for ${x.id} (opens in a new tab)`}>View original source <ExternalLink size={15}/></a><small>Relationship classification and rationale are OSI interpretation. Direct does not mean equivalent or compliant.</small></div></article>)}</div>:<div className="sp-empty"><h3>No verified mappings match.</h3><p>No result in this index does not mean no relationship exists.</p><button type="button" onClick={clear}>Clear search and filters</button></div>}
+    </section>
+    <section className="sp-note"><div><div className="sp-label">Research transparency</div><h2>Source language remains primary.</h2></div><div><p>Mappings are developed by OSI and may change when external frameworks are revised or OSI analysis is updated. Users should consult the authoritative source for requirements and official guidance.</p><p>NIST SP 800-53 Rev. 5, NIST SP 800-171 Rev. 3, NIST SP 800-53A Rev. 5, and CISA Zero Trust mappings are not included in this initial set because detailed identifiers and relationships have not yet been verified to the same record-level standard.</p></div></section>
+  </main><SiteFooter/></div>
+}
+
 function App() {
+  if(window.location.pathname.startsWith('/standards')) return <StandardsPage/>
   if(window.location.pathname.startsWith('/oicc')) return <OiccPage/>
   if(window.location.pathname.startsWith('/knowledge')) return <KnowledgeCenterPage/>
   if(window.location.pathname.startsWith('/briefings')) return <BriefingsPage/>
