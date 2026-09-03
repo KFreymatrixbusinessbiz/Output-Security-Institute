@@ -5,6 +5,7 @@ import './styles.css'
 import './knowledge.css'
 import './knowledge-page.css'
 import './oicc.css'
+import './standards.css'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode><App /></React.StrictMode>
