@@ -5,6 +5,19 @@ import {
   Monitor, Printer, FileOutput, Archive, Trash2, Users, CalendarDays, Newspaper
 } from 'lucide-react'
 
+const august28Brief = [
+  {
+    title: 'NIST advances fine-grained, data-level access control',
+    category: 'NIST / Zero Trust / Data access',
+    confirmed: 'On August 27, NIST released final Interagency Report 8611, describing embedded Next Generation Access Control (m-NGAC). The model enforces centrally managed, policy-based permissions at the individual database-column level, independent of the application or query tool used to access the data. This is a finalized NIST research publication—not a new CMMC requirement, regulatory mandate, or product standard.',
+    inference: 'NIST IR 8611 does not address printers or print-management systems. OSI infers that its data-level authorization model provides a useful benchmark for systems that aggregate output-device and document-transaction data.',
+    why: 'Print-management platforms, fleet-monitoring systems, workflow tools, and service portals may collect device identities, user names, job names, document metadata, scan destinations, departmental information, and service data. Authenticating someone to a platform should not automatically authorize access to every category of data maintained by that platform.',
+    implication: 'Add a procurement question for print-management, DCA, and service platforms: Can the system separately authorize access to device telemetry, user identity, document or job metadata, administrative settings, credentials, and service records—or does access to the platform expose the entire dataset? This can become an OSI control titled “Data Collection Does Not Create Data Entitlement.”',
+    source: 'NIST IR 8611',
+    url: 'https://csrc.nist.gov/pubs/ir/8611/final'
+  }
+]
+
 const august21Brief = [
   {
     title: 'Federal agencies warn of an active threat to industrial endpoints',
@@ -85,6 +98,7 @@ const august14Brief = [
 ]
 
 const library = [
+  {title:'Post-quantum security moves into mainstream print',source:'Quocirca',type:'Substantive Analysis',industry:'All Industries',control:'Lifecycle Assurance',date:'2026-07-13',reviewed:'2026-08-28',url:'https://quocirca.com/content/post-quantum-security-moves-into-mainstream-print/',summary:'Analysis of post-quantum readiness in print, including secure boot, firmware signing, device identity, certificates, encrypted communications, and cryptographic agility across long device lifecycles.',relevance:'Supports treating post-quantum readiness as lifecycle capability: output endpoints must be able to preserve identity, communications security, firmware integrity, and trust as cryptographic standards change.'},
   {title:'NIST Cybersecurity Framework 2.0',source:'National Institute of Standards and Technology',type:'Framework',industry:'All Industries',control:'Governance & Ownership',date:'2024-02-26',reviewed:'2026-07-18',url:'https://www.nist.gov/cyberframework',summary:'A risk-based framework organized around Govern, Identify, Protect, Detect, Respond, and Recover.',relevance:'Provides the governing structure for bringing output systems into an organization-wide cybersecurity risk program.'},
   {title:'NIST SP 800-53 Rev. 5',source:'NIST Computer Security Resource Center',type:'Security Controls',industry:'Government & Defense',control:'Secure Configuration',date:'2020-12-10',reviewed:'2026-07-18',url:'https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final',summary:'A flexible catalog of security and privacy controls for information systems and organizations.',relevance:'Supports control selection for access, configuration, audit, communications, maintenance, media, supply chain, and system integrity.'},
   {title:'NIST SP 800-53A Rev. 5',source:'NIST Computer Security Resource Center',type:'Assessment Guidance',industry:'Government & Defense',control:'Visibility & Evidence',date:'2022-01-25',reviewed:'2026-07-18',url:'https://csrc.nist.gov/pubs/sp/800/53/a/r5/final',summary:'Assessment procedures and methodology for evaluating security and privacy controls.',relevance:'Helps turn an output-security control statement into evidence that can be examined, tested, and documented.'},
@@ -154,13 +168,37 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> August 21, 2026</span><span>Weekly edition</span><span>2 material developments</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> August 28, 2026</span><span>Weekly edition</span><span>1 material development</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
     <section className="brief-editorial">
       <strong>Editorial standard</strong>
       <p>OSI prioritizes authoritative primary sources, excludes routine promotion and recycled commentary, and states when a conclusion is an inference rather than source language. Inclusion does not establish endorsement or compliance.</p>
+    </section>
+
+    <section className="brief-list">
+      {august28Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">NO OTHER MATERIAL DEVELOPMENT THIS WEEK</div>
+      <h2>Other monitored categories remain <em>unchanged.</em></h2>
+      <p>No consequential new print-device or print-endpoint vulnerability, NIST SP 800-171 or CMMC requirement, HIPAA or other regulated-environment requirement, Windows Protected Print or IPP change, output-device data-exposure advisory, or Zero Trust guidance directly addressing output systems was identified from August 22 through August 28.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">AUGUST 21 EDITION — PRESERVED</div>
+      <h2>Previous material developments.</h2>
     </section>
 
     <section className="brief-list">
@@ -174,12 +212,6 @@ function BriefingsPage(){
         </div>
         <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
       </article>)}
-    </section>
-
-    <section className="brief-none section">
-      <div className="section-number">NO MATERIAL DEVELOPMENT THIS WEEK</div>
-      <h2>Other monitored categories remain <em>unchanged.</em></h2>
-      <p>No consequential new print-endpoint or device-data exposure advisory, NIST SP 800-171/CMMC action, Windows Protected Print or IPP change, HIPAA regulatory action, or general Zero Trust standard was identified after August 14.</p>
     </section>
 
     <section className="brief-none section">
@@ -226,7 +258,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>August 21, 2026</span></a>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>August 28, 2026</span></a>
         <div className="hero-layout">
           <div className="hero-editorial">
             <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
@@ -312,8 +344,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> August 21, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the August 21 brief <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / 2 MATERIAL DEVELOPMENTS</span>{august21Brief.map((item,i)=><a href="/briefings" key={item.title}><b>{String(i+1).padStart(2,'0')}</b><p>{item.title}</p><ArrowRight size={16}/></a>)}</div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> August 28, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the August 28 brief <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / 1 MATERIAL DEVELOPMENT</span>{august28Brief.map((item,i)=><a href="/briefings" key={item.title}><b>{String(i+1).padStart(2,'0')}</b><p>{item.title}</p><ArrowRight size={16}/></a>)}</div>
         </div>
       </section>
 
