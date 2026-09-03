@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "output-security-institute",
+  "name": "output-security-institute-phase3-preview",
   "compatibility_date": "2026-07-18",
   "assets": {
     "directory": "./dist",
