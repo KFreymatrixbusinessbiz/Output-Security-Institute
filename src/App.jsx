@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   ArrowLeft, ArrowRight, BookOpen, Check, ChevronDown, ClipboardCheck, ExternalLink,
   FileKey, Fingerprint, Menu, Network, ScanSearch, Search, ShieldCheck, X,
@@ -142,7 +142,7 @@ const mappings = [
 
 function Header() {
   const [open, setOpen] = useState(false)
-  const links = [['Why It Matters', '/#why'], ['OICC Framework', '/#controls'], ['Knowledge', '/knowledge'], ['Briefings', '/briefings'], ['About', '/#about']]
+  const links = [['Why It Matters', '/#why'], ['OICC Framework', '/oicc'], ['Knowledge', '/knowledge'], ['Briefings', '/briefings'], ['About', '/#about']]
   return <header className="site-header">
     <a className="brand" href="/" aria-label="Output Security Institute home">
       <span className="brand-initials" aria-hidden="true">OSI</span>
@@ -283,7 +283,120 @@ function BriefingsPage(){
   </main><footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/briefings">Security Briefs</a><a href="/#controls">OICC Framework</a><a href="/knowledge">Knowledge Center</a></div><small>© {new Date().getFullYear()} Output Security Institute. Educational guidance only.</small></footer></div>
 }
 
+const oiccDomains = [
+  {
+    n:'01', title:'Governance & Ownership', id:'governance-ownership',
+    purpose:'Assign accountability for output systems, their data, configurations, service access, and lifecycle decisions.',
+    questions:['Who owns security decisions for the complete output environment?','Are device, print-server, workflow, records, and physical-custody responsibilities documented?','Who accepts risk when an approved baseline cannot be met?'],
+    evidence:['Named system and data owners','Current inventory with business purpose and location','Approved policies, risk decisions, and review records'],
+    lifecycle:'Applies across the full journey. Ownership should remain clear when responsibility passes between technology, operations, service providers, records teams, and document users.'
+  },
+  {
+    n:'02', title:'Identity & Access', id:'identity-access',
+    purpose:'Control who can administer, use, release, retrieve, and service output systems and the information they handle.',
+    questions:['Are user, administrator, application, and service identities distinct?','Does access reflect role, device, information sensitivity, and business need?','Can privileged and remote sessions be approved, limited, expired, and reviewed?'],
+    evidence:['Role and privilege assignments','Authentication and secure-release settings','Remote-access approvals and session records'],
+    lifecycle:'Most visible when information is sent, processed, and released, but it also governs who can create, retain, retrieve, administer, or destroy it.'
+  },
+  {
+    n:'03', title:'Secure Configuration', id:'secure-configuration',
+    purpose:'Establish approved baselines for protocols, ports, certificates, firmware, storage, logging, and administrative settings.',
+    questions:['Is there an approved configuration baseline for each device and supporting platform?','Are unnecessary services disabled and management paths restricted?','Are firmware, certificates, protocols, and security settings reviewed after change or service?'],
+    evidence:['Approved baseline and configuration exports','Firmware and certificate inventories','Change, exception, and remediation records'],
+    lifecycle:'Shapes how information is sent and processed and whether residual data, exposed services, or weakened settings persist through maintenance and reassignment.'
+  },
+  {
+    n:'04', title:'Data Protection', id:'data-protection',
+    purpose:'Protect information while it is transmitted, processed, stored, printed, scanned, released, and disposed of.',
+    questions:['What information can the output system receive, retain, reproduce, route, or expose?','Are transmission, local storage, release, retention, and disposal protections appropriate to sensitivity?','Can data deletion and media sanitization be verified?'],
+    evidence:['Data-flow and retention documentation','Encryption, release, overwrite, and sanitization settings','Disposition certificates or verified removal records'],
+    lifecycle:'Directly follows the document from creation through destruction, including temporary files, job metadata, scans, address books, logs, and physical copies.'
+  },
+  {
+    n:'05', title:'Visibility & Evidence', id:'visibility-evidence',
+    purpose:'Maintain the logs, inventories, ownership records, and event evidence needed to understand what happened and when.',
+    questions:['Which security, administrative, job, and service events are recorded?','Can evidence be exported, protected, retained, correlated, and reviewed?','Would missing or truncated logs trigger investigation?'],
+    evidence:['Central and device event logs','Review, alert, and incident records','Evidence-retention and time-synchronization settings'],
+    lifecycle:'Provides accountability at every stage and helps reconstruct movement, access, release, service activity, retention, and final disposition.'
+  },
+  {
+    n:'06', title:'Service & Supply Chain', id:'service-supply-chain',
+    purpose:'Govern external access, replacement components, firmware sources, credentials, remote tools, and third-party dependencies.',
+    questions:['Which providers, tools, components, and cloud services can affect the output environment?','Is service access customer-authorized, least-privileged, time-limited, and logged?','Are firmware provenance, vulnerability response, support life, and subcontractor responsibilities defined?'],
+    evidence:['Vendor and dependency inventory','Service-access logs and approval records','Contracts, security notices, firmware sources, and support commitments'],
+    lifecycle:'Affects processing, availability, stored data, and custody whenever external parties maintain, monitor, replace, return, or dispose of equipment.'
+  },
+  {
+    n:'07', title:'Recovery & Continuity', id:'recovery-continuity',
+    purpose:'Design for safe recovery, documented escalation, operational availability, and continuity when normal support is unavailable.',
+    questions:['Which output functions are essential, and how long can they be unavailable?','Can secure printing, scanning, faxing, or release continue during isolation or service disruption?','Are restoration priorities, clean configurations, escalation paths, and manual alternatives tested?'],
+    evidence:['Recovery and continuity procedures','Test results and corrective actions','Known-good configurations, dependencies, and escalation contacts'],
+    lifecycle:'Protects authorized creation, release, and access during disruption while preventing hurried workarounds from weakening custody or data protection.'
+  },
+  {
+    n:'08', title:'Lifecycle Assurance', id:'lifecycle-assurance',
+    purpose:'Evaluate acquisition, deployment, maintenance, reassignment, decommissioning, and verified data removal as one control system.',
+    questions:['Do acquisition decisions include security capabilities, support period, evidence access, and end-of-life requirements?','Are controls revalidated after deployment, repair, reassignment, or major update?','Can the organization prove secure return, reuse, sanitization, and disposal?'],
+    evidence:['Security requirements and procurement evaluations','Deployment, maintenance, reassignment, and acceptance records','End-of-life inventory and verified sanitization evidence'],
+    lifecycle:'Extends beyond one document to the life of the system that handles it—from selection and deployment through maintenance, reassignment, return, and disposal.'
+  }
+]
+
+function SiteFooter(){
+  return <footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/briefings">Security Briefs</a><a href="/oicc">OICC Framework</a><a href="/knowledge">Knowledge Center</a></div><small>© {new Date().getFullYear()} Output Security Institute. Educational guidance only.</small></footer>
+}
+
+function OiccPage(){
+  useEffect(()=>{
+    document.title='OICC Framework | Output Security Institute'
+    const meta=document.querySelector('meta[name="description"]')
+    if(meta) meta.setAttribute('content','OICC is a practical, manufacturer-neutral control framework for governing output systems, physical information, service access, evidence, and lifecycle risk.')
+  },[])
+  return <div className="oicc-page" id="top"><Header/><main>
+    <section className="oicc-hero">
+      <div className="oicc-kicker">Operational Infrastructure Critical Controls</div>
+      <div className="oicc-hero-grid"><div><h1>OICC</h1><p className="oicc-lede">A practical control framework for output security.</p></div><div className="oicc-version"><span>OICC v1.0</span><strong>Foundational draft</strong><p>Independent, manufacturer-neutral guidance for examining output systems as connected infrastructure and as a physical information boundary.</p></div></div>
+    </section>
+
+    <nav className="oicc-anchor-nav" aria-label="OICC page sections"><a href="#logic">Control logic</a><a href="#framework-index">Eight domains</a><a href="#standards-relationship">Standards relationship</a><a href="#evidence">Evidence</a><a href="#version">Version</a></nav>
+
+    <section className="oicc-logic oicc-section" id="logic">
+      <div className="oicc-section-label">How to use OICC</div>
+      <div className="oicc-logic-line" aria-label="Understand, assign, control, evidence"><span><b>01</b>Understand</span><i aria-hidden="true">→</i><span><b>02</b>Assign</span><i aria-hidden="true">→</i><span><b>03</b>Control</span><i aria-hidden="true">→</i><span><b>04</b>Evidence</span></div>
+      <p className="oicc-logic-copy">Understand the information, systems, pathways, and consequences. Assign accountable owners. Apply controls suited to the environment. Preserve evidence that the controls exist and operate.</p>
+    </section>
+
+    <section className="oicc-bridge oicc-section">
+      <div><div className="oicc-section-label">One continuous responsibility</div><h2>The lifecycle describes the journey.<br/><em>OICC organizes the controls.</em></h2></div>
+      <ol aria-label="Document lifecycle">{['Created','Sent','Processed','Released','Used','Retained','Destroyed'].map((stage,i)=><li key={stage}><span>{String(i+1).padStart(2,'0')}</span>{stage}</li>)}</ol>
+    </section>
+
+    <section className="oicc-index oicc-section" id="framework-index">
+      <div className="oicc-section-label">Framework index</div><div className="oicc-index-head"><h2>Eight domains.<br/><em>One control system.</em></h2><p>The domains are designed to be examined together. Each section states a purpose, practical assessment questions, examples of evidence, and its relevance to the information lifecycle.</p></div>
+      <div className="oicc-index-list">{oiccDomains.map(d=><a key={d.n} href={`#${d.id}`}><span>{d.n}</span><strong>{d.title}</strong><ArrowRight size={18}/></a>)}</div>
+    </section>
+
+    <section className="oicc-domains" aria-label="OICC control domains">
+      {oiccDomains.map(d=><article className="oicc-domain oicc-section" id={d.id} key={d.n}>
+        <header><span>{d.n}</span><div><p>Control domain</p><h2>{d.title}</h2></div><a href="#framework-index">Index ↑</a></header>
+        <p className="oicc-purpose"><strong>Purpose</strong>{d.purpose}</p>
+        <div className="oicc-domain-grid"><section><h3>Assessment questions</h3><ol>{d.questions.map((q,i)=><li key={q}><span>{String(i+1).padStart(2,'0')}</span><p>{q}</p></li>)}</ol></section><section><h3>Evidence examples</h3><ul>{d.evidence.map(e=><li key={e}>{e}</li>)}</ul></section></div>
+        <aside><strong>Lifecycle relevance</strong><p>{d.lifecycle}</p></aside>
+      </article>)}
+    </section>
+
+    <section className="oicc-standards oicc-section" id="standards-relationship">
+      <div className="oicc-section-label">Standards relationship</div><div className="oicc-standards-grid"><div><h2>Built to support interpretation—not replace authority.</h2><p>OICC helps teams apply established security principles to output devices, print infrastructure, document workflows, service pathways, and physical information.</p><strong>OSI does not create regulatory requirements or certify compliance.</strong></div><div>{mappings.map(([name,text],i)=><article key={name}><span>{String(i+1).padStart(2,'0')}</span><div><h3>{name}</h3><p>{text}</p></div></article>)}</div></div>
+    </section>
+
+    <section className="oicc-evidence oicc-section" id="evidence"><div className="oicc-section-label">Evidence philosophy</div><div><h2>A control statement is a beginning.<br/><em>Evidence makes it examinable.</em></h2><p>OICC emphasizes evidence an organization can inspect: ownership records, approved configurations, access decisions, inventories, event logs, service records, tests, exceptions, and verified disposition. The appropriate evidence depends on the environment, risk, and applicable authority.</p></div></section>
+
+    <section className="oicc-versioning oicc-section" id="version"><div><div className="oicc-section-label">Version architecture</div><h2>Foundational draft</h2></div><div><p>OICC v1.0 establishes the framework’s eight-domain structure. Future revisions can clarify language, add implementation guidance, and document change without silently altering the framework’s meaning.</p><p>The framework is manufacturer-neutral. Technology examples may inform assessment, but no domain depends on one manufacturer, product, or service model.</p><a className="button primary" href="mailto:info@outputsecurityinstitute.org?subject=OICC foundational draft feedback">Contribute informed feedback <ArrowRight size={18}/></a></div></section>
+  </main><SiteFooter/></div>
+}
+
 function App() {
+  if(window.location.pathname.startsWith('/oicc')) return <OiccPage/>
   if(window.location.pathname.startsWith('/knowledge')) return <KnowledgeCenterPage/>
   if(window.location.pathname.startsWith('/briefings')) return <BriefingsPage/>
   return <div id="top">
@@ -299,7 +412,7 @@ function App() {
             <p className="hero-copy">OSI provides independent, manufacturer-neutral guidance for systems that create, move, and manage physical information.</p>
             <div className="hero-actions">
               <a className="button primary" href="#why">Understand the risk</a>
-              <a className="text-link" href="#controls">Explore OICC <ArrowRight size={18}/></a>
+              <a className="text-link" href="/oicc">Explore OICC <ArrowRight size={18}/></a>
             </div>
             <p className="trust-line">Independent <span aria-hidden="true">•</span> Manufacturer-neutral <span aria-hidden="true">•</span> Standards-informed</p>
           </div>
@@ -368,7 +481,7 @@ function App() {
         <div className="pathway-grid">
           <a className="path understand" href="#why"><small>UNDERSTAND</small><BookOpen/><h3>What am I missing?</h3><p>Learn how connected output systems and physical information create one continuous responsibility.</p><span>Start with the issue <ArrowRight size={16}/></span></a>
           <a className="path examine" href="#resources"><small>EXAMINE</small><ScanSearch/><h3>What should we review?</h3><p>Use practical questions to examine ownership, access, data handling, service, evidence, recovery, and lifecycle.</p><span>See what to examine <ArrowRight size={16}/></span></a>
-          <a className="path act" href="#controls"><small>ACT</small><ShieldCheck/><h3>What should we put in place?</h3><p>Explore the OICC controls, authoritative standards, implementation guidance, and evidence expectations.</p><span>Use the controls <ArrowRight size={16}/></span></a>
+          <a className="path act" href="/oicc"><small>ACT</small><ShieldCheck/><h3>What should we put in place?</h3><p>Explore the OICC controls, authoritative standards, implementation guidance, and evidence expectations.</p><span>Use the controls <ArrowRight size={16}/></span></a>
         </div>
         <aside className="ask-osi"><div><strong>Not sure where to begin?</strong><p>Describe the condition you are trying to understand. You do not need to know the terminology.</p></div><a href="mailto:info@outputsecurityinstitute.org?subject=Help me begin with output security">Ask OSI a question <ArrowRight size={17}/></a></aside>
       </section>
@@ -390,7 +503,7 @@ function App() {
         <div className="control-grid">
           {controls.map((c, i) => {
             const ControlIcon = [ShieldCheck, Fingerprint, Check, FileKey, ScanSearch, Network, ClipboardCheck, BookOpen][i]
-            return <article key={c.n} className="control-card"><span>{c.n}</span><ControlIcon size={25}/><h3>{c.title}</h3><p>{c.text}</p><a href="#resources" aria-label={`Learn about ${c.title}`}>View control objective <ArrowRight size={15}/></a></article>
+            return <article key={c.n} className="control-card"><span>{c.n}</span><ControlIcon size={25}/><h3>{c.title}</h3><p>{c.text}</p><a href={`/oicc#${oiccDomains[i].id}`} aria-label={`Learn about ${c.title}`}>View control objective <ArrowRight size={15}/></a></article>
           })}
         </div>
       </section>
@@ -449,7 +562,7 @@ function App() {
         <div className="about-grid"><h2>An independent initiative for a boundary that deserves clearer governance.</h2><div><p>The Output Security Institute develops practical, manufacturer-neutral guidance for the security, integrity, and continuity of systems that create, move, and manage physical information.</p><p>OSI is an independent educational initiative. It is not affiliated with or endorsed by NIST, and it does not certify products, organizations, or regulatory compliance.</p><a className="text-link dark-link" href="mailto:info@outputsecurityinstitute.org">Contribute to the discussion <ArrowRight size={17}/></a></div></div>
       </section>
     </main>
-    <footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="#controls">OICC Framework</a><a href="#standards">Standards</a><a href="#about">Transparency</a></div><small>© {new Date().getFullYear()} Output Security Institute. Educational guidance only.</small></footer>
+    <footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/oicc">OICC Framework</a><a href="#standards">Standards</a><a href="#about">Transparency</a></div><small>© {new Date().getFullYear()} Output Security Institute. Educational guidance only.</small></footer>
   </div>
 }
 

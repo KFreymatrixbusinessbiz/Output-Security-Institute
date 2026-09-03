@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './styles.css'
 import './knowledge.css'
 import './knowledge-page.css'
+import './oicc.css'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode><App /></React.StrictMode>
