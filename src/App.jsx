@@ -4,6 +4,7 @@ import {
   FileKey, Fingerprint, Menu, Network, ScanSearch, Search, ShieldCheck, X,
   Monitor, Printer, FileOutput, Archive, Trash2, Users, CalendarDays, Newspaper
 } from 'lucide-react'
+import { knowledgeCategories, knowledgeResources } from './knowledge-data.js'
 
 const september3Brief = [
   {
@@ -110,17 +111,6 @@ const august14Brief = [
   }
 ]
 
-const library = [
-  {title:'PaperCut NG/MF urgent security advisory',source:'PaperCut Software',type:'Security Advisory',industry:'All Industries',control:'Secure Configuration',date:'2026-08-27',reviewed:'2026-09-03',url:'https://www.papercut.com/kb/Main/security-bulletin-27-aug-2026-urgent-security-advisory/',summary:'Active exploitation affecting all versions of PaperCut NG and MF. PaperCut published Emergency Patch Release 3 and recommends restricting internet-facing Application Servers to trusted addresses.',relevance:'Demonstrates that output security includes print-management servers, their management interfaces, logs, databases, identity connections, and the remote-access tools an attacker may install after compromise.'},
-  {title:'Post-quantum security moves into mainstream print',source:'Quocirca',type:'Substantive Analysis',industry:'All Industries',control:'Lifecycle Assurance',date:'2026-07-13',reviewed:'2026-08-28',url:'https://quocirca.com/content/post-quantum-security-moves-into-mainstream-print/',summary:'Analysis of post-quantum readiness in print, including secure boot, firmware signing, device identity, certificates, encrypted communications, and cryptographic agility across long device lifecycles.',relevance:'Supports treating post-quantum readiness as lifecycle capability: output endpoints must be able to preserve identity, communications security, firmware integrity, and trust as cryptographic standards change.'},
-  {title:'NIST Cybersecurity Framework 2.0',source:'National Institute of Standards and Technology',type:'Framework',industry:'All Industries',control:'Governance & Ownership',date:'2024-02-26',reviewed:'2026-07-18',url:'https://www.nist.gov/cyberframework',summary:'A risk-based framework organized around Govern, Identify, Protect, Detect, Respond, and Recover.',relevance:'Provides the governing structure for bringing output systems into an organization-wide cybersecurity risk program.'},
-  {title:'NIST SP 800-53 Rev. 5',source:'NIST Computer Security Resource Center',type:'Security Controls',industry:'Government & Defense',control:'Secure Configuration',date:'2020-12-10',reviewed:'2026-07-18',url:'https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final',summary:'A flexible catalog of security and privacy controls for information systems and organizations.',relevance:'Supports control selection for access, configuration, audit, communications, maintenance, media, supply chain, and system integrity.'},
-  {title:'NIST SP 800-53A Rev. 5',source:'NIST Computer Security Resource Center',type:'Assessment Guidance',industry:'Government & Defense',control:'Visibility & Evidence',date:'2022-01-25',reviewed:'2026-07-18',url:'https://csrc.nist.gov/pubs/sp/800/53/a/r5/final',summary:'Assessment procedures and methodology for evaluating security and privacy controls.',relevance:'Helps turn an output-security control statement into evidence that can be examined, tested, and documented.'},
-  {title:'NIST SP 800-171 Rev. 3',source:'NIST Computer Security Resource Center',type:'Security Requirements',industry:'Government & Defense',control:'Data Protection',date:'2024-05-14',reviewed:'2026-07-18',url:'https://csrc.nist.gov/pubs/sp/800/171/r3/final',summary:'Recommended security requirements for protecting the confidentiality of CUI in nonfederal systems and organizations.',relevance:'Relevant when output devices, queues, workflows, storage, service processes, or physical documents handle controlled information.'},
-  {title:'Zero Trust Maturity Model Version 2.0',source:'Cybersecurity and Infrastructure Security Agency',type:'Implementation Guidance',industry:'Government & Defense',control:'Identity & Access',date:'2023-04-11',reviewed:'2026-07-18',url:'https://www.cisa.gov/resources-tools/resources/zero-trust-maturity-model',summary:'A maturity model for advancing identity, device, network, application, workload, and data protections.',relevance:'Provides a useful lens for questioning implicit trust in output endpoints, administrators, users, service paths, and device data.'},
-  {title:'Adapting Zero Trust Principles to Operational Technology',source:'CISA and Joint Authoring Organizations',type:'Implementation Guidance',industry:'Manufacturing',control:'Recovery & Continuity',date:'2026-04-29',reviewed:'2026-07-18',url:'https://www.cisa.gov/sites/default/files/2026-04/joint-guide-adapting-zero-trust-principles-to-operational-technology_508c.pdf',summary:'Joint guidance for applying Zero Trust principles while respecting safety, availability, and operational constraints.',relevance:'Useful where output systems support production, segmented environments, critical processes, or locations where availability shapes security decisions.'}
-]
-
 const controls = [
   { n: '01', title: 'Governance & Ownership', text: 'Assign accountability for output systems, their data, configurations, service access, and lifecycle decisions.' },
   { n: '02', title: 'Identity & Access', text: 'Control who can administer, use, release, retrieve, and service output systems and the information they handle.' },
@@ -158,23 +148,73 @@ function Header() {
 
 function KnowledgeCenterPage(){
   const [query,setQuery]=useState('')
-  const [type,setType]=useState('All')
-  const types=['All',...new Set(library.map(x=>x.type))]
-  const visible=library.filter(x=>(type==='All'||x.type===type)&&`${x.title} ${x.source} ${x.industry} ${x.control}`.toLowerCase().includes(query.toLowerCase()))
+  const [filters,setFilters]=useState({category:'All',authority:'All',domain:'All',industry:'All'})
+  const slug=window.location.pathname.split('/').filter(Boolean)[1]
+  const selected=slug?knowledgeResources.find(item=>item.slug===slug):null
+  useEffect(()=>{
+    document.title=selected?`${selected.title} | OSI Knowledge Center`:'Knowledge Center | Output Security Institute'
+    const meta=document.querySelector('meta[name="description"]')
+    if(meta) meta.setAttribute('content',selected?`Source record and OSI relevance for ${selected.title}.`:'Authoritative sources, evidence, and practical guidance for output security, organized by provenance and OICC domain.')
+  },[selected])
+  if(slug) return selected?<KnowledgeResourceDetail item={selected}/>:<KnowledgeNotFound/>
+  const options={
+    category:knowledgeCategories,
+    authority:[...new Set(knowledgeResources.map(x=>x.authority))],
+    domain:[...new Set(knowledgeResources.flatMap(x=>x.domains))],
+    industry:[...new Set(knowledgeResources.map(x=>x.industry))]
+  }
+  const search=query.trim().toLowerCase()
+  const visible=knowledgeResources.filter(item=>
+    Object.entries(filters).every(([key,value])=>value==='All'||(key==='domain'?item.domains.includes(value):item[key]===value))&&
+    (!search||[item.title,item.source,item.category,item.authority,item.type,item.summary,item.relevance,item.industry,item.jurisdiction,...item.domains].filter(Boolean).join(' ').toLowerCase().includes(search))
+  )
+  const clear=()=>{setQuery('');setFilters({category:'All',authority:'All',domain:'All',industry:'All'})}
+  const active=query||Object.values(filters).some(value=>value!=='All')
   return <div className="kc-page"><Header/><main>
-    <section className="kc-hero"><a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a><div className="eyebrow"><span></span> Curated primary-source guidance</div><h1>Knowledge<br/><em>Center.</em></h1><p>Standards, requirements, implementation guidance, and evidence organized for the security and continuity of output environments.</p></section>
-    <section className="kc-library">
-      <div className="kc-toolbar"><label><Search size={18}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search publications, controls, or industries"/></label><div className="kc-filters">{types.map(t=><button className={type===t?'active':''} key={t} onClick={()=>setType(t)}>{t}</button>)}</div></div>
-      <div className="kc-count"><span>{String(visible.length).padStart(2,'0')} RESOURCES</span><span>LAST LIBRARY REVIEW: SEPTEMBER 3, 2026</span></div>
-      <div className="kc-results">{visible.map((item,i)=><article key={item.title}>
-        <div className="kc-meta"><span>{String(i+1).padStart(2,'0')}</span><b>{item.type}</b><span>{item.industry}</span></div>
-        <div className="kc-body"><small>{item.source}</small><h2>{item.title}</h2><p>{item.summary}</p><div className="kc-relevance"><strong>OUTPUT SECURITY RELEVANCE</strong><p>{item.relevance}</p></div></div>
-        <div className="kc-record"><span><b>Published</b>{item.date}</span><span><b>Last reviewed</b>{item.reviewed}</span><span><b>OICC mapping</b>{item.control}</span><a href={item.url} target="_blank" rel="noreferrer">Open original source <ExternalLink size={15}/></a></div>
-      </article>)}</div>
-      <aside className="kc-disclosure"><ShieldCheck size={25}/><div><strong>Source and interpretation standard</strong><p>OSI links to the original publisher whenever possible. “Output Security Relevance” is OSI interpretation, not language from or endorsement by the source organization. Inclusion does not establish compliance.</p></div></aside>
+    <section className="kc-hero"><a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a><div className="kc-kicker">OSI Knowledge Center</div><h1>Evidence, guidance, and authoritative sources for output security.</h1><div className="kc-hero-copy"><p>OSI organizes standards, regulatory material, security advisories, research, and independent guidance relevant to systems that create, move, and manage physical information.</p><strong>Source authority matters.</strong><p>A government requirement, security advisory, research paper, manufacturer notice, and OSI interpretation should not be presented as though they are equivalent.</p></div></section>
+
+    <section className="kc-authority" aria-labelledby="authority-heading"><div><span>Provenance before interpretation</span><h2 id="authority-heading">Understand what a source is before deciding how to use it.</h2><p>These classifications clarify provenance and context. They are not presented as a universal legal hierarchy.</p></div><ol>{[
+      ['Primary authority','Official standards, requirements, regulations, and government source material.'],
+      ['Authoritative guidance','Official government, framework, or sector guidance.'],
+      ['Security / technical source','Official advisories and primary technical notices.'],
+      ['Research / evidence','Technical research, analysis, reports, and documented evidence.'],
+      ['OSI interpretation','Independent OSI material that explains or applies information to output security.']
+    ].map(([name,text],i)=><li key={name}><span>{String(i+1).padStart(2,'0')}</span><div><strong>{name}</strong><p>{text}</p></div></li>)}</ol></section>
+
+    <section className="kc-library" aria-labelledby="library-heading"><div className="kc-library-head"><div><span>Resource index</span><h2 id="library-heading">The currently verified library.</h2></div><p>External source language and OSI interpretation are identified separately. Each OICC relationship is an OSI relevance judgment—not an endorsement by the issuing organization.</p></div>
+      <div className="kc-toolbar">
+        <label className="kc-search"><span>Search resources</span><div><Search size={18}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Title, source, subject, or domain"/></div></label>
+        <div className="kc-filter-grid">{[
+          ['category','Category'],['authority','Authority / source type'],['domain','OICC domain'],['industry','Operational context']
+        ].map(([key,label])=><label key={key}><span>{label}</span><select value={filters[key]} onChange={e=>setFilters({...filters,[key]:e.target.value})}><option value="All">All</option>{options[key].map(value=><option key={value} value={value}>{value}</option>)}</select></label>)}</div>
+      </div>
+      <div className="kc-count"><span>{String(visible.length).padStart(2,'0')} indexed resources</span>{active&&<button type="button" onClick={clear}>Clear search and filters</button>}</div>
+      {visible.length?<div className="kc-results">{visible.map((item,i)=><article key={item.slug}>
+        <div className="kc-meta"><span>{String(i+1).padStart(2,'0')}</span><b>{item.authority}</b><span>{item.category}</span></div>
+        <div className="kc-body"><small>Source / {item.source}</small><h3><a href={`/knowledge/${item.slug}`}>{item.title}</a></h3><p>{item.summary}</p><div className="kc-relevance"><strong>OSI relevance</strong><p>{item.relevance}</p></div></div>
+        <div className="kc-record"><span><b>Published</b>{item.date}</span>{item.updated&&<span><b>Updated</b>{item.updated}</span>}<span><b>OSI last reviewed</b>{item.reviewed}</span><span><b>Related OICC domains</b>{item.domains.join(' · ')}</span><a href={item.url} target="_blank" rel="noreferrer" aria-label={`View original source for ${item.title} (opens in a new tab)`}>View original source <ExternalLink size={15}/></a></div>
+      </article>)}</div>:<div className="kc-empty"><strong>No indexed resources match these filters.</strong><p>This means no resources in the current OSI index match—not that no authoritative resources exist.</p><button type="button" onClick={clear}>Clear search and filters</button></div>}
+      <aside className="kc-disclosure"><ShieldCheck size={25}/><div><strong>Source and interpretation standard</strong><p>OSI links to the original publisher whenever possible. “OSI relevance” and “Related OICC domains” are OSI interpretation, not source language or endorsement. Inclusion does not establish compliance.</p></div></aside>
     </section>
-  </main></div>
+  </main><SiteFooter/></div>
 }
+
+function KnowledgeResourceDetail({item}){
+  const domainAnchors={
+    'Governance & Ownership':'governance-ownership',
+    'Identity & Access':'identity-access',
+    'Data Protection':'data-protection',
+    'Secure Configuration':'secure-configuration',
+    'Visibility & Evidence':'visibility-evidence',
+    'Network & Integration':'network-integration',
+    'Service & Supply Chain':'service-supply-chain',
+    'Recovery & Continuity':'recovery-continuity',
+    'Lifecycle Assurance':'lifecycle-assurance'
+  }
+  return <div className="kc-page"><Header/><main className="kc-detail"><section className="kc-detail-hero"><a href="/knowledge" className="kc-back"><ArrowLeft size={15}/> Knowledge Center index</a><div className="kc-kicker">{item.authority}</div><h1>{item.title}</h1><p>{item.source}</p></section><section className="kc-detail-record"><aside><h2>Source record</h2><dl><div><dt>Issuing source</dt><dd>{item.source}</dd></div><div><dt>Authority type</dt><dd>{item.authority}</dd></div><div><dt>Resource type</dt><dd>{item.type}</dd></div><div><dt>Category</dt><dd>{item.category}</dd></div><div><dt>Published</dt><dd>{item.date}</dd></div>{item.updated&&<div><dt>Updated</dt><dd>{item.updated}</dd></div>}<div><dt>OSI last reviewed</dt><dd>{item.reviewed}</dd></div>{item.status&&<div><dt>Status</dt><dd>{item.status}</dd></div>}{item.jurisdiction&&<div><dt>Jurisdiction</dt><dd>{item.jurisdiction}</dd></div>}<div><dt>Operational context</dt><dd>{item.industry}</dd></div></dl><a href={item.url} target="_blank" rel="noreferrer" aria-label={`View original source for ${item.title} (opens in a new tab)`}>View original source <ExternalLink size={16}/></a></aside><article><section><span>Source</span><h2>What the resource addresses</h2><p>{item.summary}</p></section><section className="kc-detail-relevance"><span>OSI relevance</span><h2>Why OSI indexed this</h2><p>{item.relevance}</p></section><section><span>OSI mapping</span><h2>Related OICC domains</h2><ul>{item.domains.map(domain=><li key={domain}><a href={`/oicc#${domainAnchors[domain]}`}>{domain}</a></li>)}</ul><p className="kc-note">This relationship is assigned by OSI. It does not indicate that the issuing organization references or endorses OICC.</p></section></article></section></main><SiteFooter/></div>
+}
+
+function KnowledgeNotFound(){return <div className="kc-page"><Header/><main><section className="kc-not-found"><span>Knowledge Center</span><h1>Resource not found.</h1><p>This record is not part of the currently verified OSI index.</p><a href="/knowledge">Return to the resource index <ArrowRight size={17}/></a></section></main><SiteFooter/></div>}
 
 function BriefingsPage(){
   return <div className="brief-page"><Header/><main>
