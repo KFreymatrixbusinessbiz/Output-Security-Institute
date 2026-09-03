@@ -5,6 +5,19 @@ import {
   Monitor, Printer, FileOutput, Archive, Trash2, Users, CalendarDays, Newspaper
 } from 'lucide-react'
 
+const september3Brief = [
+  {
+    title: 'PaperCut confirms active exploitation of NG/MF servers',
+    category: 'Print management / Active exploitation',
+    confirmed: 'PaperCut is investigating active exploitation affecting all versions of PaperCut NG and PaperCut MF and has confirmed customer incidents. The company disclosed CVE-2026-82078, a critical unsafe dynamic class-loading vulnerability rated CVSS 9.4, and CVE-2026-81578, a high-severity authentication-bypass vulnerability rated CVSS 8.8. Emergency Patch Release 3, published September 1, supersedes the earlier emergency patches. PaperCut recommends that internet-facing Application Servers install Release 3 immediately and restrict web access to trusted IP addresses.',
+    inference: 'The reported compromise centers on the PaperCut Application Server rather than the printer itself. OSI infers that this demonstrates why the output system must include the servers, databases, identity connections, management interfaces, monitoring platforms, and service tools surrounding the physical device.',
+    why: 'Observed post-exploitation activity includes domain and user discovery, downloaded executables, missing or truncated logs, and installation of SimpleHelp and AnyDesk remote-access software. A compromised print-management server can become a pathway into the broader information environment even when individual printers were not the initial entry point.',
+    implication: 'OSI should publish “The Printer Was Not the Entry Point. The Output System Still Was.” Immediate defensive guidance should include Emergency Patch Release 3, removal of public internet exposure, trusted-address restrictions, review of PaperCut server.log indicators, investigation of missing or truncated logs, endpoint detection coverage for the Application Server, credential rotation when compromise is suspected, and separation of monitoring, administration, and service privileges.',
+    source: 'PaperCut urgent security advisory',
+    url: 'https://www.papercut.com/kb/Main/security-bulletin-27-aug-2026-urgent-security-advisory/'
+  }
+]
+
 const august28Brief = [
   {
     title: 'NIST advances fine-grained, data-level access control',
@@ -98,6 +111,7 @@ const august14Brief = [
 ]
 
 const library = [
+  {title:'PaperCut NG/MF urgent security advisory',source:'PaperCut Software',type:'Security Advisory',industry:'All Industries',control:'Secure Configuration',date:'2026-08-27',reviewed:'2026-09-03',url:'https://www.papercut.com/kb/Main/security-bulletin-27-aug-2026-urgent-security-advisory/',summary:'Active exploitation affecting all versions of PaperCut NG and MF. PaperCut published Emergency Patch Release 3 and recommends restricting internet-facing Application Servers to trusted addresses.',relevance:'Demonstrates that output security includes print-management servers, their management interfaces, logs, databases, identity connections, and the remote-access tools an attacker may install after compromise.'},
   {title:'Post-quantum security moves into mainstream print',source:'Quocirca',type:'Substantive Analysis',industry:'All Industries',control:'Lifecycle Assurance',date:'2026-07-13',reviewed:'2026-08-28',url:'https://quocirca.com/content/post-quantum-security-moves-into-mainstream-print/',summary:'Analysis of post-quantum readiness in print, including secure boot, firmware signing, device identity, certificates, encrypted communications, and cryptographic agility across long device lifecycles.',relevance:'Supports treating post-quantum readiness as lifecycle capability: output endpoints must be able to preserve identity, communications security, firmware integrity, and trust as cryptographic standards change.'},
   {title:'NIST Cybersecurity Framework 2.0',source:'National Institute of Standards and Technology',type:'Framework',industry:'All Industries',control:'Governance & Ownership',date:'2024-02-26',reviewed:'2026-07-18',url:'https://www.nist.gov/cyberframework',summary:'A risk-based framework organized around Govern, Identify, Protect, Detect, Respond, and Recover.',relevance:'Provides the governing structure for bringing output systems into an organization-wide cybersecurity risk program.'},
   {title:'NIST SP 800-53 Rev. 5',source:'NIST Computer Security Resource Center',type:'Security Controls',industry:'Government & Defense',control:'Secure Configuration',date:'2020-12-10',reviewed:'2026-07-18',url:'https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final',summary:'A flexible catalog of security and privacy controls for information systems and organizations.',relevance:'Supports control selection for access, configuration, audit, communications, maintenance, media, supply chain, and system integrity.'},
@@ -151,7 +165,7 @@ function KnowledgeCenterPage(){
     <section className="kc-hero"><a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a><div className="eyebrow"><span></span> Curated primary-source guidance</div><h1>Knowledge<br/><em>Center.</em></h1><p>Standards, requirements, implementation guidance, and evidence organized for the security and continuity of output environments.</p></section>
     <section className="kc-library">
       <div className="kc-toolbar"><label><Search size={18}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search publications, controls, or industries"/></label><div className="kc-filters">{types.map(t=><button className={type===t?'active':''} key={t} onClick={()=>setType(t)}>{t}</button>)}</div></div>
-      <div className="kc-count"><span>{String(visible.length).padStart(2,'0')} RESOURCES</span><span>LAST LIBRARY REVIEW: JULY 18, 2026</span></div>
+      <div className="kc-count"><span>{String(visible.length).padStart(2,'0')} RESOURCES</span><span>LAST LIBRARY REVIEW: SEPTEMBER 3, 2026</span></div>
       <div className="kc-results">{visible.map((item,i)=><article key={item.title}>
         <div className="kc-meta"><span>{String(i+1).padStart(2,'0')}</span><b>{item.type}</b><span>{item.industry}</span></div>
         <div className="kc-body"><small>{item.source}</small><h2>{item.title}</h2><p>{item.summary}</p><div className="kc-relevance"><strong>OUTPUT SECURITY RELEVANCE</strong><p>{item.relevance}</p></div></div>
@@ -168,13 +182,37 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> August 28, 2026</span><span>Weekly edition</span><span>1 material development</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> September 3, 2026</span><span>Security update</span><span>1 urgent development</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
     <section className="brief-editorial">
       <strong>Editorial standard</strong>
       <p>OSI prioritizes authoritative primary sources, excludes routine promotion and recycled commentary, and states when a conclusion is an inference rather than source language. Inclusion does not establish endorsement or compliance.</p>
+    </section>
+
+    <section className="brief-list">
+      {september3Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">SEPTEMBER 3 SECURITY UPDATE</div>
+      <h2>Immediate action takes <em>priority.</em></h2>
+      <p>This update is limited to the actively exploited PaperCut vulnerability and the vendor's current mitigation guidance. Other monitored categories will be addressed in the next scheduled weekly brief.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">AUGUST 28 EDITION — PRESERVED</div>
+      <h2>Previous material development.</h2>
     </section>
 
     <section className="brief-list">
@@ -188,12 +226,6 @@ function BriefingsPage(){
         </div>
         <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
       </article>)}
-    </section>
-
-    <section className="brief-none section">
-      <div className="section-number">NO OTHER MATERIAL DEVELOPMENT THIS WEEK</div>
-      <h2>Other monitored categories remain <em>unchanged.</em></h2>
-      <p>No consequential new print-device or print-endpoint vulnerability, NIST SP 800-171 or CMMC requirement, HIPAA or other regulated-environment requirement, Windows Protected Print or IPP change, output-device data-exposure advisory, or Zero Trust guidance directly addressing output systems was identified from August 22 through August 28.</p>
     </section>
 
     <section className="brief-none section">
@@ -258,7 +290,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>August 28, 2026</span></a>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>September 3, 2026</span></a>
         <div className="hero-layout">
           <div className="hero-editorial">
             <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
@@ -344,8 +376,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> August 28, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the August 28 brief <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / 1 MATERIAL DEVELOPMENT</span>{august28Brief.map((item,i)=><a href="/briefings" key={item.title}><b>{String(i+1).padStart(2,'0')}</b><p>{item.title}</p><ArrowRight size={16}/></a>)}</div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> September 3, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the September 3 update <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / 1 URGENT DEVELOPMENT</span>{september3Brief.map((item,i)=><a href="/briefings" key={item.title}><b>{String(i+1).padStart(2,'0')}</b><p>{item.title}</p><ArrowRight size={16}/></a>)}</div>
         </div>
       </section>
 
