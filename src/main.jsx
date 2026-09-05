@@ -7,6 +7,7 @@ import './knowledge-page.css'
 import './oicc.css'
 import './standards.css'
 import './about.css'
+import './contexts.css'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode><App /></React.StrictMode>

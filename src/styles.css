@@ -29,9 +29,9 @@
 .nav-action:hover{background:var(--osi-ink);color:var(--white)}
 .hero{min-height:auto;padding:20px clamp(24px,6vw,92px) clamp(44px,5vw,72px);overflow:visible;background:var(--osi-paper)}
 .hero:before{display:none}
-.latest-brief-link{width:max-content;margin-left:auto;display:flex;align-items:center;gap:8px;padding:6px 0;color:var(--osi-slate);font:500 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
-.latest-brief-link span:first-child{color:var(--osi-teal)}
-.latest-brief-link:hover span:first-child{text-decoration:underline;text-underline-offset:4px}
+.latest-brief-link{width:max-content;margin-left:auto;display:flex;align-items:center;gap:8px;padding:6px 0;color:var(--mint);font:500 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.latest-brief-link span:first-child{color:var(--mint);text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:4px}
+.latest-brief-link:hover span:first-child{color:var(--white)}
 .hero-layout{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(300px,.58fr);gap:clamp(54px,7vw,110px);align-items:start;margin-top:clamp(34px,4.5vh,52px)}
 .hero-editorial{max-width:900px}
 .hero .eyebrow{color:var(--osi-slate);font-size:10px}
