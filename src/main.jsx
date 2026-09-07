@@ -8,6 +8,7 @@ import './oicc.css'
 import './standards.css'
 import './about.css'
 import './contexts.css'
+import './guidance.css'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode><App /></React.StrictMode>
