@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://outputsecurityinstitute.org/</loc></url>
-<url><loc>https://outputsecurityinstitute.org/controls</loc></url>
-<url><loc>https://outputsecurityinstitute.org/standards</loc></url>
-<url><loc>https://outputsecurityinstitute.org/industries</loc></url>
-<url><loc>https://outputsecurityinstitute.org/doctrine</loc></url>
-<url><loc>https://outputsecurityinstitute.org/evidence</loc></url>
-<url><loc>https://outputsecurityinstitute.org/resources</loc></url>
-<url><loc>https://outputsecurityinstitute.org/pathways</loc></url>
-<url><loc>https://outputsecurityinstitute.org/briefings</loc></url>
-<url><loc>https://outputsecurityinstitute.org/briefings/2026-08-14</loc></url>
-<url><loc>https://outputsecurityinstitute.org/methodology</loc></url>
-<url><loc>https://outputsecurityinstitute.org/governance</loc></url>
-<url><loc>https://outputsecurityinstitute.org/maturity</loc></url>
-<url><loc>https://outputsecurityinstitute.org/profiles</loc></url>
-<url><loc>https://outputsecurityinstitute.org/tools</loc></url>
-<url><loc>https://outputsecurityinstitute.org/about</loc></url>
-<url><loc>https://outputsecurityinstitute.org/contact</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/oicc</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/knowledge</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/knowledge/papercut-ng-mf-urgent-security-advisory</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/knowledge/post-quantum-security-mainstream-print</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/knowledge/nist-cybersecurity-framework-2</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/knowledge/nist-sp-800-53-rev-5</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/knowledge/nist-sp-800-53a-rev-5</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/knowledge/nist-sp-800-171-rev-3</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/knowledge/zero-trust-maturity-model-v2</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/knowledge/zero-trust-operational-technology</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/standards</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/about</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/contexts</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/contexts/healthcare</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/contexts/government-defense</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/contexts/financial-services</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/contexts/education</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/contexts/manufacturing</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/contexts/legal-professional</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/briefings</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/guidance</loc></url>
+  <url><loc>https://outputsecurityinstitute.org/guidance/output-security-assessment</loc></url>
 </urlset>

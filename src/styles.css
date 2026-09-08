@@ -29,8 +29,8 @@
 .nav-action:hover{background:var(--osi-ink);color:var(--white)}
 .hero{min-height:auto;padding:20px clamp(24px,6vw,92px) clamp(44px,5vw,72px);overflow:visible;background:var(--osi-paper)}
 .hero:before{display:none}
-.latest-brief-link{width:max-content;margin-left:auto;display:flex;align-items:center;gap:8px;padding:6px 0;color:var(--mint);font:500 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
-.latest-brief-link span:first-child{color:var(--mint);text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:4px}
+.latest-brief-link{width:max-content;margin-left:auto;display:flex;align-items:center;gap:8px;padding:6px 0;color:#00CFEA;font:500 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.latest-brief-link span:first-child{color:#00CFEA;text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:4px}
 .latest-brief-link:hover span:first-child{color:var(--white)}
 .hero-layout{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(300px,.58fr);gap:clamp(54px,7vw,110px);align-items:start;margin-top:clamp(34px,4.5vh,52px)}
 .hero-editorial{max-width:900px}
@@ -72,3 +72,15 @@
 @media(max-width:900px){.site-header{height:72px}.nav{top:72px;padding:18px 6vw 28px;background:var(--white);box-shadow:0 12px 24px rgba(17,26,34,.08);gap:2px}.nav a:not(.nav-action){width:100%;padding:14px 0;border-bottom:1px solid var(--rule);font-size:11px}.nav-action{margin-top:14px}.menu{display:flex;align-items:center;justify-content:center;width:44px;height:44px;cursor:pointer}.hero{padding-top:22px}.hero-layout{grid-template-columns:1fr;margin-top:48px}.boundary-diagram{max-width:620px;padding:36px 0 0;border-left:0;border-top:1px solid var(--rule)}.issue-grid{grid-template-columns:1fr;gap:40px}}
 @media(max-width:560px){.brand-name strong{font-size:9px}.brand-name em{font-size:13px}.latest-brief-link{margin-left:0;gap:7px;font-size:8px}.latest-brief-link span+span{display:none}.hero-layout{margin-top:38px;gap:46px}.hero h1{font-size:clamp(3.25rem,15vw,4.6rem)}.hero .hero-principle{grid-template-columns:1fr;gap:10px;margin-top:30px}.hero .hero-actions{align-items:flex-start;flex-direction:column;gap:18px}.trust-line{display:grid;grid-template-columns:1fr;gap:5px}.trust-line span{display:none}.boundary-diagram{padding-top:28px}.change-sequence{margin-top:55px}.change-sequence article{grid-template-columns:1fr;gap:10px;padding:24px 0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Phase 9 launch hardening */
+.skip-link{position:fixed;top:12px;left:12px;z-index:1000;padding:12px 16px;background:var(--osi-paper);color:var(--osi-ink);border:2px solid var(--osi-teal);font:700 13px var(--sans);text-decoration:underline;transform:translateY(-160%)}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--osi-teal);outline-offset:4px}
+footer>nav{display:flex;flex-direction:column;gap:10px;font-size:12px}
+.not-found{min-height:62vh;padding:100px 7vw;display:flex;flex-direction:column;justify-content:center}
+.not-found h1{max-width:920px;font-size:clamp(3rem,7vw,7rem);line-height:.95}
+.not-found>p{max-width:620px;margin:28px 0;font-size:17px;line-height:1.7;color:var(--osi-slate)}
+.not-found nav{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:18px}
+.not-found nav a{font-size:13px;font-weight:700;border-bottom:1px solid var(--osi-ink);padding-bottom:4px}
+.not-found nav a:hover{border-bottom-color:var(--osi-teal)}
+@media(max-width:760px){.not-found{padding:72px 6vw}.not-found nav{flex-direction:column;align-items:flex-start}footer>nav{gap:14px}}

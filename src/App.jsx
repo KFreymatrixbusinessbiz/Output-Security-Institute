@@ -81,7 +81,7 @@ const august14Brief = [
     source: 'Microsoft announcement',
     url: 'https://techcommunity.microsoft.com/blog/partnernews/introducing-windows-ready-print-and-modernized-driver-selection/4526895',
     source2: 'Windows update documentation',
-    url2: 'https://support.microsoft.com/en-us/topic/june-23-2026-kb5095093-os-builds-26200-8737-and-26100-8737-preview'
+    url2: 'https://support.microsoft.com/en-us/topic/june-23-2026-kb5095093-os-builds-26200-8737-and-26100-8737-preview-0e2a20f2-cf9e-46f8-9f08-e6996220882d'
   },
   {
     title: 'Federal IoT acquisition guidance is open for comment',
@@ -133,10 +133,72 @@ const mappings = [
   ['Sector Requirements', 'Contextual guidance for healthcare, government, defense, education, finance, and industry.']
 ]
 
+const productionOrigin = 'https://outputsecurityinstitute.org'
+
+function getPageMetadata(pathname) {
+  const path = pathname.replace(/\/+$/, '') || '/'
+  const resourceSlug = path.startsWith('/knowledge/') ? path.split('/')[2] : null
+  const resource = resourceSlug ? knowledgeResources.find(item => item.slug === resourceSlug) : null
+  const contextSlug = path.startsWith('/contexts/') ? path.split('/')[2] : null
+  const context = contextSlug ? getOperationalContext(contextSlug) : null
+  const pages = {
+    '/': ['Output Security Institute | Security Beyond the Screen', 'Independent guidance for governing the security, integrity, and continuity of organizational output systems.'],
+    '/oicc': ['OICC Framework | Output Security Institute', 'OICC is a practical, manufacturer-neutral control framework for governing output systems, physical information, service access, evidence, and lifecycle risk.'],
+    '/knowledge': ['Knowledge Center | Output Security Institute', 'Authoritative sources, evidence, and practical guidance for output security, organized by provenance and OICC domain.'],
+    '/standards': ['Standards Crosswalk | Output Security Institute', 'A limited, evidence-based crosswalk showing how OSI interprets selected NIST CSF 2.0 outcomes in relation to OICC.'],
+    '/about': ['About OSI | Output Security Institute', 'About the Output Security Institute, an independent educational initiative developing manufacturer-neutral output-security guidance, OICC, and transparent research methods.'],
+    '/contexts': ['Operational Context | Output Security Institute', 'OSI analysis of how output-security conditions differ across six operational environments.'],
+    '/briefings': ['Security Briefings | Output Security Institute', 'Curated output-security developments with confirmed facts, OSI interpretation, and practical implications.'],
+    '/guidance': ['Practical Guidance | Output Security Institute', 'OSI field guidance and practical tools for examining output systems, evidence, ownership, access, service, recovery, and lifecycle risk.'],
+    '/guidance/output-security-assessment': ['Output Security Assessment Guide | Output Security Institute', 'A practical, evidence-oriented guide for examining output systems across twelve assessment areas without scoring or certification.']
+  }
+  if (resource) return [`${resource.title} | OSI Knowledge Center`, `Source record and OSI relevance for ${resource.title}.`]
+  if (context) return [`${context.name} | OSI Operational Context`, `OSI contextual analysis of output-security conditions, evidence questions, and OICC relationships in ${context.name.toLowerCase()}.`]
+  return pages[path] || ['Page Not Found | Output Security Institute', 'The requested page is not part of the current Output Security Institute site.']
+}
+
+function SiteMetadata() {
+  useEffect(() => {
+    const path = window.location.pathname.replace(/\/+$/, '') || '/'
+    const [title, description] = getPageMetadata(path)
+    const canonicalUrl = `${productionOrigin}${path === '/' ? '/' : path}`
+    document.title = title
+    const setMeta = (selector, key, value) => {
+      let node = document.head.querySelector(selector)
+      if (!node) {
+        node = document.createElement('meta')
+        node.setAttribute(key, selector.match(/"([^"]+)"/)[1])
+        document.head.appendChild(node)
+      }
+      node.setAttribute('content', value)
+    }
+    let canonical = document.head.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', canonicalUrl)
+    setMeta('meta[name="description"]', 'name', description)
+    setMeta('meta[property="og:title"]', 'property', title)
+    setMeta('meta[property="og:description"]', 'property', description)
+    setMeta('meta[property="og:type"]', 'property', 'website')
+    setMeta('meta[property="og:url"]', 'property', canonicalUrl)
+    setMeta('meta[property="og:image"]', 'property', `${productionOrigin}/assets/osi-social-share.png`)
+    setMeta('meta[name="twitter:card"]', 'name', 'summary_large_image')
+    setMeta('meta[name="twitter:title"]', 'name', title)
+    setMeta('meta[name="twitter:description"]', 'name', description)
+    setMeta('meta[name="twitter:image"]', 'name', `${productionOrigin}/assets/osi-social-share.png`)
+    const main = document.querySelector('main')
+    if (main && !main.id) main.id = 'main-content'
+  }, [])
+  return null
+}
+
 function Header() {
   const [open, setOpen] = useState(false)
   const links = [['Why It Matters', '/#why'], ['OICC Framework', '/oicc'], ['Standards', '/standards'], ['Knowledge', '/knowledge'], ['Briefings', '/briefings'], ['About', '/about']]
-  return <header className="site-header">
+  return <><SiteMetadata/><a className="skip-link" href="#main-content">Skip to main content</a><header className="site-header">
     <a className="brand" href="/" aria-label="Output Security Institute home">
       <span className="brand-initials" aria-hidden="true">OSI</span>
       <span className="brand-name"><strong>Output Security</strong><em>Institute</em></span>
@@ -146,7 +208,7 @@ function Header() {
       <a className="nav-action" href="mailto:info@outputsecurityinstitute.org?subject=Question for OSI" onClick={() => setOpen(false)}>Ask OSI <ArrowRight size={15}/></a>
     </nav>
     <button className="menu" type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="primary-navigation" aria-label={open ? 'Close navigation' : 'Open navigation'}>{open ? <X/> : <Menu/>}</button>
-  </header>
+  </header></>
 }
 
 function KnowledgeCenterPage(){
@@ -323,7 +385,7 @@ function BriefingsPage(){
         <li><span>05</span><p>Publish a neutral case study on API authorization and independent device validation.</p></li>
       </ol>
     </section>
-  </main><footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/briefings">Security Briefs</a><a href="/#controls">OICC Framework</a><a href="/knowledge">Knowledge Center</a></div><small>© {new Date().getFullYear()} Output Security Institute. Educational guidance only.</small></footer></div>
+  </main><SiteFooter/></div>
 }
 
 const oiccDomains = [
@@ -386,7 +448,11 @@ const oiccDomains = [
 ]
 
 function SiteFooter(){
-  return <footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/briefings">Security Briefs</a><a href="/oicc">OICC Framework</a><a href="/knowledge">Knowledge Center</a><a href="/about">Transparency</a></div><small>© {new Date().getFullYear()} Output Security Institute. Educational guidance only.</small></footer>
+  return <footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><nav aria-label="Institutional resources"><a href="/oicc">OICC</a><a href="/knowledge">Knowledge Center</a><a href="/standards">Standards Crosswalk</a><a href="/contexts">Operational Context</a><a href="/guidance">Practical Guidance</a><a href="/about">About</a><a href="/briefings">Security Briefings</a></nav><small>© {new Date().getFullYear()} Output Security Institute. Educational guidance only.</small></footer>
+}
+
+function NotFoundPage(){
+  return <div className="not-found-page"><Header/><main id="main-content"><section className="not-found"><div className="section-number">404 / PAGE NOT FOUND</div><h1>This page is not part of the current OSI site.</h1><p>The address may be incorrect, or the resource may have moved.</p><nav aria-label="Page recovery"><a href="/">Home</a><a href="/oicc">OICC</a><a href="/knowledge">Knowledge Center</a><a href="/guidance">Practical Guidance</a></nav></section></main><SiteFooter/></div>
 }
 
 function AboutPage(){
@@ -569,19 +635,21 @@ function AssessmentGuidePage(){
 }
 
 function App() {
-  if(window.location.pathname.startsWith('/guidance/output-security-assessment')) return <AssessmentGuidePage/>
-  if(window.location.pathname.startsWith('/guidance')) return <GuidanceIndexPage/>
-  if(window.location.pathname.startsWith('/contexts')) {
-    const slug=window.location.pathname.split('/').filter(Boolean)[1]
+  const path=window.location.pathname.replace(/\/+$/, '')||'/'
+  if(path==='/guidance/output-security-assessment') return <AssessmentGuidePage/>
+  if(path==='/guidance') return <GuidanceIndexPage/>
+  if(path==='/contexts'||path.startsWith('/contexts/')) {
+    const slug=path.split('/').filter(Boolean)[1]
     if(!slug) return <ContextIndexPage/>
     const context=getOperationalContext(slug)
     return context?<ContextDetailPage context={context}/>:<ContextNotFound/>
   }
-  if(window.location.pathname.startsWith('/about')) return <AboutPage/>
-  if(window.location.pathname.startsWith('/standards')) return <StandardsPage/>
-  if(window.location.pathname.startsWith('/oicc')) return <OiccPage/>
-  if(window.location.pathname.startsWith('/knowledge')) return <KnowledgeCenterPage/>
-  if(window.location.pathname.startsWith('/briefings')) return <BriefingsPage/>
+  if(path==='/about') return <AboutPage/>
+  if(path==='/standards') return <StandardsPage/>
+  if(path==='/oicc') return <OiccPage/>
+  if(path==='/knowledge'||path.startsWith('/knowledge/')) return <KnowledgeCenterPage/>
+  if(path==='/briefings') return <BriefingsPage/>
+  if(path!=='/') return <NotFoundPage/>
   return <div id="top">
     <Header />
     <main>
@@ -692,7 +760,7 @@ function App() {
       </section>
 
       <section className="standards section" id="standards">
-        <div className="section-number">03 / STANDARDS MAPPING</div>
+        <div className="section-number">07 / STANDARDS MAPPING</div>
         <div className="standards-grid">
           <div><h2>Translate standards into<br/><em>operational decisions.</em></h2><p>OSI does not create regulatory requirements or certify compliance. It helps organizations interpret established security principles in the context of output systems.</p></div>
           <div className="mapping-list">
@@ -702,7 +770,7 @@ function App() {
       </section>
 
       <section className="knowledge section" id="knowledge">
-        <div className="section-number">04 / KNOWLEDGE CENTER</div>
+        <div className="section-number">08 / KNOWLEDGE CENTER</div>
         <div className="knowledge-intro">
           <h2>A curated source for what<br/>output security teams <em>need to know.</em></h2>
           <div><p>The OSI Knowledge Center will organize authoritative standards, regulatory developments, security advisories, research, and practical guidance without treating every source as though it carries the same authority.</p><a className="text-link dark-link" href="mailto:info@outputsecurityinstitute.org?subject=OSI Knowledge Center Updates">Receive Knowledge Center updates <ArrowRight size={17}/></a></div>
@@ -721,7 +789,7 @@ function App() {
       </section>
 
       <section className="industries section" id="industries">
-        <div className="section-number">05 / OPERATIONAL CONTEXT</div>
+        <div className="section-number">09 / OPERATIONAL CONTEXT</div>
         <h2>Controls become meaningful<br/>when applied to the <em>operation.</em></h2>
         <div className="industry-grid">
           {[
@@ -737,16 +805,16 @@ function App() {
       </section>
 
       <section className="resources section" id="resources">
-        <div className="resource-copy"><div className="section-number">06 / PRACTICAL GUIDANCE</div><h2>Begin with the questions<br/>your environment must answer.</h2><p>The first OSI field guide helps security, IT, compliance, operations, and procurement teams examine ownership, access, data handling, service dependency, evidence, and recovery together.</p><a className="button light" href="/guidance/output-security-assessment">Open the Assessment Guide <ArrowRight size={18}/></a></div>
+        <div className="resource-copy"><div className="section-number">10 / PRACTICAL GUIDANCE</div><h2>Begin with the questions<br/>your environment must answer.</h2><p>The first OSI field guide helps security, IT, compliance, operations, and procurement teams examine ownership, access, data handling, service dependency, evidence, and recovery together.</p><a className="button light" href="/guidance/output-security-assessment">Open the Assessment Guide <ArrowRight size={18}/></a></div>
         <a className="document-card" href="/guidance/output-security-assessment" aria-label="Open the Output Security Assessment Guide"><div className="doc-top"><span>OSI / FIELD GUIDE 01</span><ClipboardCheck size={34}/></div><div><small>AVAILABLE</small><h3>Output Security<br/>Assessment Guide</h3><p>A cross-functional starting point for evaluating output systems as part of organizational security and continuity.</p></div><div className="doc-foot"><span>12 ASSESSMENT AREAS</span><span>V1.0</span></div></a>
       </section>
 
       <section className="about section" id="about">
-        <div className="section-number">07 / ABOUT OSI</div>
+        <div className="section-number">11 / ABOUT OSI</div>
         <div className="about-grid"><h2>An independent initiative for a boundary that deserves clearer governance.</h2><div><p>The Output Security Institute develops practical, manufacturer-neutral guidance for the security, integrity, and continuity of systems that create, move, and manage physical information.</p><p>OSI is an independent educational initiative. It is not affiliated with or endorsed by NIST, and it does not certify products, organizations, or regulatory compliance.</p><a className="text-link dark-link" href="/about">About OSI and its methodology <ArrowRight size={17}/></a></div></div>
       </section>
     </main>
-    <footer><div className="brand footer-brand"><span className="brand-mark"><span>O</span><span>S</span><span>I</span></span><span><strong>Output Security</strong><em>Institute</em></span></div><p>Security beyond the screen.</p><div><a href="/oicc">OICC Framework</a><a href="/standards">Standards</a><a href="/about">Transparency</a></div><small>© {new Date().getFullYear()} Output Security Institute. Educational guidance only.</small></footer>
+    <SiteFooter/>
   </div>
 }
 
