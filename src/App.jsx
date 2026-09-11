@@ -9,6 +9,19 @@ import { crosswalkRecords, crosswalkSource } from './standards-data.js'
 import { contextDomains, getOperationalContext, operationalContexts } from './context-data.js'
 import { assessmentGuide, conditionTerms, lifecycleStages } from './guidance-data.js'
 
+const september11Brief = [
+  {
+    title: 'PaperCut replaces emergency patches with tested maintenance releases',
+    category: 'Print management / Lifecycle assurance',
+    confirmed: 'On September 10, PaperCut published fully tested maintenance releases 26.0.5, 25.0.13, and 24.1.10 for PaperCut NG and MF. These releases contain the protections from Emergency Patch Releases 1–3, add further security hardening, and replace those temporary builds. PaperCut recommends upgrading every deployment, including servers that are not publicly accessible. Version 23 and earlier will not receive patched releases and must move to a supported version. Primary Application Servers, Site Servers, and secondary or print servers must all run protected versions. Mobility Print, Print Deploy servers, and client software are not affected.',
+    inference: 'The publication of fully tested releases converts this incident from emergency remediation into a measurable lifecycle-control issue. Dealers and managed-service providers should now be able to identify every supported and unsupported installation, document its exact version, and establish a firm exception process.',
+    why: 'The maintenance releases establish stable, auditable targets for inventories, customer reporting, vulnerability management, and regulated-environment evidence. Applying a protected release does not prove that a previously exposed server was never compromised; PaperCut continues to recommend incident-response procedures and rebuilding from a known-clean backup when compromise is suspected.',
+    implication: 'Matrix should require every PaperCut NG/MF Application Server, Site Server, and secondary or print server to run 26.0.5, 25.0.13, 24.1.10, or a later protected release. Version 23 and earlier require a documented migration or isolation plan, and previously exposed systems require compromise assessment before closure. OSI can express the broader control as “Emergency Remediation Is Not Lifecycle Closure.”',
+    source: 'PaperCut security bulletin and downloads',
+    url: 'https://www.papercut.com/kb/Main/security-bulletin-27-aug-2026-urgent-security-advisory/'
+  }
+]
+
 const september3Brief = [
   {
     title: 'PaperCut confirms active exploitation of NG/MF servers',
@@ -287,13 +300,37 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> September 3, 2026</span><span>Security update</span><span>1 urgent development</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> September 11, 2026</span><span>Weekly security brief</span><span>1 material development</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
     <section className="brief-editorial">
       <strong>Editorial standard</strong>
       <p>OSI prioritizes authoritative primary sources, excludes routine promotion and recycled commentary, and states when a conclusion is an inference rather than source language. Inclusion does not establish endorsement or compliance.</p>
+    </section>
+
+    <section className="brief-list">
+      {september11Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">SEPTEMBER 11 REVIEW</div>
+      <h2>No other material developments.</h2>
+      <p>No additional development meeting OSI's publication threshold was identified from September 5 through September 11 in printer or MFP firmware vulnerabilities, NIST SP 800-171 or CMMC requirements, HIPAA or other regulated-environment requirements, Windows Protected Print Mode or Microsoft IPP implementation, new IPP standards, general Zero Trust guidance, or output-device data-exposure advisories.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">SEPTEMBER 3 SECURITY UPDATE — PRESERVED</div>
+      <h2>Previous urgent development.</h2>
     </section>
 
     <section className="brief-list">
@@ -307,12 +344,6 @@ function BriefingsPage(){
         </div>
         <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
       </article>)}
-    </section>
-
-    <section className="brief-none section">
-      <div className="section-number">SEPTEMBER 3 SECURITY UPDATE</div>
-      <h2>Immediate action takes <em>priority.</em></h2>
-      <p>This update is limited to the actively exploited PaperCut vulnerability and the vendor's current mitigation guidance. Other monitored categories will be addressed in the next scheduled weekly brief.</p>
     </section>
 
     <section className="brief-none section">
@@ -654,7 +685,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>September 3, 2026</span></a>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>September 11, 2026</span></a>
         <div className="hero-layout">
           <div className="hero-editorial">
             <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
@@ -740,8 +771,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> September 3, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the September 3 update <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / 1 URGENT DEVELOPMENT</span>{september3Brief.map((item,i)=><a href="/briefings" key={item.title}><b>{String(i+1).padStart(2,'0')}</b><p>{item.title}</p><ArrowRight size={16}/></a>)}</div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> September 11, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the September 11 update <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / 1 MATERIAL DEVELOPMENT</span>{september11Brief.map((item,i)=><a href="/briefings" key={item.title}><b>{String(i+1).padStart(2,'0')}</b><p>{item.title}</p><ArrowRight size={16}/></a>)}</div>
         </div>
       </section>
 
