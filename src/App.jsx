@@ -300,13 +300,24 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> September 11, 2026</span><span>Weekly security brief</span><span>1 material development</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> September 21, 2026</span><span>Current security review</span><span>No material developments</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
     <section className="brief-editorial">
       <strong>Editorial standard</strong>
       <p>OSI prioritizes authoritative primary sources, excludes routine promotion and recycled commentary, and states when a conclusion is an inference rather than source language. Inclusion does not establish endorsement or compliance.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">SEPTEMBER 21 CURRENT REVIEW</div>
+      <h2>No material development met the publication threshold.</h2>
+      <p>OSI reviewed developments published after the September 11 edition through September 21. No authoritative change warranted a new article in print-device or print-endpoint vulnerabilities, NIST SP 800-171 or CMMC requirements, HIPAA or other regulated-environment requirements, Windows Protected Print Mode or Microsoft IPP implementation, IPP standards, general Zero Trust guidance, or output-device data exposure. Routine vendor promotion, unrelated vulnerabilities, and repeated PaperCut commentary were excluded.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">SEPTEMBER 11 EDITION — PRESERVED</div>
+      <h2>Previous material development.</h2>
     </section>
 
     <section className="brief-list">
@@ -685,7 +696,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>September 11, 2026</span></a>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>September 21, 2026</span></a>
         <div className="hero-layout">
           <div className="hero-editorial">
             <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
@@ -771,8 +782,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> September 11, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the September 11 update <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / 1 MATERIAL DEVELOPMENT</span>{september11Brief.map((item,i)=><a href="/briefings" key={item.title}><b>{String(i+1).padStart(2,'0')}</b><p>{item.title}</p><ArrowRight size={16}/></a>)}</div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> September 21, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the September 21 review <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / NO MATERIAL DEVELOPMENTS</span><a href="/briefings"><b>—</b><p>No authoritative development met OSI’s inclusion threshold.</p><ArrowRight size={16}/></a></div>
         </div>
       </section>
 
