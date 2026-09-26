@@ -9,6 +9,21 @@ import { crosswalkRecords, crosswalkSource } from './standards-data.js'
 import { contextDomains, getOperationalContext, operationalContexts } from './context-data.js'
 import { assessmentGuide, conditionTerms, lifecycleStages } from './guidance-data.js'
 
+const september25Brief = [
+  {
+    title: 'CISA establishes a quality framework for CVE records',
+    category: 'Vulnerability disclosure / Evidence quality',
+    confirmed: 'On September 23, CISA published “CVE Program: Establishing a Quality Era Framework.” It identifies four connected priorities: transparent and effective governance, broad global participation, resilient CVE data infrastructure, and higher-quality vulnerability records. CISA describes this as a framework for improving the CVE Program—not a new regulation, vulnerability-management mandate, or product-security standard. More detailed publications are expected to follow.',
+    inference: 'The framework does not specifically address printers or require manufacturers to change their disclosures. OSI infers that its quality principles provide an authoritative foundation for evaluating whether output-device advisories contain enough information for customers to make defensible security decisions.',
+    why: 'Printer and MFP vulnerability disclosures vary substantially in quality. Some clearly identify affected models, firmware versions, attack prerequisites, remediation releases, and CVEs; others provide incomplete model lists, vague mitigation language, or insufficient information to verify whether a device is protected. Higher-quality CVE records would help dealers, customers, assessors, and regulated organizations determine actual exposure and document remediation.',
+    implication: 'OSI should create an “Output Vulnerability Disclosure Quality Standard” requiring manufacturer advisories to identify affected and unaffected models, affected firmware or software versions, attack prerequisites and reachable services, potential confidentiality, integrity, and availability effects, evidence of exploitation, exact corrected versions, compensating controls, revision history, and long-term advisory availability. Matrix can use the same criteria before declaring customer remediation complete.',
+    source: 'CISA Quality Era framework',
+    url: 'https://www.cisa.gov/resources-tools/resources/cve-program-establishing-quality-era-framework',
+    source2: 'CISA announcement',
+    url2: 'https://www.cisa.gov/news-events/news/cisa-whitepaper-charts-path-establishing-and-maturing-cve-program-quality'
+  }
+]
+
 const september11Brief = [
   {
     title: 'PaperCut replaces emergency patches with tested maintenance releases',
@@ -300,7 +315,7 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> September 21, 2026</span><span>Current security review</span><span>No material developments</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> September 25, 2026</span><span>Current security review</span><span>One material development</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
@@ -310,7 +325,32 @@ function BriefingsPage(){
     </section>
 
     <section className="brief-none section">
-      <div className="section-number">SEPTEMBER 21 CURRENT REVIEW</div>
+      <div className="section-number">SEPTEMBER 25 CURRENT REVIEW</div>
+      <h2>One development met the publication threshold.</h2>
+      <p>CISA's new CVE Quality Era framework is relevant to the evidence organizations rely on when evaluating output-device vulnerabilities. It is not a print-specific advisory, regulatory requirement, or product-security standard.</p>
+    </section>
+
+    <section className="brief-list">
+      {september25Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">SEPTEMBER 25 REVIEW</div>
+      <h2>No other material developments.</h2>
+      <p>No other development meeting OSI's publication threshold was identified from September 22 through September 25 in printer, MFP, or print-management vulnerabilities; NIST SP 800-171 or CMMC requirements; HIPAA or other regulated-environment requirements; Zero Trust guidance directly affecting output systems; Windows Protected Print Mode or Microsoft IPP; new PWG or IPP standards; or output-device data-exposure advisories. The prior PaperCut incident remains operationally important but had no sufficiently material new development to justify repetition.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">SEPTEMBER 21 REVIEW — PRESERVED</div>
       <h2>No material development met the publication threshold.</h2>
       <p>OSI reviewed developments published after the September 11 edition through September 21. No authoritative change warranted a new article in print-device or print-endpoint vulnerabilities, NIST SP 800-171 or CMMC requirements, HIPAA or other regulated-environment requirements, Windows Protected Print Mode or Microsoft IPP implementation, IPP standards, general Zero Trust guidance, or output-device data exposure. Routine vendor promotion, unrelated vulnerabilities, and repeated PaperCut commentary were excluded.</p>
     </section>
@@ -696,7 +736,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>September 21, 2026</span></a>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>September 25, 2026</span></a>
         <div className="hero-layout">
           <div className="hero-editorial">
             <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
@@ -782,8 +822,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> September 21, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the September 21 review <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / NO MATERIAL DEVELOPMENTS</span><a href="/briefings"><b>—</b><p>No authoritative development met OSI’s inclusion threshold.</p><ArrowRight size={16}/></a></div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> September 25, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the September 25 brief <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / ONE MATERIAL DEVELOPMENT</span><a href="/briefings"><b>01</b><p>CISA establishes a quality framework for CVE records.</p><ArrowRight size={16}/></a></div>
         </div>
       </section>
 
