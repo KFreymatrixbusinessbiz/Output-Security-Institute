@@ -9,6 +9,36 @@ import { crosswalkRecords, crosswalkSource } from './standards-data.js'
 import { contextDomains, getOperationalContext, operationalContexts } from './context-data.js'
 import { assessmentGuide, conditionTerms, lifecycleStages } from './guidance-data.js'
 
+const october9Brief = [
+  {
+    title: 'HHS enforcement demonstrates that physical record custody is a security responsibility',
+    category: 'HIPAA / Physical information custody',
+    confirmed: 'On October 8, HHS Office for Civil Rights announced a $140,000 settlement with Shen Smiles, P.C., a Pennsylvania dental practice, resolving a HIPAA Privacy Rule investigation. OCR began investigating after a former patient could not obtain her records and the practice asserted that a workforce member had taken them. OCR found that records were not maintained in an orderly manner: they were stored unsecured in clear plastic boxes, on the floor, and in boxes in a private bathroom; moved between practice locations and the owner’s home; and regularly went missing. OCR also found inadequate HIPAA policies, procedures, safeguards, and formal training, and concluded that the practice failed to reasonably safeguard protected health information. This was OCR’s 56th Right of Access enforcement action.',
+    inference: 'OCR did not attribute the incident to printers, MFPs, servers, or document-management software. OSI infers that the case supports treating printed PHI as part of the same information lifecycle as electronic PHI: custody, location, authorized transfer, availability, retention, and destruction remain security responsibilities after information becomes physical.',
+    why: 'An organization cannot protect, retrieve, disclose, retain, or destroy a record reliably if it does not know where the record is, who has custody, whether a transfer was authorized, whether the storage location is approved, or when a record has gone missing. The enforcement action connects physical safeguards directly to privacy rights and information availability.',
+    implication: 'OSI should add a “Physical Record Custody” control to its healthcare guidance covering authorized print locations, immediate ownership after printing, approved physical storage, sign-out and transfer records, transport controls, retrieval-time expectations, missing-record escalation and investigation, and verified retention and destruction. Matrix can use the same control when assessing document workflows in healthcare environments. Governing statement: “Information availability depends on custody. An organization cannot protect or provide a record it cannot locate.”',
+    source: 'HHS OCR press release',
+    url: 'https://www.hhs.gov/press-room/hhs-office-civil-rights-settles-hipaa-privacy-rule-investigation-shen-smiles.html',
+    source2: 'HHS resolution agreement',
+    url2: 'https://www.hhs.gov/sites/default/files/ocr-resolution-agreement-shen-smiles.pdf'
+  }
+]
+
+const october2Brief = [
+  {
+    title: 'PaperCut discloses four additional vulnerabilities across NG/MF and Hive',
+    category: 'Print management / Vulnerability disclosure',
+    confirmed: 'On September 24, PaperCut published a security bulletin covering CVE-2026-14780, CVE-2026-82077, and CVE-2026-87739 in PaperCut NG/MF, plus CVE-2026-11744 in the PaperCut Hive Embedded Application for Ricoh. The issues include two authenticated administrator paths to remote code execution through the optional scripting subsystem and Scan2Fax, an unauthenticated report-generation authorization bypass that may expose sensitive information, and a physical-access JavaScript injection issue involving crafted NFC input on Ricoh devices. PaperCut reported no evidence that any of the issues had been exploited. Protected versions are PaperCut NG/MF 26.0.5 or later, 25.0.13 or later on the 25.x branch, and PaperCut Hive Embedded Application for Ricoh 2.3.0 or later.',
+    inference: 'The bulletin demonstrates that optional print-management features, reports, embedded applications, and administrator privileges must be included in the security boundary. OSI infers that organizations should govern component enablement, administrative access, report contents, and embedded-device applications rather than treating the platform as one undifferentiated product.',
+    why: 'Administrative scripting and Scan2Fax can reach the underlying operating system, while report generation can expose information without authentication and an embedded application can create a device-local execution path. Risk therefore depends on enabled components, reachable privileges, retained report data, device applications, and exact deployed versions.',
+    implication: 'Matrix should verify protected PaperCut versions; identify and disable or review unnecessary scripting and Scan2Fax functions; secure and review administrator accounts; inspect which reports contain sensitive information; and update affected Ricoh embedded applications. OSI should adopt the principle: “Optional functionality inherits the security significance of every privilege, dataset, and operating-system pathway it can reach.”',
+    source: 'PaperCut September 2026 security bulletin',
+    url: 'https://www.papercut.com/kb/Main/security-bulletin-sep-2026/',
+    source2: 'PaperCut vulnerability log',
+    url2: 'https://www.papercut.com/kb/Main/security-vulnerability-log/'
+  }
+]
+
 const september25Brief = [
   {
     title: 'CISA establishes a quality framework for CVE records',
@@ -315,7 +345,7 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> September 25, 2026</span><span>Current security review</span><span>One material development</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> October 9, 2026</span><span>Current security review</span><span>One material development</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
@@ -325,9 +355,59 @@ function BriefingsPage(){
     </section>
 
     <section className="brief-none section">
-      <div className="section-number">SEPTEMBER 25 CURRENT REVIEW</div>
+      <div className="section-number">OCTOBER 9 CURRENT REVIEW</div>
       <h2>One development met the publication threshold.</h2>
-      <p>CISA's new CVE Quality Era framework is relevant to the evidence organizations rely on when evaluating output-device vulnerabilities. It is not a print-specific advisory, regulatory requirement, or product-security standard.</p>
+      <p>HHS OCR’s Shen Smiles settlement is a new HIPAA Privacy Rule enforcement action with direct relevance to the custody, availability, and safeguarding of physical records. It is not a new regulation or Security Rule requirement.</p>
+    </section>
+
+    <section className="brief-list">
+      {october9Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">OCTOBER 9 REVIEW</div>
+      <h2>No other material developments.</h2>
+      <p>No additional development meeting OSI's publication threshold was identified from October 3 through October 9 in printer, MFP, or print-management vulnerabilities; NIST SP 800-171 or CMMC requirements; HIPAA Security Rule requirements; general Zero Trust guidance; Windows Protected Print Mode or Microsoft IPP; new PWG or IPP standards; or output-device data-exposure advisories.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">OCTOBER 2 REVIEW — PRESERVED</div>
+      <h2>One development met the publication threshold.</h2>
+      <p>PaperCut disclosed four additional vulnerabilities affecting NG/MF and the Hive Embedded Application for Ricoh. The vendor reported no evidence of exploitation.</p>
+    </section>
+
+    <section className="brief-list">
+      {october2Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">OCTOBER 2 REVIEW — PRESERVED</div>
+      <h2>No other material developments.</h2>
+      <p>No additional development meeting OSI's publication threshold was identified from September 26 through October 2 in printer or MFP firmware vulnerabilities; NIST SP 800-171 or CMMC requirements; HIPAA or other regulated-environment requirements; general Zero Trust guidance; Windows Protected Print Mode or Microsoft IPP; new PWG or IPP standards; or output-device data-exposure advisories.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">SEPTEMBER 25 REVIEW — PRESERVED</div>
+      <h2>One development met the publication threshold.</h2>
+      <p>CISA's CVE Quality Era framework is relevant to the evidence organizations rely on when evaluating output-device vulnerabilities. It is not a print-specific advisory, regulatory requirement, or product-security standard.</p>
     </section>
 
     <section className="brief-list">
@@ -736,7 +816,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>September 25, 2026</span></a>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>October 9, 2026</span></a>
         <div className="hero-layout">
           <div className="hero-editorial">
             <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
@@ -822,8 +902,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> September 25, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the September 25 brief <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / ONE MATERIAL DEVELOPMENT</span><a href="/briefings"><b>01</b><p>CISA establishes a quality framework for CVE records.</p><ArrowRight size={16}/></a></div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> October 9, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the October 9 brief <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / ONE MATERIAL DEVELOPMENT</span><a href="/briefings"><b>01</b><p>HHS enforcement demonstrates that physical record custody is a security responsibility.</p><ArrowRight size={16}/></a></div>
         </div>
       </section>
 
