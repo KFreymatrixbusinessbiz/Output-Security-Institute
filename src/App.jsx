@@ -345,7 +345,7 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> October 9, 2026</span><span>Current security review</span><span>One material development</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> October 23, 2026</span><span>Current security review</span><span>No material developments</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
@@ -355,7 +355,21 @@ function BriefingsPage(){
     </section>
 
     <section className="brief-none section">
-      <div className="section-number">OCTOBER 9 CURRENT REVIEW</div>
+      <div className="section-number">OCTOBER 23 CURRENT REVIEW</div>
+      <h2>No material developments.</h2>
+      <p>No development published from October 17 through October 23 met OSI’s publication threshold. NIST released draft SP 800-100 Rev. 1 on October 21 and draft SP 800-221 Rev. 1 on October 22. Both are broad cybersecurity and ICT risk-governance publications; neither changes NIST SP 800-171, CMMC, print-security requirements, or output-endpoint controls.</p>
+      <p><a href="https://csrc.nist.gov/pubs/sp/800/100/r1/ipd" target="_blank" rel="noreferrer">NIST SP 800-100 Rev. 1 initial public draft <ExternalLink size={14}/></a> <span aria-hidden="true">·</span> <a href="https://csrc.nist.gov/pubs/sp/800/221/r1/ipd" target="_blank" rel="noreferrer">NIST SP 800-221 Rev. 1 initial public draft <ExternalLink size={14}/></a></p>
+      <p>No material development was identified in output security and print endpoints; device-data exposure; NIST SP 800-171; CMMC and DFARS; HIPAA and regulated environments; Zero Trust; Windows Protected Print and Microsoft IPP; or IPP and PWG standards.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">OCTOBER 16 REVIEW — PRESERVED</div>
+      <h2>No material developments.</h2>
+      <p>No development meeting OSI’s publication threshold was identified from October 10 through October 16 in print endpoints or print-management vulnerabilities; device-data exposure; NIST SP 800-171; CMMC or DFARS; HIPAA or other regulated environments; general Zero Trust guidance; Windows Protected Print or Microsoft IPP; or PWG standards.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">OCTOBER 9 REVIEW — PRESERVED</div>
       <h2>One development met the publication threshold.</h2>
       <p>HHS OCR’s Shen Smiles settlement is a new HIPAA Privacy Rule enforcement action with direct relevance to the custody, availability, and safeguarding of physical records. It is not a new regulation or Security Rule requirement.</p>
     </section>
@@ -816,7 +830,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>October 9, 2026</span></a>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>October 23, 2026</span></a>
         <div className="hero-layout">
           <div className="hero-editorial">
             <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
@@ -902,8 +916,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> October 9, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the October 9 brief <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / ONE MATERIAL DEVELOPMENT</span><a href="/briefings"><b>01</b><p>HHS enforcement demonstrates that physical record custody is a security responsibility.</p><ArrowRight size={16}/></a></div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> October 23, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the October 23 brief <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / NO MATERIAL DEVELOPMENTS</span><a href="/briefings"><b>—</b><p>No development published from October 17 through October 23 met OSI’s publication threshold.</p><ArrowRight size={16}/></a></div>
         </div>
       </section>
 
