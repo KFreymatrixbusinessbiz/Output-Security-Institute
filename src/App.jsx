@@ -9,6 +9,31 @@ import { crosswalkRecords, crosswalkSource } from './standards-data.js'
 import { contextDomains, getOperationalContext, operationalContexts } from './context-data.js'
 import { assessmentGuide, conditionTerms, lifecycleStages } from './guidance-data.js'
 
+const november6Brief = [
+  {
+    title: 'Xerox begins releasing PHP2Shell patches for affected output devices',
+    category: 'Print endpoints / Remediation',
+    confirmed: 'On November 5, Xerox released two product-specific security bulletins containing patches for devices affected by the actively exploited PHP2Shell vulnerabilities covered in the October 30 brief. XRX26-017 covers Xerox EC7836, EC7856, WorkCentre 3655, and WorkCentre 3655i. XRX26-018 covers the Xerox AltaLink C80XX, AltaLink B80XX, and EC80XX series. Xerox continues to maintain XRX26-016 as the master advisory for CVE-2026-109618 and CVE-2026-109619.',
+    inference: 'Xerox confirms that patches are available for the products covered by XRX26-017 and XRX26-018. It does not state that every affected device has been compromised or that every remaining affected Xerox or Fiery product has now received a fix. OSI infers that closure requires device-level evidence rather than a fleet-wide assertion that Xerox issued a patch.',
+    why: 'A patch announcement is not verified remediation. Dealers and customers must identify exact models, install the applicable release, record the resulting firmware version, and determine whether the device was exposed before remediation. Because the vulnerabilities are known to be exploited, an affected and reachable device should not be treated as safe merely because a patch now exists.',
+    implication: 'Matrix should create a PHP2Shell remediation register recording customer and device location, exact model and serial number, current firmware, applicable Xerox bulletin, network and web-interface exposure, installation date, post-installation version, retained evidence, exceptions for products still awaiting remediation, and escalation for devices that were externally reachable. OSI control: “Vendor remediation becomes security closure only when the affected asset, installed correction, and resulting protected state are independently verifiable.”',
+    source: 'Official Xerox security-bulletin index',
+    url: 'https://security.business.xerox.com/en-us/documents/bulletins/'
+  },
+  {
+    title: 'PWG advances IPP Firmware Update Extensions to Stable Draft',
+    category: 'IPP standards / Firmware lifecycle',
+    confirmed: 'On October 31, the Printer Working Group advanced IPP Firmware Update Extensions v1.0 to Stable Draft status after the specification had been prototyped and re-prototyped. The draft defines standardized IPP operations and attributes for checking for new printer firmware, reporting available version, size, urgency and expected offline time, requesting immediate or scheduled installation, identifying the configured repository and update policy, and monitoring acquisition, validation, installation, activation, failure, restart and completion. PWG reviewed the work during its November 5 meeting. It remains a working draft, not a final Candidate Standard or mandatory product requirement.',
+    inference: 'PWG does not claim that current printers universally implement these extensions or that the draft alone guarantees secure firmware provenance. OSI infers that the model provides a useful direction for manufacturer-neutral lifecycle assurance: an output endpoint should report whether security firmware is available, whether installation succeeded, and what protected version it is running.',
+    why: 'Firmware remediation remains fragmented across manufacturer portals, proprietary fleet tools, manual configuration reports and model-specific procedures. A standardized IPP mechanism could make firmware availability, urgency, version state, installation progress, failures and completion visible to authorized management systems, improving inventory accuracy and evidence for vulnerability management, regulated-environment review and incident closure.',
+    implication: 'OSI should ask manufacturers whether a device can report installed firmware through a standardized interface; identify available security firmware and urgency; allow authorized systems to initiate or schedule updates; distinguish acquisition, validation, installation, activation, failure and completion; control the approved repository and policy; and export evidence. Proposed control: “Patchability must be observable. A device should not merely accept firmware; it should provide verifiable evidence of availability, authorization, validation, installation, and resulting version state.”',
+    source: 'IPP Firmware Update Extensions v1.0 — October 31 Stable Draft',
+    url: 'https://ftp.pwg.org/pub/pwg/ipp/wd/wd-ippfwupdate10-20261031.pdf',
+    source2: 'PWG November 2026 meeting',
+    url2: 'https://www.pwg.org/chair/meeting-info/november-2026-virtual.html'
+  }
+]
+
 const october30Brief = [
   {
     title: 'Xerox confirms output devices and Fiery DFEs are affected by actively exploited PHP2Shell vulnerabilities',
@@ -370,7 +395,7 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> October 30, 2026</span><span>Current security review</span><span>Two material developments</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> November 6, 2026</span><span>Current security review</span><span>Two material developments</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
@@ -380,7 +405,32 @@ function BriefingsPage(){
     </section>
 
     <section className="brief-none section">
-      <div className="section-number">OCTOBER 30 CURRENT REVIEW</div>
+      <div className="section-number">NOVEMBER 6 CURRENT REVIEW</div>
+      <h2>Two developments met the publication threshold.</h2>
+      <p>Xerox began releasing product-specific PHP2Shell patches, converting part of the active-exploitation incident into a verifiable remediation requirement. PWG advanced IPP Firmware Update Extensions v1.0 to Stable Draft status after prototype implementation work.</p>
+    </section>
+
+    <section className="brief-list">
+      {november6Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">NOVEMBER 6 REVIEW</div>
+      <h2>No other material developments.</h2>
+      <p>No additional authoritative development meeting OSI’s threshold was identified from October 31 through November 6 in NIST SP 800-171; CMMC or DFARS; HIPAA or other regulated-environment enforcement; general Zero Trust guidance; Windows Protected Print Mode or Windows Ready Print; new device-data exposure advisories; or print-management server vulnerabilities. The October 29 HHS ransomware settlement was covered in the October 30 edition and is not repeated.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">OCTOBER 30 REVIEW — PRESERVED</div>
       <h2>Two developments met the publication threshold.</h2>
       <p>Xerox confirmed that actively exploited PHP2Shell vulnerabilities affect specific printers, MFPs, and Fiery Digital Front Ends. HHS OCR issued a new ransomware settlement that gives current enforcement weight to comprehensive ePHI flow mapping and regular review of system activity.</p>
     </section>
@@ -880,7 +930,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>October 30, 2026</span></a>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>November 6, 2026</span></a>
         <div className="hero-layout">
           <div className="hero-editorial">
             <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
@@ -966,8 +1016,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> October 30, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the October 30 brief <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / TWO MATERIAL DEVELOPMENTS</span><a href="/briefings"><b>01</b><p>Xerox confirms output devices and Fiery DFEs are affected by actively exploited PHP2Shell vulnerabilities.</p><ArrowRight size={16}/></a><a href="/briefings"><b>02</b><p>HHS ransomware settlement reinforces ePHI flow mapping and log review.</p><ArrowRight size={16}/></a></div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> November 6, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the November 6 brief <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / TWO MATERIAL DEVELOPMENTS</span><a href="/briefings"><b>01</b><p>Xerox begins releasing PHP2Shell patches for affected output devices.</p><ArrowRight size={16}/></a><a href="/briefings"><b>02</b><p>PWG advances IPP Firmware Update Extensions to Stable Draft.</p><ArrowRight size={16}/></a></div>
         </div>
       </section>
 
