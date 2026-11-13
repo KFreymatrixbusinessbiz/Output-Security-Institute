@@ -9,6 +9,21 @@ import { crosswalkRecords, crosswalkSource } from './standards-data.js'
 import { contextDomains, getOperationalContext, operationalContexts } from './context-data.js'
 import { assessmentGuide, conditionTerms, lifecycleStages } from './guidance-data.js'
 
+const november13Brief = [
+  {
+    title: 'Xerox issues firmware for a critical Brotli decoder vulnerability',
+    category: 'Print endpoints / Embedded components',
+    confirmed: 'On November 12, Xerox published Security Bulletin XRX26-020 addressing CVE-2026-111497 across numerous Xerox and Lexmark printer and MFP families. The vulnerability is a buffer overflow in the Brotli decoder contained within the devices’ Chromium WebView component. A crafted Brotli-compressed stream could potentially disclose memory contents, cause denial of service, corrupt adjacent decoder state, or execute arbitrary code remotely as an unprivileged user. The vulnerability carries a CVSS v4 base score of 9.2. Xerox lists affected and corrected firmware releases, generally moving affected product families from firmware ending in .201 to .202, or from .558 to .559.',
+    inference: 'Xerox states that its testing did not identify a realistic path for triggering the vulnerability on affected devices and that it is unaware of malicious exploitation against Xerox or Lexmark products. OSI therefore does not infer that these devices have been compromised. OSI does infer that updating remains justified because exploitability assumptions can change and retaining a known vulnerable component creates unnecessary lifecycle risk.',
+    why: 'Modern printers inherit vulnerabilities from embedded browsers, compression libraries, and other third-party components that may not appear in ordinary device inventories. A model-only inventory cannot determine exposure. Organizations need the model, installed firmware, component applicability, and corrected release before they can establish that remediation is complete.',
+    implication: 'Matrix should compare managed Xerox and Lexmark fleets against the affected-model table and record device model, installed firmware, applicable corrected release, update status, any special-code dependency requiring vendor assistance, and documented exceptions or isolation measures. OSI control: “A product inventory without component applicability and firmware evidence cannot support vulnerability closure.” Manufacturers should provide a machine-readable product-impact statement identifying affected models, component location, exploitability analysis, corrected versions, and mitigation status.',
+    source: 'Xerox Security Bulletin XRX26-020',
+    url: 'https://securitydocs.business.xerox.com/wp-content/uploads/2026/11/Xerox-Security-Bulletin-XRX26-020-for-Brotli-Decoder-Vulnerability-CVE-2026-111497.pdf',
+    source2: 'NIST National Vulnerability Database record',
+    url2: 'https://nvd.nist.gov/vuln/detail/CVE-2026-111497'
+  }
+]
+
 const november6Brief = [
   {
     title: 'Xerox begins releasing PHP2Shell patches for affected output devices',
@@ -395,7 +410,7 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> November 6, 2026</span><span>Current security review</span><span>Two material developments</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> November 13, 2026</span><span>Current security review</span><span>One material development</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
@@ -405,7 +420,32 @@ function BriefingsPage(){
     </section>
 
     <section className="brief-none section">
-      <div className="section-number">NOVEMBER 6 CURRENT REVIEW</div>
+      <div className="section-number">NOVEMBER 13 CURRENT REVIEW</div>
+      <h2>One development met the publication threshold.</h2>
+      <p>Xerox published a product-specific impact analysis and corrected firmware for a critical Brotli decoder vulnerability embedded in the Chromium WebView component used by numerous Xerox and Lexmark output devices.</p>
+    </section>
+
+    <section className="brief-list">
+      {november13Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">NOVEMBER 13 REVIEW</div>
+      <h2>No other material developments.</h2>
+      <p>No additional authoritative development meeting OSI’s threshold was identified from November 7 through November 13 in NIST SP 800-171; CMMC or DFARS; HIPAA or other regulated-environment enforcement; general Zero Trust guidance; Windows Protected Print Mode or Windows Ready Print; PWG or IPP standards; device-data exposure advisories; or print-management server vulnerabilities. Xerox XRX26-019 is a routine FreeFlow Print Server maintenance bulletin and does not independently warrant inclusion.</p>
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">NOVEMBER 6 REVIEW — PRESERVED</div>
       <h2>Two developments met the publication threshold.</h2>
       <p>Xerox began releasing product-specific PHP2Shell patches, converting part of the active-exploitation incident into a verifiable remediation requirement. PWG advanced IPP Firmware Update Extensions v1.0 to Stable Draft status after prototype implementation work.</p>
     </section>
@@ -930,7 +970,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>November 6, 2026</span></a>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>November 13, 2026</span></a>
         <div className="hero-layout">
           <div className="hero-editorial">
             <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
@@ -1016,8 +1056,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> November 6, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the November 6 brief <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / TWO MATERIAL DEVELOPMENTS</span><a href="/briefings"><b>01</b><p>Xerox begins releasing PHP2Shell patches for affected output devices.</p><ArrowRight size={16}/></a><a href="/briefings"><b>02</b><p>PWG advances IPP Firmware Update Extensions to Stable Draft.</p><ArrowRight size={16}/></a></div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> November 13, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the November 13 brief <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / ONE MATERIAL DEVELOPMENT</span><a href="/briefings"><b>01</b><p>Xerox issues firmware for a critical Brotli decoder vulnerability affecting numerous Xerox and Lexmark output devices.</p><ArrowRight size={16}/></a></div>
         </div>
       </section>
 
