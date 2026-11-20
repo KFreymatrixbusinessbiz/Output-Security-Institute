@@ -16,7 +16,6 @@ const november20Brief = [
     confirmed: 'On November 17, CISA urged organizations to address CVE-2026-114938, a memory-corruption vulnerability in the hardware-accelerated Base64 decoder of affected HotSpot Java runtimes. Crafted input can crash a vulnerable JVM and may permit unauthenticated remote code execution when an application exposes the affected decoder. Vendor advisories clarify that exposure depends on the affected Java build, an x86-64 processor supporting AVX-512 VBMI, and an input path that reaches the decoder. CISA specifically warns that Java runtimes bundled inside third-party applications, containers, and appliances may not appear as separate software-inventory entries.',
     inference: 'No cited advisory establishes that a particular printer, multifunction device, or print-management product is affected. OSI infers that output-system assurance must include the supporting application and service layer, not only device firmware. Java presence alone is not proof of exploitability; manufacturers and software suppliers must establish runtime version, relevant hardware, reachable input paths, and patch or mitigation status for each product.',
     why: 'Organizations may inventory a print server or document workflow application by product name while missing the Java runtime it ships with. That gap prevents reliable determination of component exposure, prioritization, and remediation closure. The same evidence problem applies to embedded and bundled software across the output environment.',
-    implication: 'OSI recommends that manufacturers and software providers disclose security-relevant bundled runtimes and dependencies, including affected versions, applicable hardware and software conditions, exposure prerequisites, corrected releases, and verifiable remediation status. Organizations should require product-specific evidence before determining whether an output device, print-management system, or document-workflow application is affected. The presence of a vulnerable component does not, by itself, establish that exploitation is possible. OSI control principle: “A product inventory that omits bundled runtimes cannot establish component-level exposure or verified remediation.”',
     source: 'CISA — Critical Java Vulnerability Requires Immediate Patching (November 17)',
     url: 'https://www.cisa.gov/news-events/alerts/2026/11/17/critical-java-vulnerability-requires-immediate-patching',
     source2: 'Red Hat — CVE-2026-114938 technical assessment',
@@ -447,7 +446,7 @@ function BriefingsPage(){
           <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
           {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
           <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
-          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+
         </div>
         <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
       </article>)}
