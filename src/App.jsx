@@ -9,6 +9,21 @@ import { crosswalkRecords, crosswalkSource } from './standards-data.js'
 import { contextDomains, getOperationalContext, operationalContexts } from './context-data.js'
 import { assessmentGuide, conditionTerms, lifecycleStages } from './guidance-data.js'
 
+const november20Brief = [
+  {
+    title: 'CISA warns of critical Java Base64 decoder vulnerability in bundled runtimes',
+    category: 'Output infrastructure / Software supply chain',
+    confirmed: 'On November 17, CISA urged organizations to address CVE-2026-114938, a memory-corruption vulnerability in the hardware-accelerated Base64 decoder of affected HotSpot Java runtimes. Crafted input can crash a vulnerable JVM and may permit unauthenticated remote code execution when an application exposes the affected decoder. Vendor advisories clarify that exposure depends on the affected Java build, an x86-64 processor supporting AVX-512 VBMI, and an input path that reaches the decoder. CISA specifically warns that Java runtimes bundled inside third-party applications, containers, and appliances may not appear as separate software-inventory entries.',
+    inference: 'No cited advisory establishes that a particular printer, multifunction device, or print-management product is affected. OSI infers that output-system assurance must include the supporting application and service layer, not only device firmware. Java presence alone is not proof of exploitability; manufacturers and software suppliers must establish runtime version, relevant hardware, reachable input paths, and patch or mitigation status for each product.',
+    why: 'Organizations may inventory a print server or document workflow application by product name while missing the Java runtime it ships with. That gap prevents reliable determination of component exposure, prioritization, and remediation closure. The same evidence problem applies to embedded and bundled software across the output environment.',
+    implication: 'OSI should ask output-software and device manufacturers to disclose security-relevant bundled runtimes, affected versions, deployment prerequisites, corrected releases, and verifiable remediation status. Matrix can apply this manufacturer-neutral evidence requirement when evaluating output infrastructure and helping customers assess vendor-provided impact statements; it should not claim that any particular product is affected without product-specific evidence. OSI control: “A product inventory that omits bundled runtimes cannot establish component-level exposure or verified remediation.”',
+    source: 'CISA — Critical Java Vulnerability Requires Immediate Patching (November 17)',
+    url: 'https://www.cisa.gov/news-events/alerts/2026/11/17/critical-java-vulnerability-requires-immediate-patching',
+    source2: 'Red Hat — CVE-2026-114938 technical assessment',
+    url2: 'https://access.redhat.com/security/vulnerabilities/RHSB-2026-018'
+  }
+]
+
 const november13Brief = [
   {
     title: 'Xerox issues firmware for a critical Brotli decoder vulnerability',
@@ -410,7 +425,7 @@ function BriefingsPage(){
       <a href="/" className="kc-back"><ArrowLeft size={15}/> Output Security Institute</a>
       <div className="eyebrow"><span></span> Primary-source developments for output environments</div>
       <h1>OSI Security<br/><em>Brief.</em></h1>
-      <div className="brief-hero-meta"><span><CalendarDays size={17}/> November 13, 2026</span><span>Current security review</span><span>One material development</span></div>
+      <div className="brief-hero-meta"><span><CalendarDays size={17}/> November 20, 2026</span><span>Current security review</span><span>One material development</span></div>
       <p>OSI identifies developments that deserve attention, explains why they matter to output systems and physical information, and distinguishes confirmed facts from OSI interpretation.</p>
     </section>
 
@@ -420,7 +435,26 @@ function BriefingsPage(){
     </section>
 
     <section className="brief-none section">
-      <div className="section-number">NOVEMBER 13 CURRENT REVIEW</div>
+      <div className="section-number">NOVEMBER 20 CURRENT REVIEW</div>
+      <h2>One development met the publication threshold.</h2>
+      <p>CISA warned of a critical vulnerability in certain Java runtimes. The output-security significance is the need to account for bundled runtimes in print-management and document-workflow infrastructure; no printer-specific impact is asserted without manufacturer evidence.</p>
+    </section>
+
+    <section className="brief-list">
+      {november20Brief.map((item,i)=><article className="brief-item" key={item.title}>
+        <div className="brief-index"><span>{String(i+1).padStart(2,'0')}</span><small>{item.category}</small></div>
+        <div className="brief-content"><h2>{item.title}</h2>
+          <div className="brief-fact"><strong>Confirmed</strong><p>{item.confirmed}</p></div>
+          {item.inference&&<div className="brief-inference"><strong>OSI inference</strong><p>{item.inference}</p></div>}
+          <div className="brief-why"><strong>Why it matters</strong><p>{item.why}</p></div>
+          <div className="brief-implication"><strong>Specific OSI / Matrix application</strong><p>{item.implication}</p></div>
+        </div>
+        <div className="brief-sources"><a href={item.url} target="_blank" rel="noreferrer">{item.source} <ExternalLink size={14}/></a>{item.url2&&<a href={item.url2} target="_blank" rel="noreferrer">{item.source2} <ExternalLink size={14}/></a>}</div>
+      </article>)}
+    </section>
+
+    <section className="brief-none section">
+      <div className="section-number">NOVEMBER 13 REVIEW — PRESERVED</div>
       <h2>One development met the publication threshold.</h2>
       <p>Xerox published a product-specific impact analysis and corrected firmware for a critical Brotli decoder vulnerability embedded in the Chromium WebView component used by numerous Xerox and Lexmark output devices.</p>
     </section>
@@ -970,7 +1004,7 @@ function App() {
     <Header />
     <main>
       <section className="hero">
-        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>November 13, 2026</span></a>
+        <a className="latest-brief-link" href="/briefings"><span>Latest Security Brief</span><span aria-hidden="true">/</span><span>November 20, 2026</span></a>
         <div className="hero-layout">
           <div className="hero-editorial">
             <div className="eyebrow"><span></span> Output security / the digital–physical boundary</div>
@@ -1056,8 +1090,8 @@ function App() {
       <section className="weekly-brief section" id="weekly-brief">
         <div className="section-number">05 / WEEKLY SECURITY BRIEF</div>
         <div className="weekly-grid">
-          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> November 13, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the November 13 brief <ArrowRight size={18}/></a></div>
-          <div className="weekly-list"><span>LATEST BRIEF / ONE MATERIAL DEVELOPMENT</span><a href="/briefings"><b>01</b><p>Xerox issues firmware for a critical Brotli decoder vulnerability affecting numerous Xerox and Lexmark output devices.</p><ArrowRight size={16}/></a></div>
+          <div className="weekly-copy"><div className="weekly-date"><CalendarDays size={17}/> November 20, 2026</div><h2>What changed.<br/><em>Why it matters.</em></h2><p>OSI reviews authoritative sources for developments affecting output systems, physical information, security, compliance, and continuity. Each brief separates confirmed facts from OSI interpretation and records when no material development was found.</p><a className="button primary" href="/briefings">Read the November 20 brief <ArrowRight size={18}/></a></div>
+          <div className="weekly-list"><span>LATEST BRIEF / ONE MATERIAL DEVELOPMENT</span><a href="/briefings"><b>01</b><p>CISA warns of a critical Java runtime vulnerability, highlighting bundled-component visibility in output infrastructure.</p><ArrowRight size={16}/></a></div>
         </div>
       </section>
 
